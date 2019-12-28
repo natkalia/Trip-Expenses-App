@@ -1,0 +1,27 @@
+{
+  "name": "travelplanner",
+  "version": "1.0.0",
+  "description": "app for planning travel budget",
+  "keywords": [
+    "travel",
+    "travel costs",
+    "travel budget"
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dobrzyckahanna/TravelPlanner.git"
+  },
+  "author": "Warsaw Team CodersCamp 2019",
+  "scripts": {
+    "install:app": "npm install && npm run install:server && npm run install:client",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "start:app": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "node server/server.js",
+    "start:client": "npm run start --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.2"
+  }
+}
