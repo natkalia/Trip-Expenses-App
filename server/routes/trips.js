@@ -22,7 +22,7 @@ router.put('/edit/:id', async (req, res) => {
           .catch(error => res.status(400).json(error))
 
       })
-      .catch(error => res.status(400).send('The trip with the given ID was not found'))
+      .catch(() => res.status(404).send('The trip with the given ID was not found'))
   }
 });
 
