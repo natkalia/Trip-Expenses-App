@@ -20,7 +20,6 @@ router.put('/edit/:id', (req, res) => {
         trip.save()
           .then(() => res.json('Trip modified!'))
           .catch(error => res.status(400).json(error))
-
       })
       .catch(() => res.status(404).send('The trip with the given ID was not found'))
   }
