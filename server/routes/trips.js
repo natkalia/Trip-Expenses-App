@@ -4,7 +4,7 @@ const { Trip, validateTrip } = require('../models/trip');
 
 // edit trip information
 
-router.put('/edit/:id', async (req, res) => {
+router.put('/edit/:id', (req, res) => {
   const { error } = validateTrip(req.body);
   if (error) {
     return res.status(400).send(error.details[0].message)
