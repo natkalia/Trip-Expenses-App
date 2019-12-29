@@ -1,4 +1,5 @@
 import React from 'react';
+import AddTrip from './AddTrip';
 
 class App extends React.Component {
 
@@ -21,8 +22,9 @@ class App extends React.Component {
     return (
     <div>
       <header>
-        React App
+        Place for navigation menu
       </header>
+      <AddTrip/>
       <p>{this.state.apiResponse}</p>
     </div>
     )
