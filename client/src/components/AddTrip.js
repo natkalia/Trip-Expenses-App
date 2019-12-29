@@ -44,6 +44,10 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  color: #000;
   display: block;
   border: 1px solid #000;
   padding: 4px;
@@ -54,10 +58,15 @@ const Input = styled.input`
   &::placeholder{
     font-family: 'Roboto', sans-serif;
     font-size: 18px;
+    color: #999;
   }
 `;
 
 const Textarea = styled.textarea`
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  color: #000;
   display: block;
   border: 1px solid #000;
   padding: 4px;
@@ -69,6 +78,7 @@ const Textarea = styled.textarea`
   &::placeholder{
     font-family: 'Roboto', sans-serif;
     font-size: 18px;
+    color: #999;
   }
 `;
 
@@ -87,21 +97,21 @@ const Button = styled.input`
 
 class AddTrip extends Component {
 
-  handleClick = () => { console.log('button was clicked')}; 
+  handleClick = () => { alert('Form submitted!')}; 
   
   render() {
     return (
       <Wrapper>
         <Title>Add Trip</Title>
-        <Form>
+        <Form method="POST" action='/api/trips/add' onSubmit={this.handleClick}>
           <Label htmlFor="name">Name:</Label>
-          <Input type="text" id="name" placeholder="Name"/>
+          <Input type="text" name="name" id="name" placeholder="Name"/>
           <Label htmlFor="date">Start date:</Label>
-          <Input type="text" id="date" placeholder={new Date().toJSON().slice(0,10).replace(/-/g,'/')}/>
+          <Input type="text" name="date" id="date" placeholder={new Date().toJSON().slice(0,10).replace(/-/g,'/')}/>
           <Label htmlFor="description">Description:</Label>
           <Text>This field is optional</Text>
-          <Textarea id="description" placeholder="Description"/>
-          <Button type="submit" value="Add" onClick={this.handleClick}/> 
+          <Textarea name="description" id="description" placeholder="Description"/>
+          <Button type="submit" value="Add"/> 
         </Form>
       </Wrapper>
     )
