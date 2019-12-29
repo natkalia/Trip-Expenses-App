@@ -11,8 +11,6 @@ router.post('/add', (req, res) => {
   } else {
     const trip = new Trip({
       name: req.body.name,
-      mainCurrency: req.body.mainCurrency,
-      budget: req.body.budget,
       description: req.body.description,
       startDate: req.body.startDate
     });
