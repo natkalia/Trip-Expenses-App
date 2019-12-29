@@ -12,6 +12,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const testAPIRouter = require("./routes/testAPI");
+const tripsRouter = require('./routes/trips');
 
 const app = express();
 
@@ -36,6 +37,7 @@ if (app.get('env') === 'development') {
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/testAPI', testAPIRouter);
+app.use('/api/trips', tripsRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
