@@ -97,7 +97,12 @@ const Button = styled.input`
 
 class AddTrip extends Component {
 
-  handleClick = () => { alert('Form submitted!')}; 
+  handleClick = () => { alert('Form submitted!')};
+
+  giveCurrentDate = () => {
+    const currentDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    return currentDate;
+  }
   
   render() {
     return (
@@ -105,9 +110,9 @@ class AddTrip extends Component {
         <Title>Add Trip</Title>
         <Form method="POST" action='/api/trips/add' onSubmit={this.handleClick}>
           <Label htmlFor="name">Name:</Label>
-          <Input type="text" name="name" id="name" placeholder="Name"/>
+          <Input type="text" name="name" id="name" placeholder="Name" required/>
           <Label htmlFor="date">Start date:</Label>
-          <Input type="text" name="date" id="date" placeholder={new Date().toJSON().slice(0,10).replace(/-/g,'/')}/>
+          <Input type="text" name="date" id="date" placeholder={this.giveCurrentDate()} required/>
           <Label htmlFor="description">Description:</Label>
           <Text>This field is optional</Text>
           <Textarea name="description" id="description" placeholder="Description"/>
