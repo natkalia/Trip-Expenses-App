@@ -53,8 +53,8 @@ function validateUser(user) {
   return userSchema.validate(user)
 }
 
+/*
 // Test joi validation
-///*
 const user1 = {
   name: 'Anna',
   email: 'sadd@sa.pl',
@@ -62,14 +62,14 @@ const user1 = {
 }
 const result = validateUser(user1);
 console.log(result);
-//*/
+
 // Test mongoose validation
 const createUser = (userData) => {
   const user = new User(userData);
   console.log(user.validateSync());
 } 
 createUser(result.value);
-
+*/
 
 exports.User = User;
 exports.validate = validateUser;
