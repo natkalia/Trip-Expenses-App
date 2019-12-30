@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
     maxlength: 500,
     trim: true
   },
+  trips: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Trip'
+  }]
 })
 
 // Compile schema to a model
@@ -52,24 +56,6 @@ function validateUser(user) {
   });
   return userSchema.validate(user)
 }
-
-/*
-// Test joi validation
-const user1 = {
-  name: 'Anna',
-  email: 'sadd@sa.pl',
-  password: '1aS@1234'
-}
-const result = validateUser(user1);
-console.log(result);
-
-// Test mongoose validation
-const createUser = (userData) => {
-  const user = new User(userData);
-  console.log(user.validateSync());
-} 
-createUser(result.value);
-*/
 
 exports.User = User;
 exports.validate = validateUser;
