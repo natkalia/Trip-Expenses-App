@@ -36,6 +36,7 @@ if (app.get('env') === 'development') {
 }
 
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/testAPI', testAPIRouter);
 app.use('/api/trips', tripsRouter);
 

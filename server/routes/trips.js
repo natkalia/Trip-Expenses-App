@@ -19,6 +19,13 @@ router.post('/add', (req, res) => {
   }
 });
 
+// Delete trip
+router.delete('/:id', (req, res) => {
+  Trip.findByIdAndRemove(req.params.id)
+    .then(() => res.json("Trip was sucessfully deleted."))
+    .catch(() => res.status(404).send('The trip with the given ID was not found'))
+});
+
 // edit trip information
 router.put('/edit/:id', (req, res) => {
   const { error } = validateTrip(req.body);
