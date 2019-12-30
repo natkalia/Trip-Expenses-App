@@ -104,8 +104,8 @@ class EditTrip extends Component {
           <Label htmlFor="description" >Description:</Label>
           <Text>This field is optional</Text>
           <Textarea name="description" id="description-edit" placeholder="Description"/>
-          <Button type="submit" textOnButton="Edit" style={{ border: "1px solid black" }} /> 
-          <Button type="submit" textOnButton="Delete" /> 
+          <Button type="submit" textOnButton="Edit" btnColor="#70F4FD" btnBorder="none"/> 
+          <Button type="submit" textOnButton="Delete" btnColor="#fff" btnBorder="1px solid #000"/> 
         </Form>
       </Wrapper>
     )

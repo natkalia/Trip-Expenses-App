@@ -1,8 +1,8 @@
 import React from 'react'; 
 import styled from 'styled-components';
 
-const DefaultButton = styled.input`
-  background-color: #70F4FD;
+const DefaultButton = styled.button`
+  background-color: #fff;
   border-radius: 7px;
   min-height: 50px;
   margin: 10px auto;
@@ -12,6 +12,7 @@ const DefaultButton = styled.input`
   border: none;
   color: #000;
   user-select: none;
+  outline: none;  
   &:hover {
     cursor: pointer;  
   } 
@@ -21,9 +22,16 @@ const DefaultButton = styled.input`
 `;
 
 const Button = (props) => {
+
+  const btnStyle = {
+    backgroundColor: props.btnColor,
+    border: props.btnBorder
+  };
+
   return (
-    <DefaultButton defaultValue = {props.textOnButton} disabled backgroundColor = {props.test} />
+    <DefaultButton type="submit" style = {btnStyle}>{props.textOnButton}</DefaultButton>
   )
+
 }
 
 export default Button;

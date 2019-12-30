@@ -1,5 +1,6 @@
 import React from 'react';
 import AddTrip from './AddTrip';
+import EditTrip from './EditTrip';
 
 class App extends React.Component {
 
@@ -25,6 +26,7 @@ class App extends React.Component {
         Place for navigation menu
       </header>
       <AddTrip/>
+      <EditTrip/>
       <p>{this.state.apiResponse}</p>
     </div>
     )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; 
 import styled from 'styled-components';
+import Button from './Button';
 
 const Wrapper = styled.div`
   display: flex;
@@ -82,22 +83,9 @@ const Textarea = styled.textarea`
   }
 `;
 
-const Button = styled.input`
-  background-color: #70F4FD;
-  border-radius: 7px;
-  min-height: 50px;
-  margin: 10px auto;
-  width: 100%;
-  font-size: 20px;
-  border: none;
-  &:hover {
-    cursor: pointer;  
-  } 
-`;
-
 class AddTrip extends Component {
 
-  handleClick = () => { alert('Form submitted!')};
+  handleSubmit = () => { alert('Form submitted!')};
 
   giveCurrentDate = () => {
     const currentDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
@@ -108,15 +96,15 @@ class AddTrip extends Component {
     return (
       <Wrapper>
         <Title>Add Trip</Title>
-        <Form method="POST" action='/api/trips/add' onSubmit={this.handleClick}>
+        <Form method="POST" action='/api/trips/add' onSubmit={this.handleSubmit}>
           <Label htmlFor="name">Name:</Label>
-          <Input type="text" name="name" id="name" placeholder="Name" required/>
+          <Input type="text" name="name" id="name-add" placeholder="Name" required/>
           <Label htmlFor="date">Start date:</Label>
-          <Input type="text" name="date" id="date" placeholder={this.giveCurrentDate()} required/>
+          <Input type="text" name="startDate" id="date-add" placeholder={this.giveCurrentDate()} required/>
           <Label htmlFor="description">Description:</Label>
           <Text>This field is optional</Text>
-          <Textarea name="description" id="description" placeholder="Description"/>
-          <Button type="submit" value="Add"/> 
+          <Textarea name="description" id="description-add" placeholder="Description"/>
+          <Button textOnButton="Add" btnColor="#70F4FD" btnBorder="none"/> 
         </Form>
       </Wrapper>
     )
