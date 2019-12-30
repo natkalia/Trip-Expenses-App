@@ -5,7 +5,6 @@ import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
 
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -118,8 +117,7 @@ class EditTrip extends Component {
       name: "", 
       startDate: new Date(), 
       description: "", 
-      isFinished: false,
-      id: "5e0a112fde6b762d1442ef5b" // temporary
+      isFinished: false
     };
   }
 
@@ -157,15 +155,19 @@ class EditTrip extends Component {
     }
 
     console.log(trip); // for debugging only
-    let id="5e0a112fde6b762d1442ef5b"; // temporary id
 
     // send PUT request to backend endpoint
+    let id="5e0a1ecc530bab2710600906"; // temporary id
     axios.put("http://localhost:3000/api/trips/edit/" + id, trip)
       .then(res => console.log(res.data));
 
     // reset inputs to blank to start over again after form submit
     this.setState({ name: "", startDate: new Date(), description: "" })
   };
+
+    // we should add event handler to send DELETE request to backend endpoint after DELETE button is clicked
+      // axios.delete("http://localhost:3000/api/trips/" + id)
+      //   .then(res => console.log(res.data));
 
   render() {
     return (
