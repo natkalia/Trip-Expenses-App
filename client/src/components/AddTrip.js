@@ -85,7 +85,15 @@ const Textarea = styled.textarea`
 
 class AddTrip extends Component {
 
-  handleSubmit = () => { alert('Form submitted!')};
+  state = { name: "", startDate: "", description: "" };
+
+  onFormSubmit= (e) => { 
+    e.preventDefault();
+    console.log(this.state.name);
+    console.log(this.state.startDate);
+    console.log(this.state.description);
+    alert('Form submitted!')
+  };
 
   giveCurrentDate = () => {
     const currentDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
@@ -96,14 +104,14 @@ class AddTrip extends Component {
     return (
       <Wrapper>
         <Title>Add Trip</Title>
-        <Form method="POST" action='/api/trips/add' onSubmit={this.handleSubmit}>
+        <Form method="POST" action='/api/trips/add' onSubmit={this.onFormSubmit}>
           <Label htmlFor="name">Name:</Label>
-          <Input type="text" name="name" id="name-add" placeholder="Name" required/>
+          <Input type="text" name="name" id="name-add" placeholder="Name" required onChange={e => this.setState({ name: e.target.value })}  value={this.state.name}/>
           <Label htmlFor="date">Start date:</Label>
-          <Input type="text" name="startDate" id="date-add" placeholder={this.giveCurrentDate()} required/>
+          <Input type="text" name="startDate" id="date-add" placeholder={this.giveCurrentDate()} required onChange={e => this.setState({ startDate: e.target.value })}  value={this.state.startDate}/>
           <Label htmlFor="description">Description:</Label>
           <Text>This field is optional</Text>
-          <Textarea name="description" id="description-add" placeholder="Description"/>
+          <Textarea name="description" id="description-add" placeholder="Description" onChange={e => this.setState({ description: e.target.value })} value={this.state.description}/>
           <Button textOnButton="Add" btnColor="#70F4FD" btnBorder="none"/> 
         </Form>
       </Wrapper>

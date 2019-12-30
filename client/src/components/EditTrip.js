@@ -85,7 +85,15 @@ const Textarea = styled.textarea`
 
 class EditTrip extends Component {
 
-  handleClick = () => { alert('Form submitted!')};
+  state = { name: "", startDate: "", description: "" };
+
+  onFormSubmit= (e) => { 
+    e.preventDefault();
+    console.log(this.state.name);
+    console.log(this.state.startDate);
+    console.log(this.state.description);
+    alert('Form submitted!')
+  };
 
   giveCurrentDate = () => {
     const currentDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
@@ -96,14 +104,14 @@ class EditTrip extends Component {
     return (
       <Wrapper>
         <Title>Edit Trip</Title>
-        <Form method="POST" action='/api/trips/add' onSubmit={this.handleClick}>
-          <Label htmlFor="name-edit">Name:</Label>
-          <Input type="text" name="name" id="name-edit" placeholder="Name" required/>
+        <Form method="POST" action='/api/trips/edit:id' onSubmit={this.handleClick}>
+        <Label htmlFor="name">Name:</Label>
+          <Input type="text" name="name" id="name-edit" placeholder="Name" required onChange={e => this.setState({ name: e.target.value })}  value={this.state.name}/>
           <Label htmlFor="date">Start date:</Label>
-          <Input type="text" name="date" id="date-edit" placeholder={this.giveCurrentDate()} required/>
-          <Label htmlFor="description" >Description:</Label>
+          <Input type="text" name="startDate" id="date-edit" placeholder={this.giveCurrentDate()} required onChange={e => this.setState({ startDate: e.target.value })}  value={this.state.startDate}/>
+          <Label htmlFor="description">Description:</Label>
           <Text>This field is optional</Text>
-          <Textarea name="description" id="description-edit" placeholder="Description"/>
+          <Textarea name="description" id="description-edit" placeholder="Description" onChange={e => this.setState({ description: e.target.value })} value={this.state.description}/>
           <Button type="submit" textOnButton="Edit" btnColor="#70F4FD" btnBorder="none"/> 
           <Button type="submit" textOnButton="Delete" btnColor="#fff" btnBorder="1px solid #000"/> 
         </Form>
