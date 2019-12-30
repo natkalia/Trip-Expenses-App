@@ -3,7 +3,7 @@ const router = express.Router();
 const { Trip, validateTrip } = require('../models/trip');
 
 
-//Add trip
+// Add trip
 router.post('/add', (req, res) => {
   const { error } = validateTrip(req.body);
   if (error) {
@@ -20,5 +20,11 @@ router.post('/add', (req, res) => {
   }
 });
 
+// Delete trip
+router.delete('/:id', (req, res) => {
+  Trip.findByIdAndRemove(req.params.id)
+    .then(() => res.json("Trip was sucessfully deleted."))
+    .catch(() => res.status(404).send('The trip with the given ID was not found'))
+});
 
 module.exports = router;
