@@ -5,7 +5,7 @@ const DefaultButton = styled.button`
   background-color: #fff;
   border-radius: 7px;
   min-height: 50px;
-  margin: 10px auto;
+  margin: 10px auto 0;
   width: 100%;
   font-size: 20px;
   text-align: center;
