@@ -1,10 +1,13 @@
-export const INCREMENT = 'increment';
+const FIRSTONE = 'FIRSTONE';
 
-export function updateUser(newUser) {
-  return {
-    type: INCREMENT,
-    payload: {
-      user: newUser
-    }
+const addFirstOne = (text) => ({
+  type: FIRSTONE,
+  payload: {
+    text: text
   }
-};
+});
+
+export {
+  addFirstOne,
+  FIRSTONE
+}

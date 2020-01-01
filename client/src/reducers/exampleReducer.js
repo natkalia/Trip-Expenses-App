@@ -1,10 +1,12 @@
+import {
+  FIRSTONE
+} from '../actions/expampleAction';
 
-function exampleReducer(state = 0, action) {
+
+const exampleReducer = (state = [], action) => {
   switch (action.type) {
-    case 'INCREMENT':
-    return state + 1
-    case 'DECREMENT':
-    return state - 1
+    case FIRSTONE:
+    return [ ...state, action.payload ]
     default:
     return state
   }
