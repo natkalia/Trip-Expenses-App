@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from './Button';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
+import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const Wrapper = styled.div`
@@ -99,24 +100,21 @@ class AddTrip extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { name: "", startDate: new Date(), description: "" };
+    this.state = { name: "", startDate: Date.now(), description: "" };
   }
 
-  onNameChange = (e) => {
-    this.setState({ 
-      name: e.target.value 
-    })
+  onInputChange = (e) => {
+    const target = e.target;
+    const value = target.value; 
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
   }
 
   onDateChange = (date) => {
     this.setState({ 
       startDate: date
-    })
-  }
-  
-  onDescriptionChange = (e) => {
-    this.setState({ 
-      description: e.target.value 
     })
   }
 
@@ -125,7 +123,7 @@ class AddTrip extends Component {
 
     const trip = {
       name: this.state.name,
-      startDate: this.state.startDate,
+      startDate: moment(this.state.startDate).format(),
       description: this.state.description
     }
 
@@ -145,14 +143,14 @@ class AddTrip extends Component {
         <Form onSubmit={this.onFormSubmit}>
           
           <Label htmlFor="name-add">Name:</Label>
-          <Input type="text" name="name" id="name-add" placeholder="Name" required onChange={this.onNameChange} value={this.state.name}/>
+          <Input type="text" name="name" id="name-add" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
           
           <Label htmlFor="startDate-add">Start date:</Label>
           <DatePicker customInput={<DateInput/>} dateFormat="yyyy/MM/dd" type="text" name="startDate" id="startDate-add" selected={this.state.startDate} onChange={this.onDateChange} todayButton="Today"/>
 
           <Label htmlFor="description-add">Description:</Label>
           <Paragraph>This field is optional</Paragraph>
-          <Textarea name="description" id="description-add" placeholder="Description" onChange={this.onDescriptionChange} value={this.state.description}/>
+          <Textarea name="description" id="description-add" placeholder="Description" onChange={this.onInputChange} value={this.state.description}/>
           <Button textOnButton="Add" btnColor="#70F4FD" btnBorder="none"/> 
         </Form>
       </Wrapper>
