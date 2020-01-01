@@ -1,5 +1,8 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 // Create schema
 const userSchema = new mongoose.Schema({
@@ -33,6 +36,16 @@ const userSchema = new mongoose.Schema({
   }]
 })
 
+// Generate webtoken
+
+userSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({
+    _id: this._id,
+    name: this.name,
+  }, config.get('db.jwtPrivateKey'));
+  return token;
+}
+
 // Compile schema to a model
 const User = mongoose.model('User', userSchema);
 
@@ -57,5 +70,21 @@ function validateUser(user) {
   return userSchema.validate(user)
 }
 
+// User validation for authorization process
+// Function will return object with value key and error key (if there is an error)
+function validateUserOnLogin(user) {
+  const userSchema = Joi.object({
+    email: Joi.string()
+      .min(8)
+      .max(200)
+      .required()
+      .email(),
+    password: Joi.string()
+      .required()
+  });
+  return userSchema.validate(user)
+}
+
 exports.User = User;
 exports.validate = validateUser;
+exports.validateUserOnLogin = validateUserOnLogin;
