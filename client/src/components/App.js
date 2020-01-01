@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {addFirstOne} from '../actions/expampleAction';
+import {addFirstOne} from '../actions/exampleAction';
 
 
 class App extends React.Component {

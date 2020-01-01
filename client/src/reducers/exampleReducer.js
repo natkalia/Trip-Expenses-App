@@ -1,6 +1,6 @@
 import {
   FIRSTONE
-} from '../actions/expampleAction';
+} from '../actions/exampleAction';
 
 
 const initialState = {
