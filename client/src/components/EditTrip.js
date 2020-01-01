@@ -116,7 +116,7 @@ class EditTrip extends Component {
     this.state = {
       name: "", 
       startDate: "", 
-      description: "", 
+      description: undefined, 
       isTripFinished: false
     };
   }
@@ -131,6 +131,19 @@ class EditTrip extends Component {
     this.setState({
       [name]: value
     });
+  }
+
+  onDescriptionChange = (e) => {
+    console.log(e.target.value);
+    if (e.target.value !== "") {
+      this.setState({ 
+      description: e.target.value
+      });
+    } else {
+      this.setState({ 
+        description: undefined
+      });
+    }
   }
 
   onDateChange = (date) => {
@@ -158,7 +171,7 @@ class EditTrip extends Component {
   };
 
   componentDidMount () {
-    axios.get("http://localhost:3000/api/trips/5e0cd2259f1d29379c9c1729") // temporary currenTripId
+    axios.get("http://localhost:3000/api/trips/5e0cf9169f1d29379c9c172d") // temporary currenTripId
       .then(res => this.setState({ 
         id: res.data._id,
         name: res.data.name,
@@ -174,15 +187,15 @@ class EditTrip extends Component {
         <Title>Edit Trip Information</Title>
         <Form onSubmit={this.onEditSubmit}>
           
-          <Label htmlFor="name-edit">Name:</Label>
-          <Input type="text" name="name" id="name-edit" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
+          <Label htmlFor="name-edit">Name (3-30 characters):</Label>
+          <Input minlength="3" maxlength="30" type="text" name="name" id="name-edit" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
           
           <Label htmlFor="startDate-edit">Start date:</Label>
           <DatePicker customInput={<DateInput/>} dateFormat="yyyy/MM/dd" type="text" name="startDate" id="startDate-edit" selected={this.state.startDate} onChange={this.onDateChange} todayButton="Today"/>
 
-          <Label htmlFor="description-edit">Description:</Label>
+          <Label htmlFor="description-edit">Description (10-200 characters):</Label>
           <Paragraph>This field is optional</Paragraph>
-          <Textarea name="description" id="description-edit" placeholder="Description" onChange={this.onInputChange} value={this.state.description}/>
+          <Textarea minlength="10" maxlength="200" name="description" id="description-edit" placeholder="Description" onChange={this.onDescriptionChange} value={this.state.description}/>
 
           <IsTripFinishedContainer>
             <Input type="checkbox" name="isTripFinished" id="isTripFinished-edit" onChange={this.onInputChange} checked={this.state.isTripFinished} />

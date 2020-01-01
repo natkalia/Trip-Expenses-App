@@ -100,7 +100,7 @@ class AddTrip extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { name: "", startDate: Date.now(), description: "" };
+    this.state = { name: "", startDate: Date.now(), description: undefined };
   }
 
   onInputChange = (e) => {
@@ -142,15 +142,15 @@ class AddTrip extends Component {
         <Title>Add Trip</Title>
         <Form onSubmit={this.onFormSubmit}>
           
-          <Label htmlFor="name-add">Name:</Label>
-          <Input type="text" name="name" id="name-add" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
+          <Label htmlFor="name-add">Name (3-30 characters):</Label>
+          <Input minlength="3" maxlength="30" type="text" name="name" id="name-add" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
           
           <Label htmlFor="startDate-add">Start date:</Label>
           <DatePicker customInput={<DateInput/>} dateFormat="yyyy/MM/dd" type="text" name="startDate" id="startDate-add" selected={this.state.startDate} onChange={this.onDateChange} todayButton="Today"/>
 
-          <Label htmlFor="description-add">Description:</Label>
+          <Label htmlFor="description-add">Name (3-30 characters):</Label>
           <Paragraph>This field is optional</Paragraph>
-          <Textarea name="description" id="description-add" placeholder="Description" onChange={this.onInputChange} value={this.state.description}/>
+          <Textarea minlength="10" maxlength="200" name="description" id="description-add" placeholder="Description" onChange={this.onInputChange} value={this.state.description}/>
           <Button textOnButton="Add" btnColor="#70F4FD" btnBorder="none"/> 
         </Form>
       </Wrapper>
