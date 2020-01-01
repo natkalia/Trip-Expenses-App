@@ -28,8 +28,7 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: left;
-  padding: 10px;
-  margin: 10px auto;
+  margin: 0 auto;
 `;
 
 const Label = styled.label`
@@ -115,7 +114,6 @@ class EditTrip extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // id: "", 
       name: "", 
       startDate: "", 
       description: "", 
@@ -140,9 +138,9 @@ class EditTrip extends Component {
       startDate: date
     })
   }
-  
-  onFormSubmit = (e) => { 
-    e.preventDefault();
+   
+  onEditSubmit = (e) => { 
+    e.preventDefault(); 
     const trip = {
       name: this.state.name,
       startDate: moment(this.state.startDate).format(),
@@ -150,15 +148,17 @@ class EditTrip extends Component {
       isTripFinished: this.state.isTripFinished
     }
     axios.put("http://localhost:3000/api/trips/edit/" + this.state.id, trip)
-      .then(res => console.log(res.data));
+      .then(res => console.log(res.data));    
   };
 
-    // we should add event handler to send DELETE request to backend endpoint after DELETE button is clicked
-      // axios.delete("http://localhost:3000/api/trips/" + id)
-      //   .then(res => console.log(res.data));
+  onDeleteSubmit = (e) => {
+    e.preventDefault();
+    axios.delete("http://localhost:3000/api/trips/" + this.state.id)
+    .then(res => console.log(res.data));
+  };
 
   componentDidMount () {
-    axios.get("http://localhost:3000/api/trips/5e0ca080b3ffb10f8c375be1") // temporary currenTripId
+    axios.get("http://localhost:3000/api/trips/5e0cd2259f1d29379c9c1729") // temporary currenTripId
       .then(res => this.setState({ 
         id: res.data._id,
         name: res.data.name,
@@ -172,7 +172,7 @@ class EditTrip extends Component {
     return (
       <Wrapper>
         <Title>Edit Trip Information</Title>
-        <Form onSubmit={this.onFormSubmit}>
+        <Form onSubmit={this.onEditSubmit}>
           
           <Label htmlFor="name-edit">Name:</Label>
           <Input type="text" name="name" id="name-edit" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
@@ -189,9 +189,13 @@ class EditTrip extends Component {
             <Label htmlFor="isTripFinished-edit">Is this trip finished?</Label>
           </IsTripFinishedContainer>
           
-          <Button textOnButton="Edit" btnColor="#70F4FD" btnBorder="none" onClick={this.onEditClick}/> 
-          <Button textOnButton="Delete" btnColor="#fff" btnBorder="1px solid #000" onClick={this.onDeleteClick}/> 
+          <Button textOnButton="Edit" btnColor="#70F4FD" btnBorder="none"/>     
+        </Form> 
+
+        <Form onSubmit={this.onDeleteSubmit}>
+          <Button textOnButton="Delete" btnColor="#fff" btnBorder="1px solid #000"/> 
         </Form>
+
       </Wrapper>
     )
   }
