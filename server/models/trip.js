@@ -61,7 +61,7 @@ const tripSchema = new mongoose.Schema({
   },
   startDate: {
     type: Date,
-    default: moment.format(Date.now),
+    default: moment().format(),
     min: '2019-12-01',
     max: '2099-12-31'
   },

@@ -125,8 +125,10 @@ class EditTrip extends Component {
 
   onInputChange = (e) => {
     const target = e.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value; 
     const name = target.name;
+
+    // potentially place for additional validation: compare startDate and isFinished (current date);
 
     this.setState({
       [name]: value
@@ -141,20 +143,14 @@ class EditTrip extends Component {
   
   onFormSubmit = (e) => { 
     e.preventDefault();
-
     const trip = {
       name: this.state.name,
       startDate: moment(this.state.startDate).format(),
       description: this.state.description,
       isTripFinished: this.state.isTripFinished
     }
-    console.log(trip); // for debugging only
-  
     axios.put("http://localhost:3000/api/trips/edit/" + this.state.id, trip)
       .then(res => console.log(res.data));
-
-    // reset inputs to blank to start over again after form submit - probably not necessary here
-    // this.setState({ name: "", startDate: new Date(), description: "", isTripFinished: false })
   };
 
     // we should add event handler to send DELETE request to backend endpoint after DELETE button is clicked
