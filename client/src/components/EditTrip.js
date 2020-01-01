@@ -187,15 +187,15 @@ class EditTrip extends Component {
         <Title>Edit Trip Information</Title>
         <Form onSubmit={this.onEditSubmit}>
           
-          <Label htmlFor="name-edit">Name (3-30 characters):</Label>
-          <Input minlength="3" maxlength="30" type="text" name="name" id="name-edit" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
+          <Label htmlFor="name-edit">Name (5-100 characters):</Label>
+          <Input minlength="5" maxlength="100" type="text" name="name" id="name-edit" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
           
           <Label htmlFor="startDate-edit">Start date:</Label>
           <DatePicker customInput={<DateInput/>} dateFormat="yyyy/MM/dd" type="text" name="startDate" id="startDate-edit" selected={this.state.startDate} onChange={this.onDateChange} todayButton="Today"/>
 
           <Label htmlFor="description-edit">Description (10-200 characters):</Label>
           <Paragraph>This field is optional</Paragraph>
-          <Textarea minlength="10" maxlength="200" name="description" id="description-edit" placeholder="Description" onChange={this.onDescriptionChange} value={this.state.description}/>
+          <Textarea maxlength="200" name="description" id="description-edit" placeholder="Description" onChange={this.onDescriptionChange} value={this.state.description}/>
 
           <IsTripFinishedContainer>
             <Input type="checkbox" name="isTripFinished" id="isTripFinished-edit" onChange={this.onInputChange} checked={this.state.isTripFinished} />
