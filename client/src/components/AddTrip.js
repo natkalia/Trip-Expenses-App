@@ -148,7 +148,7 @@ class AddTrip extends Component {
           <Label htmlFor="startDate-add">Start date:</Label>
           <DatePicker customInput={<DateInput/>} dateFormat="yyyy/MM/dd" type="text" name="startDate" id="startDate-add" selected={this.state.startDate} onChange={this.onDateChange} todayButton="Today"/>
 
-          <Label htmlFor="description-add">Name (3-30 characters):</Label>
+          <Label htmlFor="description-add">Description (10-200 characters):</Label>
           <Paragraph>This field is optional</Paragraph>
           <Textarea minlength="10" maxlength="200" name="description" id="description-add" placeholder="Description" onChange={this.onInputChange} value={this.state.description}/>
           <Button textOnButton="Add" btnColor="#70F4FD" btnBorder="none"/> 
