@@ -1,9 +1,9 @@
 const FIRSTONE = 'FIRSTONE';
 
-const addFirstOne = (text) => ({
+const addFirstOne = (payload) => ({
   type: FIRSTONE,
   payload: {
-    text: text
+    text: payload
   }
 });
 

@@ -3,10 +3,14 @@ import {
 } from '../actions/expampleAction';
 
 
-const exampleReducer = (state = [], action) => {
+const initialState = {
+  text: 'text początkowy'
+};
+
+const exampleReducer = (state = initialState, action) => {
   switch (action.type) {
     case FIRSTONE:
-    return [ ...state, action.payload ]
+    return Object.assign({}, state,action.payload)
     default:
     return state
   }
