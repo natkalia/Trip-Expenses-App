@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from './Button';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
+import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const Wrapper = styled.div`
@@ -79,7 +80,7 @@ const Paragraph = styled.p`
   margin: 0;
 `;
 
-const IsFinishedContainer = styled.div`
+const IsTripFinishedContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: start;
@@ -113,18 +114,23 @@ class EditTrip extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
+      // id: "", 
       name: "", 
-      startDate: new Date(), 
+      startDate: "", 
       description: "", 
-      isFinished: false
+      isTripFinished: false
     };
   }
 
-  onNameChange = (e) => {
-    this.setState({ 
-      name: e.target.value 
-    })
+  onInputChange = (e) => {
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
   }
 
   onDateChange = (date) => {
@@ -133,41 +139,38 @@ class EditTrip extends Component {
     })
   }
   
-  onIsFinishedChange = (e) => {
-    this.setState({ 
-      isFinished: e.target.checked 
-    })
-  }
-
-  onDescriptionChange = (e) => {
-    this.setState({ 
-      description: e.target.value 
-    })
-  }
- 
   onFormSubmit = (e) => { 
     e.preventDefault();
 
     const trip = {
       name: this.state.name,
-      startDate: this.state.startDate,
-      description: this.state.description
+      startDate: moment(this.state.startDate).format(),
+      description: this.state.description,
+      isTripFinished: this.state.isTripFinished
     }
-
     console.log(trip); // for debugging only
-
-    // send PUT request to backend endpoint
-    let id="5e0a1ecc530bab2710600906"; // temporary id
-    axios.put("http://localhost:3000/api/trips/edit/" + id, trip)
+  
+    axios.put("http://localhost:3000/api/trips/edit/" + this.state.id, trip)
       .then(res => console.log(res.data));
 
-    // reset inputs to blank to start over again after form submit
-    this.setState({ name: "", startDate: new Date(), description: "" })
+    // reset inputs to blank to start over again after form submit - probably not necessary here
+    // this.setState({ name: "", startDate: new Date(), description: "", isTripFinished: false })
   };
 
     // we should add event handler to send DELETE request to backend endpoint after DELETE button is clicked
       // axios.delete("http://localhost:3000/api/trips/" + id)
       //   .then(res => console.log(res.data));
+
+  componentDidMount () {
+    axios.get("http://localhost:3000/api/trips/5e0ca080b3ffb10f8c375be1") // temporary currenTripId
+      .then(res => this.setState({ 
+        id: res.data._id,
+        name: res.data.name,
+        startDate: new Date(res.data.startDate),
+        description: res.data.description,
+        isTripFinished: res.data.isTripFinished
+    }));
+  }
 
   render() {
     return (
@@ -176,19 +179,19 @@ class EditTrip extends Component {
         <Form onSubmit={this.onFormSubmit}>
           
           <Label htmlFor="name-edit">Name:</Label>
-          <Input type="text" name="name" id="name-edit" placeholder="Name" required onChange={this.onNameChange} value={this.state.name}/>
+          <Input type="text" name="name" id="name-edit" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
           
           <Label htmlFor="startDate-edit">Start date:</Label>
           <DatePicker customInput={<DateInput/>} dateFormat="yyyy/MM/dd" type="text" name="startDate" id="startDate-edit" selected={this.state.startDate} onChange={this.onDateChange} todayButton="Today"/>
 
           <Label htmlFor="description-edit">Description:</Label>
           <Paragraph>This field is optional</Paragraph>
-          <Textarea name="description" id="description-edit" placeholder="Description" onChange={this.onDescriptionChange} value={this.state.description}/>
+          <Textarea name="description" id="description-edit" placeholder="Description" onChange={this.onInputChange} value={this.state.description}/>
 
-          <IsFinishedContainer>
-            <Input type="checkbox" name="isFinished-edit" id="isFinished-edit" onChange={this.onIsFinishedChange} checked={this.state.isFinished}/>
-            <Label htmlFor="isFinished-edit">Is this trip finished?</Label>
-          </IsFinishedContainer>
+          <IsTripFinishedContainer>
+            <Input type="checkbox" name="isTripFinished" id="isTripFinished-edit" onChange={this.onInputChange} checked={this.state.isTripFinished} />
+            <Label htmlFor="isTripFinished-edit">Is this trip finished?</Label>
+          </IsTripFinishedContainer>
           
           <Button textOnButton="Edit" btnColor="#70F4FD" btnBorder="none" onClick={this.onEditClick}/> 
           <Button textOnButton="Delete" btnColor="#fff" btnBorder="1px solid #000" onClick={this.onDeleteClick}/> 

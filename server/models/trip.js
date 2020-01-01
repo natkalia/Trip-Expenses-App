@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
+const moment = require ('moment');
 
 const supportedCurrencies = [
   'PLN',
@@ -60,7 +61,7 @@ const tripSchema = new mongoose.Schema({
   },
   startDate: {
     type: Date,
-    default: Date.now,
+    default: moment.format(Date.now),
     min: '2019-12-01',
     max: '2099-12-31'
   },
