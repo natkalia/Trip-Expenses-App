@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'universal-cookie';
 import AddTrip from './AddTrip';
 import EditTrip from './EditTrip';
 import { connect } from 'react-redux';
@@ -10,7 +11,12 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { apiResponse: "" };
+
+    const cookies = new Cookies();
+    this.state = { 
+      apiResponse: "",
+      travelplanner_jwt: cookies.get('travelplanner_jwt') || ""
+    };
   }
 
   callAPI() {
