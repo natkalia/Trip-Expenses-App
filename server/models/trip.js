@@ -14,12 +14,12 @@ const supportedCurrencies = [
 ];
 
 const defaultCategories = [
-  'travel',
-  'tickets',
   'accomodation',
-  'health and insurance',
   'food',
-  'other'
+  'health and insurance',
+  'other',
+  'tickets',
+  'travel',
 ];
 
 const expenseSchema = new mongoose.Schema({
@@ -107,6 +107,8 @@ function validateTrip(trip) {
   //   values if needed
 
   const tripSchema = Joi.object({
+    _id: Joi.object(),
+    __v: Joi.number(),
     name: Joi.string()
       .trim()
       .min(5)
@@ -141,28 +143,35 @@ function validateTrip(trip) {
           .max(30)
       ),
     expenses: Joi.array()
-      .max(300)
-      .items(Joi.object({
-        name: Joi.string()
-          .trim()
-          .min(3)
-          .max(30)
-          .required(),
-        category: Joi.string()
-          .required()
-          .valid(Joi.in('/categories')),
-        cost: Joi.number()
-          .min(0)
-          .max(100000)
-          .precision(2)
-          .required(),
-        currency: Joi.string()
-          .default(Joi.ref('/mainCurrency'))
-          .valid(...supportedCurrencies)
-      })),
   });
 
   return tripSchema.validate(trip);
+}
+
+function validateExpense(expenseObject, categoriesArray) {
+  const expenseSchema = Joi.object({
+    _id: Joi.object(),
+    name: Joi.string()
+      .trim()
+      .min(3)
+      .max(30)
+      .required(),
+    category: Joi.string()
+      .required()
+      .valid(...categoriesArray),
+      // .valid(Joi.in('/categories')),
+    cost: Joi.number()
+      .min(0)
+      .max(100000)
+      .precision(2)
+      .required(),
+    currency: Joi.string()
+      // .default(Joi.ref('/mainCurrency'))
+      .valid(...supportedCurrencies)
+      .required()
+  });
+
+  return expenseSchema.validate(expenseObject);
 }
 
 // Test trip object
@@ -209,3 +218,4 @@ createTrip(validateResult.value);
 
 exports.Trip = Trip;
 exports.validateTrip = validateTrip;
+exports.validateExpense = validateExpense;
