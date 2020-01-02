@@ -12,23 +12,8 @@ import { addFirstOne } from '../actions/exampleAction';
 
 class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = { apiResponse: "" };
-  }
-
-  callAPI() {
-    fetch("http://localhost:5000/testAPI")
-        .then(res => res.text())
-        .then(res => this.setState({ apiResponse: res }));
-  }
-
   changeText = () => {
     this.props.addFirstOne("Zupełenie nowy text")
-  }
-
-  componentDidMount() {
-    this.callAPI();
   }
   
   render() {
@@ -39,9 +24,9 @@ class App extends React.Component {
         <Route path='/add' exact component={AddTrip} />
         <Route path='/edit/:id' exact component={EditTrip} />
         {/* <Route path='/' exact component={} /> */}
-          {/* <p>{this.state.apiResponse}</p>
-          <h1>{this.props.text}</h1>
-          <button onClick={this.changeText}>kliknij</button> */}
+        {/* do usuniecia później */}
+        <h1>{this.props.text}</h1>
+        <button onClick={this.changeText}>kliknij</button>
         <Footer/>
       </Router>
     )
