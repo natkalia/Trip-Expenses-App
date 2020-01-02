@@ -52,4 +52,58 @@ router.put('/edit/:id', (req, res) => {
   }
 });
 
+// Add expense
+router.post('/:id/expenses/', validation, async (req, res) => {
+  try {
+    console.log('What from user:');
+    console.dir(req.body);
+    const tripFromDatabase = await Trip.findById(req.params.id);
+    const plainObject = tripFromDatabase.toJSON();
+    console.log('Trip from database:');
+    console.dir(tripFromDatabase);
+    console.log('Plain object');
+    console.dir(plainObject);
+    plainObject.expenses.push(req.body);
+    console.log('Plain object after push');
+    console.dir(plainObject)
+    const { error } = validateTrip(plainObject);
+    if (error) {
+      console.log('Jakiś error');
+      return res.status(400).send(error.details[0].message);
+    }
+    tripFromDatabase.expenses.push(req.body);
+    console.log('Trip object after push');
+    console.log(tripFromDatabase);
+    const changedTrip = await tripFromDatabase.save();
+    return res.status(200).json('Expense added');
+
+  } catch (error) {
+    console.dir(error);
+    return res.status(400).send(error);
+  }
+});
+
+// Display all expenses
+router.get('/:id/expenses/', async (req, res) => {
+  try {
+    const tripFromDatabase = await Trip.findById(req.params.id);
+    const expenses = tripFromDatabase.expenses;
+    const expensesObject = {
+      "expenses": expenses,
+    }
+    res.status(200).json(expensesObject);
+  } catch (error) {
+    console.dir(error);
+    return res.status(400).send(error);
+  }
+});
+
+// Display chosen expense
+
+// Modify chosen expense
+
+// Delete chosen expense
+
+
+
 module.exports = router;

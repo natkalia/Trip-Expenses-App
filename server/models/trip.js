@@ -106,6 +106,8 @@ function validateTrip(trip) {
   //   values if needed
 
   const tripSchema = Joi.object({
+    _id: Joi.object(),
+    __v: Joi.number(),
     name: Joi.string()
       .trim()
       .min(5)
@@ -142,6 +144,7 @@ function validateTrip(trip) {
     expenses: Joi.array()
       .max(300)
       .items(Joi.object({
+        _id: Joi.object(),
         name: Joi.string()
           .trim()
           .min(3)
@@ -156,8 +159,9 @@ function validateTrip(trip) {
           .precision(2)
           .required(),
         currency: Joi.string()
-          .default(Joi.ref('/mainCurrency'))
+          // .default(Joi.ref('/mainCurrency'))
           .valid(...supportedCurrencies)
+          .required()
       })),
   });
 
