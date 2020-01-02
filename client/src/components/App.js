@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import {addFirstOne} from '../actions/exampleAction';
+
 
 class App extends React.Component {
 
@@ -13,6 +16,10 @@ class App extends React.Component {
         .then(res => this.setState({ apiResponse: res }));
   }
 
+  changeText = () => {
+    this.props.addFirstOne("Zupełenie nowy text")
+  }
+
   componentDidMount() {
     this.callAPI();
   }
@@ -24,10 +31,24 @@ class App extends React.Component {
         React App
       </header>
       <p>{this.state.apiResponse}</p>
+      <h1>{this.props.text}</h1>
+      <button onClick={this.changeText}>kliknij</button>
     </div>
     )
   }
 
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    text: state.text
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addFirstOne: newText => dispatch(addFirstOne(newText))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
