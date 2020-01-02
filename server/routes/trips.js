@@ -17,7 +17,8 @@ router.post('/add', (req, res) => {
     trip.save()
       .then(async(trip) => {     
         // After authentication is done change the line below
-        await User.findByIdAndUpdate('5e09e6344d3be0524e67993c', {$push: {trips: trip._id}});
+        // await User.findByIdAndUpdate('5e09e6344d3be0524e67993c', {$push: {trips: trip._id}});
+        await User.findByIdAndUpdate('5e0cfed451f05203b0575062', {$push: {trips: trip._id}});
       })
       .then(() => res.json('Trip added!'))
       .catch((error => res.status(400).json('Error: ' + error)))  
@@ -116,6 +117,11 @@ router.get('/:tripId/expenses/:expenseId', async (req, res) => {
 router.put('/:tripId/expenses/:expenseId', async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId);
+    if (trip === null) {
+      return res.status(404).json({
+        "message": "Trip not found"
+      })
+    }
     const { categories : tripCategories}  = trip;
     const { error, value } = validateExpense(req.body, tripCategories);
     if (error) {
@@ -134,6 +140,11 @@ router.put('/:tripId/expenses/:expenseId', async (req, res) => {
         "expenses.$.currency": value.currency
       }
     });
+    if (edited.n === 0) {
+      return res.status(404).json({
+        "message": "Expense not found",
+      })
+    }
     await trip.save();
     const changedTrip = await Trip.findById(req.params.tripId);
     const changedExpense = changedTrip.expenses.id(req.params.expenseId);
@@ -153,8 +164,14 @@ router.put('/:tripId/expenses/:expenseId', async (req, res) => {
 router.delete('/:tripId/expenses/:expenseId', async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId);
+    if (trip === null) {
+      return res.status(404).json({
+        "message": "Trip not found"
+      })
+    }
     const deletedExpense = trip.expenses.id(req.params.expenseId).remove();
-    await whatDelete.save();
+    console.log(deletedExpense);
+    await trip.save();
     return res.status(200).send(
       {
         "message": "I deleted expense",
@@ -162,8 +179,11 @@ router.delete('/:tripId/expenses/:expenseId', async (req, res) => {
       });
 
   } catch (error) {
-    console.dir(error);
-    return res.status(400).send(error);
+    const errorMessage = error.toString();
+    dbDebug(errorMessage);
+    return res.status(404).json({
+      "message": errorMessage
+    });
   }
 });
 
