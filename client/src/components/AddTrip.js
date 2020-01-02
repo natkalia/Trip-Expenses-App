@@ -100,7 +100,11 @@ class AddTrip extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { name: "", startDate: Date.now(), description: undefined };
+    this.state = {
+      name: "", 
+      startDate: Date.now(), 
+      description: undefined 
+    };
   }
 
   onInputChange = (e) => {
@@ -120,14 +124,11 @@ class AddTrip extends Component {
 
   onFormSubmit = (e) => { 
     e.preventDefault();
-
     const trip = {
       name: this.state.name,
       startDate: moment(this.state.startDate).format(),
-      description: this.state.description
+      description:  this.state.description == false ? undefined : this.state.description
     }
-
-    // send form to backend endpoint
     axios.post("http://localhost:3000/api/trips/add", trip)
       .then(res => console.log(res.data));
 

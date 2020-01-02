@@ -134,7 +134,6 @@ class EditTrip extends Component {
   }
 
   onDescriptionChange = (e) => {
-    console.log(e.target.value);
     if (e.target.value !== "") {
       this.setState({ 
       description: e.target.value
@@ -166,12 +165,14 @@ class EditTrip extends Component {
 
   onDeleteSubmit = (e) => {
     e.preventDefault();
+    if(window.confirm("Are you sure you want to delete this trip?")) {
     axios.delete("http://localhost:3000/api/trips/" + this.state.id)
     .then(res => console.log(res.data));
+    } else return;
   };
 
   componentDidMount () {
-    axios.get("http://localhost:3000/api/trips/5e0cf9169f1d29379c9c172d") // temporary currenTripId
+    axios.get("http://localhost:3000/api/trips/5e0dd4da618f3e1f10d4db7f") // temporary currenTripId
       .then(res => this.setState({ 
         id: res.data._id,
         name: res.data.name,
