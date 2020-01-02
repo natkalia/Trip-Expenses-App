@@ -3,8 +3,14 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './Header';
 import HomePage from './HomePage';
+import SignIn from './SignIn';
+import RegisterUser from './RegisterUser';
+import SingleTrip from './SingleTrip';
 import AddTrip from './AddTrip';
 import EditTrip from './EditTrip';
+import EditExpense from './EditExpense';
+import AddExpense from './AddExpense';
+import UserProfile from './UserProfile';
 import Footer from './Footer';
 
 import { addFirstOne } from '../actions/exampleAction';
@@ -21,9 +27,15 @@ class App extends React.Component {
       <Router>
         <Header/>
         <Route path='/' exact component={HomePage} />
-        <Route path='/add' exact component={AddTrip} />
-        <Route path='/edit/:id' exact component={EditTrip} />
-        {/* <Route path='/' exact component={} /> */}
+        <Route path='/trips/add' component={AddTrip} />
+        <Route path='/trips/edit/:id' component={EditTrip} />
+        <Route path='/users/login' component={SignIn} />
+        <Route path='/user/' component={RegisterUser} />
+        <Route path='/trips/:id' component={SingleTrip} />
+        <Route path='/trips/:tripId/expenses/:expenseId' component={EditExpense} />
+        <Route path='/trips/:id/expenses' component={AddExpense} />
+        <Route path='/users/:id' component={UserProfile} />
+
         {/* do usuniecia później */}
         <h1>{this.props.text}</h1>
         <button onClick={this.changeText}>kliknij</button>
