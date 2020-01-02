@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {addFirstOne} from '../actions/exampleAction';
-import Signup from './Signup'
+import Signup from './Signup';
+import Login from './Login';
 
 class App extends React.Component {
 
@@ -32,6 +33,7 @@ class App extends React.Component {
       </header>
 
       <Signup/>
+      <Login/>
 
       <p>{this.state.apiResponse}</p>
       <h1>{this.props.text}</h1>
