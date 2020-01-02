@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Trip, validateTrip } = require('../models/trip');
+const dbDebug = require('debug')('app:db');
+const { Trip, validateTrip, validateExpense } = require('../models/trip');
 const { User, validateUser} = require('../models/user');
 
 //Add trip
@@ -52,40 +53,39 @@ router.put('/edit/:id', (req, res) => {
   }
 });
 
-// Add expense
-router.post('/:id/expenses/', validation, async (req, res) => {
+
+// Expense routing
+// Add expense to the trip
+// - :id - trip id
+router.post('/:id/expenses', async (req, res) => {
   try {
     console.log('What from user:');
     console.dir(req.body);
     const tripFromDatabase = await Trip.findById(req.params.id);
-    const plainObject = tripFromDatabase.toJSON();
-    console.log('Trip from database:');
-    console.dir(tripFromDatabase);
-    console.log('Plain object');
-    console.dir(plainObject);
-    plainObject.expenses.push(req.body);
-    console.log('Plain object after push');
-    console.dir(plainObject)
-    const { error } = validateTrip(plainObject);
+    console.log(tripFromDatabase);
+    const { categories : tripCategories }  = tripFromDatabase;
+    const { error, value } = validateExpense(req.body, tripCategories);
     if (error) {
-      console.log('Jakiś error');
       return res.status(400).send(error.details[0].message);
     }
-    tripFromDatabase.expenses.push(req.body);
+    console.log('Valid object:');
+    console.log(value);
+    tripFromDatabase.expenses.push(value);
     console.log('Trip object after push');
     console.log(tripFromDatabase);
     const changedTrip = await tripFromDatabase.save();
-    return res.status(200).json('Expense added');
-
+    return res.status(200).send(changedTrip);
   } catch (error) {
     console.dir(error);
     return res.status(400).send(error);
   }
 });
 
-// Display all expenses
-router.get('/:id/expenses/', async (req, res) => {
+// Display all expenses in the trip
+// - :id - trip id
+router.get('/:id/expenses', async (req, res) => {
   try {
+    console.log('Now display all expenses from given trip')
     const tripFromDatabase = await Trip.findById(req.params.id);
     const expenses = tripFromDatabase.expenses;
     const expensesObject = {
@@ -93,16 +93,99 @@ router.get('/:id/expenses/', async (req, res) => {
     }
     res.status(200).json(expensesObject);
   } catch (error) {
+    console.log('Error from display all expenses');
     console.dir(error);
     return res.status(400).send(error);
   }
 });
 
 // Display chosen expense
+// - tripId - id of the trip
+// - expenseId - id of the expense
+router.get('/:tripId/expenses/:expenseId', async (req, res) => {
+  try {
+    console.log('One expense');
+    console.log(req.params.expenseId);
+    const trip = await Trip.findById(req.params.tripId);
+    const expense = trip.expenses.id(req.params.expenseId);
+    console.log('One expense: ' + expense);
+    const expenseObject = {
+      "expense": expense,
+    }
+    res.status(200).json(expenseObject);
+  } catch (error) {
+    console.dir(error);
+    return res.status(400).send(error);
+  }
+});
 
 // Modify chosen expense
+// - tripId: id of the trip
+// - expenseId: id of the expense
+router.put('/:tripId/expenses/:expenseId', async (req, res) => {
+  try {
+    console.log('Start modify expense: --------------------------------------');
+    const trip = await Trip.findById(req.params.tripId);
+    // console.log(trip);
+    const { categories : tripCategories}  = trip;
+    // console.log('Categories Array');
+    // console.log(tripCategories);
+    // console.log(req.body);
+    const { error, value } = validateExpense(req.body, tripCategories);
+    if (error) {
+      return res.status(400).send(error.details[0].message);
+    }
+    console.log(value);
+
+    const edited = await Trip.updateOne({
+      _id: req.params.tripId,
+      "expenses._id": req.params.expenseId
+    },
+    {
+      "$set": {
+        "expenses.$.cost": value.cost,
+        "expenses.$.name": value.name,
+        "expenses.$.category": value.category,
+        "expenses.$.currency": value.currency
+      }
+    });
+    console.log('Trip after update');
+    console.log(edited);
+    console.log(trip);
+    await trip.save();
+    const changedTrip = await Trip.findById(req.params.tripId);
+    dbDebug("Changed trip:");
+    dbDebug(changedTrip);
+    const changedExpense = changedTrip.expenses.id(req.params.expenseId);
+    res.status(200).json(changedExpense);
+  } catch (error) {
+    console.dir(error);
+    return res.status(400).send(error);
+  }
+});
 
 // Delete chosen expense
+// - tripId: id of the trip
+// - expenseId: id of the expense
+router.delete('/:tripId/expenses/:expenseId', async (req, res) => {
+  try {
+    dbDebug('Deleting starting here');
+    const trip = await Trip.findById(req.params.tripId);
+    const deletedExpense = trip.expenses.id(req.params.expenseId).remove();
+    dbDebug(deletedExpense);
+    // await whatDelete.save();
+    return res.status(200).send(
+      {
+        "message": "I deleted expense",
+        "deletedExpense": deletedExpense
+      });
+
+  } catch (error) {
+    console.dir(error);
+    return res.status(400).send(error);
+  }
+
+});
 
 
 
