@@ -59,24 +59,18 @@ router.put('/edit/:id', (req, res) => {
 // - :id - trip id
 router.post('/:id/expenses', async (req, res) => {
   try {
-    console.log('What from user:');
-    console.dir(req.body);
     const tripFromDatabase = await Trip.findById(req.params.id);
-    console.log(tripFromDatabase);
     const { categories : tripCategories }  = tripFromDatabase;
     const { error, value } = validateExpense(req.body, tripCategories);
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
-    console.log('Valid object:');
-    console.log(value);
     tripFromDatabase.expenses.push(value);
-    console.log('Trip object after push');
-    console.log(tripFromDatabase);
     const changedTrip = await tripFromDatabase.save();
     return res.status(200).send(changedTrip);
   } catch (error) {
-    console.dir(error);
+    dbDebug('Sth wrong in posting new expense:');
+    dbDebug(error);
     return res.status(400).send(error);
   }
 });
@@ -85,7 +79,6 @@ router.post('/:id/expenses', async (req, res) => {
 // - :id - trip id
 router.get('/:id/expenses', async (req, res) => {
   try {
-    console.log('Now display all expenses from given trip')
     const tripFromDatabase = await Trip.findById(req.params.id);
     const expenses = tripFromDatabase.expenses;
     const expensesObject = {
@@ -93,8 +86,8 @@ router.get('/:id/expenses', async (req, res) => {
     }
     res.status(200).json(expensesObject);
   } catch (error) {
-    console.log('Error from display all expenses');
-    console.dir(error);
+    dbDebug('Sth wrong during getting all expenses:');
+    dbDebug(error);
     return res.status(400).send(error);
   }
 });
@@ -104,17 +97,15 @@ router.get('/:id/expenses', async (req, res) => {
 // - expenseId - id of the expense
 router.get('/:tripId/expenses/:expenseId', async (req, res) => {
   try {
-    console.log('One expense');
-    console.log(req.params.expenseId);
     const trip = await Trip.findById(req.params.tripId);
     const expense = trip.expenses.id(req.params.expenseId);
-    console.log('One expense: ' + expense);
     const expenseObject = {
       "expense": expense,
     }
     res.status(200).json(expenseObject);
   } catch (error) {
-    console.dir(error);
+    dbDebug('Sth wrong during getting chosen expense:');
+    dbDebug(error);
     return res.status(400).send(error);
   }
 });
@@ -124,18 +115,12 @@ router.get('/:tripId/expenses/:expenseId', async (req, res) => {
 // - expenseId: id of the expense
 router.put('/:tripId/expenses/:expenseId', async (req, res) => {
   try {
-    console.log('Start modify expense: --------------------------------------');
     const trip = await Trip.findById(req.params.tripId);
-    // console.log(trip);
     const { categories : tripCategories}  = trip;
-    // console.log('Categories Array');
-    // console.log(tripCategories);
-    // console.log(req.body);
     const { error, value } = validateExpense(req.body, tripCategories);
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
-    console.log(value);
 
     const edited = await Trip.updateOne({
       _id: req.params.tripId,
@@ -149,15 +134,13 @@ router.put('/:tripId/expenses/:expenseId', async (req, res) => {
         "expenses.$.currency": value.currency
       }
     });
-    console.log('Trip after update');
-    console.log(edited);
-    console.log(trip);
     await trip.save();
     const changedTrip = await Trip.findById(req.params.tripId);
-    dbDebug("Changed trip:");
-    dbDebug(changedTrip);
     const changedExpense = changedTrip.expenses.id(req.params.expenseId);
-    res.status(200).json(changedExpense);
+    res.status(200).json({
+      "message": "Expense edited correctly",
+      "data": changedExpense
+    });
   } catch (error) {
     console.dir(error);
     return res.status(400).send(error);
@@ -169,24 +152,19 @@ router.put('/:tripId/expenses/:expenseId', async (req, res) => {
 // - expenseId: id of the expense
 router.delete('/:tripId/expenses/:expenseId', async (req, res) => {
   try {
-    dbDebug('Deleting starting here');
     const trip = await Trip.findById(req.params.tripId);
     const deletedExpense = trip.expenses.id(req.params.expenseId).remove();
-    dbDebug(deletedExpense);
-    // await whatDelete.save();
+    await whatDelete.save();
     return res.status(200).send(
       {
         "message": "I deleted expense",
-        "deletedExpense": deletedExpense
+        "data": deletedExpense
       });
 
   } catch (error) {
     console.dir(error);
     return res.status(400).send(error);
   }
-
 });
-
-
 
 module.exports = router;
