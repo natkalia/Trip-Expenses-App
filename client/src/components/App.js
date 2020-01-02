@@ -1,8 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Header from './Header';
+import HomePage from './HomePage';
 import AddTrip from './AddTrip';
 import EditTrip from './EditTrip';
-import { connect } from 'react-redux';
-import {addFirstOne} from '../actions/exampleAction';
+import Footer from './Footer';
+
+import { addFirstOne } from '../actions/exampleAction';
 
 
 class App extends React.Component {
@@ -28,16 +33,17 @@ class App extends React.Component {
   
   render() {
     return (
-    <div>
-      <header>
-        Place for navigation menu
-      </header>
-      <AddTrip/>
-      <EditTrip/>
-      <p>{this.state.apiResponse}</p>
-      <h1>{this.props.text}</h1>
-      <button onClick={this.changeText}>kliknij</button>
-    </div>
+      <Router>
+        <Header/>
+        <Route path='/' exact component={HomePage} />
+        <Route path='/add' exact component={AddTrip} />
+        <Route path='/edit/:id' exact component={EditTrip} />
+        {/* <Route path='/' exact component={} /> */}
+          {/* <p>{this.state.apiResponse}</p>
+          <h1>{this.props.text}</h1>
+          <button onClick={this.changeText}>kliknij</button> */}
+        <Footer/>
+      </Router>
     )
   }
 
