@@ -11,7 +11,6 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 
-const testAPIRouter = require("./routes/testAPI");
 const tripsRouter = require('./routes/trips');
 const usersRouter = require('./routes/users');
 
