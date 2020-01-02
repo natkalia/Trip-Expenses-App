@@ -42,7 +42,6 @@ router.post('/', async (req, res) => {
   } = validateUser(req.body);
 
   if (error) {
-    // console.log(error.details[0].message)
     return res.status(400).json({'error': error.details[0].message});
   }
 
@@ -51,8 +50,7 @@ router.post('/', async (req, res) => {
   });
 
   if (user) {
-    // console.log('User already registered')
-    return res.status(400).json('Error: ' + error);
+    return res.status(400).json('Error: User already registered');
   } 
   
   let newUser = new User(_.pick(req.body, ['name', 'email', 'password']));

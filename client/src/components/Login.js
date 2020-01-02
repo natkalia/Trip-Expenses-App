@@ -34,12 +34,12 @@ class Login extends React.Component {
         <Title>Login</Title>
         <Form onSubmit={this.onFormSubmit}>
 
-          <Label htmlFor="signup-email">Email:</Label>
-          <Input type="email" name="email" id="signup-email" placeholder="Email" reqired 
+          <Label htmlFor="login-email">Email:</Label>
+          <Input type="email" name="email" id="login-email" placeholder="Email" required 
           onChange={this.onInputChange.bind(this, "email")} value={this.state.email} />
 
-          <Label htmlFor="signup-password">Password:</Label>
-          <Input type="password" name="password" id="signup-password" placeholder="Password" reqired 
+          <Label htmlFor="login-password">Password:</Label>
+          <Input type="password" name="password" id="login-password" placeholder="Password" required 
           onChange={this.onInputChange.bind(this, "password")} value={this.state.password}/>
 
           <Button textOnButton="Login" btnColor="#70F4FD" btnBorder="none"/> 

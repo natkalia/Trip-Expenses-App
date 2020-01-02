@@ -36,15 +36,15 @@ class Signup extends React.Component {
         <Title>Signup</Title>
         <Form onSubmit={this.onFormSubmit}>
           <Label htmlFor="signup-name">Name:</Label>
-          <Input type="text" name="name" id="signup-name" placeholder="Name" reqired 
+          <Input type="text" name="name" id="signup-name" placeholder="Name" required 
           onChange={this.onInputChange.bind(this, "name")} value={this.state.name}/>
 
           <Label htmlFor="signup-email">Email:</Label>
-          <Input type="email" name="email" id="signup-email" placeholder="Email" reqired 
+          <Input type="email" name="email" id="signup-email" placeholder="Email" required 
           onChange={this.onInputChange.bind(this, "email")} value={this.state.email} />
 
           <Label htmlFor="signup-password">Password:</Label>
-          <Input type="password" name="password" id="signup-password" placeholder="Password" reqired 
+          <Input type="password" name="password" id="signup-password" placeholder="Password" required 
           onChange={this.onInputChange.bind(this, "password")} value={this.state.password}/>
 
           <Button textOnButton="Sign Up" btnColor="#70F4FD" btnBorder="none"/> 
