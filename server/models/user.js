@@ -86,5 +86,5 @@ function validateUserOnLogin(user) {
 }
 
 exports.User = User;
-exports.validate = validateUser;
+exports.validateUser = validateUser;
 exports.validateUserOnLogin = validateUserOnLogin;
