@@ -1,3 +1,4 @@
 {
-  "name": "TravelPlanner app"
+  "name": "TravelPlanner app",
+  "jwtPrivateKey": ""
 }

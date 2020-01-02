@@ -1,4 +1,6 @@
 import React from 'react';
+import AddTrip from './AddTrip';
+import EditTrip from './EditTrip';
 import { connect } from 'react-redux';
 import {addFirstOne} from '../actions/exampleAction';
 import Signup from './Signup';
@@ -29,12 +31,14 @@ class App extends React.Component {
     return (
     <div>
       <header>
-        React App
+        Place for navigation menu
       </header>
 
       <Signup/>
       <Login/>
 
+      <AddTrip/>
+      <EditTrip/>
       <p>{this.state.apiResponse}</p>
       <h1>{this.props.text}</h1>
       <button onClick={this.changeText}>kliknij</button>
