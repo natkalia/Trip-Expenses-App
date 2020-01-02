@@ -99,7 +99,18 @@ router.get('/:id/expenses', async (req, res) => {
 router.get('/:tripId/expenses/:expenseId', async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId);
+    if (trip === null) {
+      return res.status(404).json({
+        "message": "Trip not found"
+      })
+    }
     const expense = trip.expenses.id(req.params.expenseId);
+    console.log('Expense', expense);
+    if (expense === null) {
+      return res.status(404).json({
+        "message": "Expense not found"
+      })
+    }
     const expenseObject = {
       "expense": expense,
     }
