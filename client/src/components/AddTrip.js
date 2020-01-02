@@ -127,6 +127,7 @@ class AddTrip extends Component {
     const trip = {
       name: this.state.name,
       startDate: moment(this.state.startDate).format(),
+      // eslint-disable-next-line
       description:  this.state.description == false ? undefined : this.state.description
     }
     axios.post("http://localhost:3000/api/trips/add", trip)

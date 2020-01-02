@@ -123,6 +123,7 @@ class EditTrip extends Component {
 
   onInputChange = (e) => {
     const target = e.target;
+    // eslint-disable-next-line
     const value = target.type === 'checkbox' ? target.checked : target.value; 
     const name = target.name;
 
