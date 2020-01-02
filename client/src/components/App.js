@@ -1,6 +1,9 @@
 import React from 'react';
 import AddTrip from './AddTrip';
 import EditTrip from './EditTrip';
+import { connect } from 'react-redux';
+import {addFirstOne} from '../actions/exampleAction';
+
 
 class App extends React.Component {
 
@@ -13,6 +16,10 @@ class App extends React.Component {
     fetch("http://localhost:5000/testAPI")
         .then(res => res.text())
         .then(res => this.setState({ apiResponse: res }));
+  }
+
+  changeText = () => {
+    this.props.addFirstOne("Zupełenie nowy text")
   }
 
   componentDidMount() {
@@ -28,10 +35,24 @@ class App extends React.Component {
       <AddTrip/>
       <EditTrip/>
       <p>{this.state.apiResponse}</p>
+      <h1>{this.props.text}</h1>
+      <button onClick={this.changeText}>kliknij</button>
     </div>
     )
   }
 
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    text: state.text
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addFirstOne: newText => dispatch(addFirstOne(newText))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
