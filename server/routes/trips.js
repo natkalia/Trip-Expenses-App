@@ -23,6 +23,16 @@ router.post('/add', (req, res) => {
   }
 });
 
+// GET trip
+router.get('/:id', async (req, res) => {
+   try {
+    const trip = await Trip.findById(req.params.id);
+    res.json(trip)
+  } catch (error) {
+    res.status(400).json('Error: ' + error)
+  }
+});
+
 // Delete trip
 router.delete('/:id', (req, res) => {
   Trip.findByIdAndRemove(req.params.id)
