@@ -56,3 +56,25 @@ export const Wrapper = styled.div`
   max-width: 400px;
   margin: 0 auto;
 `
+
+export const customStyleSelect = {
+    option: (provided, state) => ({
+      ...provided,
+      color: '#000',
+      padding: 2,
+      fontFamily: 'Roboto'
+    }),
+    control: (provided) => ({
+      ...provided,
+      borderRadius: "3px",
+      border: '1px solid #000',
+      fontFamily: 'Roboto'
+    }),
+    placeholder: () => ({
+      fontFamily: 'Roboto'
+    }),
+    dropdownIndicator: defaultStyles => ({
+      ...defaultStyles,
+      color: 'purple'
+    })
+  }

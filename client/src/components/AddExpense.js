@@ -1,7 +1,7 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
 import Button from './Button';
-import { Title, Form, Label, Input, Wrapper } from './styled';
+import { Title, Form, Label, Input, Wrapper, customStyleSelect } from './styled';
 import Select from 'react-select';
 
 class AddExpense extends Component {
@@ -85,10 +85,10 @@ class AddExpense extends Component {
           <Input min="0" max="10000" type="number" name="cost" id="cost-add" placeholder="Cost amount" required onChange={this.onInputChange} value={this.state.cost}/>
 
           <Label htmlFor="currency-add">Currency:</Label>
-          <Select options={this.state.optionsCurrencies} type="text" name="currency" id="currency-add" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.currency.value}/>
+          <Select styles={customStyleSelect} options={this.state.optionsCurrencies} type="text" name="currency" id="currency-add" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.currency.value}/>
 
           <Label htmlFor="category-add">Category:</Label>
-          <Select options={this.state.optionsCategories} type="text" name="category" id="category-add" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.category.value}/>
+          <Select styles={customStyleSelect} options={this.state.optionsCategories} type="text" name="category" id="category-add" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.category.value}/>
 
           <Button textOnButton="Add" btnColor="#2EC66D" btnBorder="none"/> 
 
