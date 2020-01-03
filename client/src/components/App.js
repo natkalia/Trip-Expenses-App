@@ -1,6 +1,7 @@
 import React from 'react';
 import AddTrip from './AddTrip';
 import EditTrip from './EditTrip';
+import Footer from './Footer';
 import { connect } from 'react-redux';
 import {addFirstOne} from '../actions/exampleAction';
 
@@ -37,6 +38,7 @@ class App extends React.Component {
       <p>{this.state.apiResponse}</p>
       <h1>{this.props.text}</h1>
       <button onClick={this.changeText}>kliknij</button>
+      <Footer/>
     </div>
     )
   }
