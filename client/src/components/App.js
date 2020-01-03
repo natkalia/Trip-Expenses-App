@@ -10,6 +10,8 @@ import AddTrip from './AddTrip';
 import EditTrip from './EditTrip';
 import EditExpense from './EditExpense';
 import AddExpense from './AddExpense';
+import TripSummary from './TripSummary';
+import AllTrips from './AllTrips';
 import UserProfile from './UserProfile';
 import Footer from './Footer';
 
@@ -30,15 +32,17 @@ class App extends React.Component {
         <Route path='/trips/add' component={AddTrip} />
         <Route path='/trips/edit/:id' component={EditTrip} />
         <Route path='/users/login' component={SignIn} />
-        <Route path='/user/' component={RegisterUser} />
-        <Route path='/trips/:id' component={SingleTrip} />
+        <Route path='/users/register' component={RegisterUser} />
+        <Route path='/trips/single/:id' component={SingleTrip} />
+        <Route path='/trips/summary/:id' component={TripSummary} />
+        <Route path='/trips/all' component={AllTrips} />
         <Route path='/trips/:tripId/expenses/:expenseId' component={EditExpense} />
-        <Route path='/trips/:id/expenses' component={AddExpense} />
-        <Route path='/users/:id' component={UserProfile} />
+        <Route path='/trips/:tripId/expenses' component={AddExpense} />
+        <Route path='/users/profile' component={UserProfile} />
 
         {/* do usuniecia później */}
-        <h1>{this.props.text}</h1>
-        <button onClick={this.changeText}>kliknij</button>
+        {/* <h1>{this.props.text}</h1>
+        <button onClick={this.changeText}>kliknij</button> */}
         <Footer/>
       </Router>
     )
