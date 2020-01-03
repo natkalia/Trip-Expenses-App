@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React from 'react';
 import Cookies from 'universal-cookie';
-import { Title, Form, Label, Input, Wrapper } from './styled';
+import { Form, Label, Input } from './styled';
 import Button from './Button';
+import ContentWrapper from './ContentWrapper';
 
 class Login extends React.Component {
   constructor(props) {
@@ -37,8 +38,7 @@ class Login extends React.Component {
 
   render() { 
     return (
-      <Wrapper>
-        <Title>Login</Title>
+      <ContentWrapper title="Login">
         <Form onSubmit={this.onFormSubmit}>
 
           <Label htmlFor="login-email">Email:</Label>
@@ -49,9 +49,9 @@ class Login extends React.Component {
           <Input type="password" name="password" id="login-password" placeholder="Password" required 
           onChange={this.onInputChange.bind(this, "password")} value={this.state.password}/>
 
-          <Button textOnButton="Login" btnColor="#70F4FD" btnBorder="none"/> 
+          <Button textOnButton="Login" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/> 
         </Form>
-      </Wrapper>
+      </ContentWrapper>
       
     )
   }

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React from 'react';
-import { Title, Form, Label, Input, Wrapper } from './styled';
+import { Form, Label, Input } from './styled';
 import Button from './Button';
+import ContentWrapper from './ContentWrapper';
 
 class Signup extends React.Component {
   constructor(props) {
@@ -32,8 +33,7 @@ class Signup extends React.Component {
 
   render() { 
     return (
-      <Wrapper>
-        <Title>Signup</Title>
+      <ContentWrapper title="Sign Up">
         <Form onSubmit={this.onFormSubmit}>
           <Label htmlFor="signup-name">Name:</Label>
           <Input type="text" name="name" id="signup-name" placeholder="Name" required 
@@ -47,9 +47,9 @@ class Signup extends React.Component {
           <Input type="password" name="password" id="signup-password" placeholder="Password" required 
           onChange={this.onInputChange.bind(this, "password")} value={this.state.password}/>
 
-          <Button textOnButton="Sign Up" btnColor="#70F4FD" btnBorder="none"/> 
+          <Button textOnButton="Sign Up" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/> 
         </Form>
-      </Wrapper>
+      </ContentWrapper>
       
     )
   }
