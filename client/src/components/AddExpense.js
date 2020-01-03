@@ -9,6 +9,7 @@ class AddExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      tripId: "5e0dd4da618f3e1f10d4db7f", // temporary
       name: "", 
       category: "",
       cost: "",
@@ -64,8 +65,7 @@ class AddExpense extends Component {
       cost: this.state.cost,
       currency: this.state.currency
     }
-    console.log(this.state);
-    axios.post(`http://localhost:3000/api/trips/5e0dd4da618f3e1f10d4db7f/expenses`, expense)
+    axios.post(`http://localhost:3000/api/trips/${this.state.tripId}/expenses`, expense)
       .then(res => console.log(res.data));
 
     // reset inputs to blank to start over again after form submit
