@@ -58,31 +58,35 @@ const Input = styled.input`
   }
 `;
 
-// temporary hardcoded options for currencies
-const optionsCurrencies = [
-  { value: 'PLN', label: 'PLN' },
-  { value: 'USD', label: 'USD' },
-  { value: 'EUR', label: 'EUR' },
-];
-
-// temporary hardcoded options for categories
-const optionsCategories = [
-  { value: 'food', label: 'food' },
-  { value: 'travel', label: 'travel' },
-  { value: 'travel', label: 'accomodation' },
-];
-
 class EditExpense extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      id: "", 
+      id: "",
       name: "", 
       category: "",
-      cost: "", 
+      cost: "",
       currency: "",
-    };
+      optionsCurrencies: [
+        { value: 'PLN', label: 'PLN' },
+        { value: 'USD', label: 'USD' },
+        { value: 'EUR', label: 'EUR' },
+        { value: 'GBP', label: 'GBP' },
+        { value: 'JPY', label: 'JPY' },
+        { value: 'AUD', label: 'AUD' },
+        { value: 'CAD', label: 'CAD' },
+        { value: 'CHF', label: 'CHF' }
+      ],
+      optionsCategories: [
+        { value: 'food', label: 'food' },
+        { value: 'travel', label: 'travel' },
+        { value: 'tickets', label: 'tickets' },
+        { value: 'accomodation', label: 'accomodation' },
+        { value: 'health and insurance', label: 'health and insurance' },
+        { value: 'other', label: 'other' }
+      ]
+    }
   }
 
   onInputChange = (e) => {
@@ -133,7 +137,7 @@ class EditExpense extends Component {
   };
 
   componentDidMount () {
-    axios.get("http://localhost:3000/api/trips/5e0dd4fa618f3e1f10d4db80/expenses/5e0e11b74f0e0f24a0e1ec1d") // temporary two ids
+    axios.get("http://localhost:3000/api/trips/5e0dd4fa618f3e1f10d4db80/expenses/5e0e10274f0e0f24a0e1ec1c") // temporary two ids
       .then(res => this.setState({ 
         id: res.data.expense._id, 
         name: res.data.expense.name,
@@ -156,10 +160,10 @@ class EditExpense extends Component {
           <Input min="0" max="10000" type="number" name="cost" id="cost-add" placeholder="Cost amount" required onChange={this.onInputChange} value={this.state.cost}/>
 
           <Label htmlFor="currency-edit">Currency:</Label>
-          <Select options={optionsCurrencies} type="text" name="currency" id="currency-edit" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.currency.value}/>
+          <Select options={this.state.optionsCurrencies} type="text" name="currency" id="currency-edit" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.currency.value}/>
 
           <Label htmlFor="category-edit">Category:</Label>
-          <Select options={optionsCategories} type="text" name="category" id="category-edit" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.category.value}/>
+          <Select options={this.state.optionsCategories} type="text" name="category" id="category-edit" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.category.value}/>
 
           <Button textOnButton="Edit" btnColor="#2EC66D" btnBorder="none"/> 
 
