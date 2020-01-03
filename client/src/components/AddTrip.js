@@ -9,7 +9,7 @@ import {
   Input, 
   DateInput, 
   InputContainer, 
-  Paragraph, 
+  ParagraphSmallItalic,
   Textarea
 } from './styled';
 import Button from './Button';
@@ -71,7 +71,7 @@ class AddTrip extends Component {
           </InputContainer>          
 
           <Label htmlFor="description-add">Description (10-200 characters):</Label>
-          <Paragraph>This field is optional</Paragraph>
+          <ParagraphSmallItalic>This field is optional</ParagraphSmallItalic>
           <Textarea maxlength="200" name="description" id="description-add" placeholder="Description" onChange={this.onInputChange} value={this.state.description}/>
           <Button textOnButton="Add" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/> 
         </Form>

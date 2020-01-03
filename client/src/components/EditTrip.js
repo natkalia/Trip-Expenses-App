@@ -10,7 +10,7 @@ import {
   InputCheckbox,
   InputContainer,
   DateInput,
-  Paragraph,
+  ParagraphSmallItalic,
   Textarea,
   IsTripFinishedContainer
 } from './styled';
@@ -105,7 +105,7 @@ class EditTrip extends Component {
           </InputContainer>
           
           <Label htmlFor="description-edit">Description (10-200 characters):</Label>
-          <Paragraph>This field is optional</Paragraph>
+          <ParagraphSmallItalic>This field is optional</ParagraphSmallItalic>
           <Textarea maxlength="200" name="description" id="description-edit" placeholder="Description" onChange={this.onDescriptionChange} value={this.state.description}/>
 
           <IsTripFinishedContainer>
