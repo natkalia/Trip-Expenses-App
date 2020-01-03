@@ -161,14 +161,16 @@ class EditTrip extends Component {
       isTripFinished: this.state.isTripFinished
     }
     axios.put("http://localhost:3000/api/trips/edit/" + this.state.id, trip)
-      .then(res => console.log(res.data));    
+      .then(res => console.log(res.data))
+      .then(() => window.location = `/trips/single/${this.state.id}`);
   };
 
   onDeleteSubmit = (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this trip?")) {
     axios.delete("http://localhost:3000/api/trips/" + this.state.id)
-    .then(res => console.log(res.data));
+    .then(res => console.log(res.data))
+    .then(() => window.location = '/trips/all');
     } else return;
   };
 

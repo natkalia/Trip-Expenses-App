@@ -131,10 +131,9 @@ class AddTrip extends Component {
       description:  this.state.description == false ? undefined : this.state.description
     }
     axios.post("http://localhost:3000/api/trips/add", trip)
-      .then(res => console.log(res.data));
-
-    // reset inputs to blank to start over again after form submit
-    this.setState({ name: "", startDate: new Date(), description: "" })
+      .then(res => console.log(res.data))
+      .then(() => this.setState({ name: "", startDate: new Date(), description: "" }))
+      .then(() => window.location = "/trips/all")
   };
 
  
