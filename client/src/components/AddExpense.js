@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button from './Button';
 import axios from 'axios';
+import Select from 'react-select'
 
 const Wrapper = styled.div`
   display: flex;
@@ -57,6 +58,20 @@ const Input = styled.input`
   }
 `;
 
+// temporary hardcoded options for currencies
+const optionsCurrencies = [
+  { value: 'PLN', label: 'PLN' },
+  { value: 'USD', label: 'USD' },
+  { value: 'EUR', label: 'EUR' },
+];
+
+// temporary hardcoded options for categories
+const optionsCategories = [
+  { value: 'food', label: 'food' },
+  { value: 'travel', label: 'travel' },
+  { value: 'travel', label: 'accomodation' },
+];
+
 class AddExpense extends Component {
 
   constructor(props) {
@@ -64,17 +79,30 @@ class AddExpense extends Component {
     this.state = {
       name: "", 
       category: "",
-      cost: 0,
+      cost: "",
       currency: "",
     };
   }
 
   onInputChange = (e) => {
-    const target = e.target;
-    const value = target.value; 
-    const name = target.name;
+    const value = e.target.value; 
+    const name = e.target.name;
     this.setState({
       [name]: value
+    });
+  }
+
+  onSelectCurrencyChange = (optionsObject) => {
+    const value = optionsObject.value; 
+    this.setState({
+      currency: value
+    });
+  }
+
+  onSelectCategoryChange = (optionsObject) => {
+    const value = optionsObject.value; 
+    this.setState({
+      category: value
     });
   }
 
@@ -86,15 +114,18 @@ class AddExpense extends Component {
       cost: this.state.cost,
       currency: this.state.currency
     }
-    const tripId = "5e0dd4da618f3e1f10d4db7f"; // temporary
-    axios.post(`http://localhost:3000/api/trips/${tripId}/expenses`, expense)
+    console.log(this.state);
+    axios.post(`http://localhost:3000/api/trips/5e0dd4da618f3e1f10d4db7f/expenses`, expense)
       .then(res => console.log(res.data));
 
     // reset inputs to blank to start over again after form submit
     // this.setState({ name: "", category: "", currency: "", cost: 0 })
   };
 
- 
+  componentDidUpdate () {
+    console.log(this.state);
+  }
+
   render() {
     return (
       <Wrapper>
@@ -108,10 +139,10 @@ class AddExpense extends Component {
           <Input min="0" max="10000" type="number" name="cost" id="cost-add" placeholder="Cost amount" required onChange={this.onInputChange} value={this.state.cost}/>
 
           <Label htmlFor="currency-add">Currency:</Label>
-          <Input type="text" name="currency" id="currency-add" placeholder="Currency" required onChange={this.onInputChange} value={this.state.currency}/>
+          <Select options={optionsCurrencies} type="text" name="currency" id="currency-add" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.currency.value}/>
 
           <Label htmlFor="category-add">Category:</Label>
-          <Input type="text" name="category" id="category-add" placeholder="Category" required onChange={this.onInputChange} value={this.state.category}/>
+          <Select options={optionsCategories} type="text" name="category" id="category-add" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.category.value}/>
 
           <Button textOnButton="Add" btnColor="#2EC66D" btnBorder="none"/> 
 
