@@ -11,7 +11,6 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 
-const testAPIRouter = require("./routes/testAPI");
 const tripsRouter = require('./routes/trips');
 const usersRouter = require('./routes/users');
 
@@ -43,7 +42,6 @@ if (app.get('env') === 'development') {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/testAPI', testAPIRouter);
 app.use('/api/trips', tripsRouter);
 app.use('/api/users', usersRouter);
 
