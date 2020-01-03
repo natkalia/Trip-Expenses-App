@@ -5,8 +5,7 @@ import { Provider } from 'react-redux';
 
 import App from "./components/App";
 import exampleReducer from './reducers/exampleReducer';
-
-
+import Layout from './layout/Layout';
 
 const store = createStore(
   exampleReducer,
@@ -15,6 +14,6 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Layout> <App/> </Layout>    
   </Provider>
   , document.querySelector("#root"));
