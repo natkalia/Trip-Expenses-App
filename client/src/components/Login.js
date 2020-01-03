@@ -19,9 +19,11 @@ class Login extends React.Component {
       email: this.state.email,
       password: this.state.password
     }
-    const url = "http://localhost:5000/api/users/login";
+    const url = "http://localhost:3000/api/users/login";
     const cookies = new Cookies();
-    await axios.post(url, user).then(res => cookies.set('travelplanner_jwt',res.data.token)).catch(err => console.log(err));
+    await axios.post(url, user)
+      .then(res => cookies.set('travelplanner_x-auth-token', res.headers["x-auth-token"]))
+      .catch(err => console.log(err));
     this.setState({
       travelplanner_jwt: cookies.get('travelplanner_jwt')
     })
