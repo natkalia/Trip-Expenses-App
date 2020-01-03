@@ -9,8 +9,9 @@ class EditExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
-      name: "", 
+      tripId: "5e0dd4fa618f3e1f10d4db80",
+      expenseId: "5e0e10274f0e0f24a0e1ec1c",
+      expenseName: "", 
       category: "",
       cost: "",
       currency: "",
@@ -61,36 +62,43 @@ class EditExpense extends Component {
   onEditSubmit = (e) => { 
     e.preventDefault();
     const expense = {
-      name: this.state.name,
+      name: this.state.expenseName,
       category: this.state.category,
       cost: this.state.cost,
       currency: this.state.currency
     }
 
-    axios.put(`http://localhost:3000/api/trips/5e0dd4fa618f3e1f10d4db80/expenses/` + this.state.id, expense)
+    axios.put(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, expense)
       .then(res => console.log(res.data));
 
     // reset inputs to blank to start over again after form submit
-    // this.setState({ name: "", category: "", currency: "", cost: "" })
+    this.setState({ expenseName: "", category: "", currency: "", cost: "" })
+
+    console.log(this.state.expenseName)
   };
+
 
   onDeleteSubmit = (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this expense?")) {
-    axios.delete("http://localhost:3000/api/trips/5e0dd4fa618f3e1f10d4db80/expenses/" + this.state.id)
+    axios.delete(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`)
     .then(res => console.log(res.data));
     } else return;
   };
 
   componentDidMount () {
-    axios.get("http://localhost:3000/api/trips/5e0dd4fa618f3e1f10d4db80/expenses/5e0e10274f0e0f24a0e1ec1c") // temporary two ids
+    axios.get(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`)    
       .then(res => this.setState({ 
-        id: res.data.expense._id, 
-        name: res.data.expense.name,
+        expenseName: res.data.expense.name,
         category: res.data.expense.category,
         cost: res.data.expense.cost,
         currency: res.data.expense.currency
     }));
+    console.log(this.state); // issue with lifecycle methods and showing data in currency and category
+  }
+
+  componentDidUpdate () {
+    console.log(this.state); // issue with lifecycle methods and showing data in currency and category
   }
  
   render() {
@@ -100,7 +108,7 @@ class EditExpense extends Component {
         <Form onSubmit={this.onEditSubmit}>
 
           <Label htmlFor="name-exp-add">Name (3-30 characters):</Label>
-          <Input minlength="3" maxlength="30" type="text" name="name" id="name-exp-add" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
+          <Input minlength="3" maxlength="30" type="text" name="expenseName" id="name-exp-add" placeholder="Name" required onChange={this.onInputChange} value={this.state.expenseName}/>
 
           <Label htmlFor="amount-add">Cost (0-10000):</Label>
           <Input min="0" max="10000" type="number" name="cost" id="cost-add" placeholder="Cost amount" required onChange={this.onInputChange} value={this.state.cost}/>
