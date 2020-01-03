@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button from './Button';
 import axios from 'axios';
-import Select from 'react-select'
+import Select from 'react-select';
 
 const Wrapper = styled.div`
   display: flex;
@@ -58,20 +58,6 @@ const Input = styled.input`
   }
 `;
 
-// temporary hardcoded options for currencies
-const optionsCurrencies = [
-  { value: 'PLN', label: 'PLN' },
-  { value: 'USD', label: 'USD' },
-  { value: 'EUR', label: 'EUR' },
-];
-
-// temporary hardcoded options for categories
-const optionsCategories = [
-  { value: 'food', label: 'food' },
-  { value: 'travel', label: 'travel' },
-  { value: 'travel', label: 'accomodation' },
-];
-
 class AddExpense extends Component {
 
   constructor(props) {
@@ -81,7 +67,25 @@ class AddExpense extends Component {
       category: "",
       cost: "",
       currency: "",
-    };
+      optionsCurrencies: [
+        { value: 'PLN', label: 'PLN' },
+        { value: 'USD', label: 'USD' },
+        { value: 'EUR', label: 'EUR' },
+        { value: 'GBP', label: 'GBP' },
+        { value: 'JPY', label: 'JPY' },
+        { value: 'AUD', label: 'AUD' },
+        { value: 'CAD', label: 'CAD' },
+        { value: 'CHF', label: 'CHF' }
+      ],
+      optionsCategories: [
+        { value: 'food', label: 'food' },
+        { value: 'travel', label: 'travel' },
+        { value: 'tickets', label: 'tickets' },
+        { value: 'accomodation', label: 'accomodation' },
+        { value: 'health and insurance', label: 'health and insurance' },
+        { value: 'other', label: 'other' }
+      ]
+    }
   }
 
   onInputChange = (e) => {
@@ -119,12 +123,8 @@ class AddExpense extends Component {
       .then(res => console.log(res.data));
 
     // reset inputs to blank to start over again after form submit
-    // this.setState({ name: "", category: "", currency: "", cost: 0 })
+    this.setState({ name: "", category: "", currency: "", cost: "" })
   };
-
-  componentDidUpdate () {
-    console.log(this.state);
-  }
 
   render() {
     return (
@@ -139,10 +139,10 @@ class AddExpense extends Component {
           <Input min="0" max="10000" type="number" name="cost" id="cost-add" placeholder="Cost amount" required onChange={this.onInputChange} value={this.state.cost}/>
 
           <Label htmlFor="currency-add">Currency:</Label>
-          <Select options={optionsCurrencies} type="text" name="currency" id="currency-add" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.currency.value}/>
+          <Select options={this.state.optionsCurrencies} type="text" name="currency" id="currency-add" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.currency.value}/>
 
           <Label htmlFor="category-add">Category:</Label>
-          <Select options={optionsCategories} type="text" name="category" id="category-add" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.category.value}/>
+          <Select options={this.state.optionsCategories} type="text" name="category" id="category-add" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.category.value}/>
 
           <Button textOnButton="Add" btnColor="#2EC66D" btnBorder="none"/> 
 
