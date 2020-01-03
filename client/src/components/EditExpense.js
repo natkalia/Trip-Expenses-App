@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button from './Button';
 import axios from 'axios';
+import Select from 'react-select';
 
 const Wrapper = styled.div`
   display: flex;
@@ -57,15 +58,29 @@ const Input = styled.input`
   }
 `;
 
+// temporary hardcoded options for currencies
+const optionsCurrencies = [
+  { value: 'PLN', label: 'PLN' },
+  { value: 'USD', label: 'USD' },
+  { value: 'EUR', label: 'EUR' },
+];
+
+// temporary hardcoded options for categories
+const optionsCategories = [
+  { value: 'food', label: 'food' },
+  { value: 'travel', label: 'travel' },
+  { value: 'travel', label: 'accomodation' },
+];
+
 class EditExpense extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      id: "", // ?
+      id: "", 
       name: "", 
       category: "",
-      cost: "", // ?
+      cost: "", 
       currency: "",
     };
   }
@@ -76,6 +91,20 @@ class EditExpense extends Component {
     const name = target.name;
     this.setState({
       [name]: value
+    });
+  }
+
+  onSelectCurrencyChange = (optionsObject) => {
+    const value = optionsObject.value; 
+    this.setState({
+      currency: value
+    });
+  }
+
+  onSelectCategoryChange = (optionsObject) => {
+    const value = optionsObject.value; 
+    this.setState({
+      category: value
     });
   }
 
@@ -92,7 +121,7 @@ class EditExpense extends Component {
       .then(res => console.log(res.data));
 
     // reset inputs to blank to start over again after form submit
-    this.setState({ name: "", category: "", currency: "", cost: 0 })
+    // this.setState({ name: "", category: "", currency: "", cost: "" })
   };
 
   onDeleteSubmit = (e) => {
@@ -126,11 +155,11 @@ class EditExpense extends Component {
           <Label htmlFor="amount-add">Cost (0-10000):</Label>
           <Input min="0" max="10000" type="number" name="cost" id="cost-add" placeholder="Cost amount" required onChange={this.onInputChange} value={this.state.cost}/>
 
-          <Label htmlFor="currency-add">Currency:</Label>
-          <Input type="text" name="currency" id="currency-add" placeholder="Currency" required onChange={this.onInputChange} value={this.state.currency}/>
+          <Label htmlFor="currency-edit">Currency:</Label>
+          <Select options={optionsCurrencies} type="text" name="currency" id="currency-edit" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.currency.value}/>
 
-          <Label htmlFor="category-add">Category:</Label>
-          <Input type="text" name="category" id="category-add" placeholder="Category" required onChange={this.onInputChange} value={this.state.category}/>
+          <Label htmlFor="category-edit">Category:</Label>
+          <Select options={optionsCategories} type="text" name="category" id="category-edit" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.category.value}/>
 
           <Button textOnButton="Edit" btnColor="#2EC66D" btnBorder="none"/> 
 
