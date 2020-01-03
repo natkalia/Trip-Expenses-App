@@ -36,8 +36,8 @@ class App extends React.Component {
         <Route path='/trips/single/:id' component={SingleTrip} />
         <Route path='/trips/summary/:id' component={TripSummary} />
         <Route path='/trips/all' component={AllTrips} />
-        <Route path='/trips/:tripId/expenses/:expenseId' component={EditExpense} />
-        <Route path='/trips/:tripId/expenses' component={AddExpense} />
+        <Route path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
+        <Route path='/trips/:tripId/expenses/add' component={AddExpense} />
         <Route path='/users/profile' component={UserProfile} />
 
         {/* do usuniecia później */}
