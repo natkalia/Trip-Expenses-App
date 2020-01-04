@@ -70,7 +70,6 @@ class EditExpense extends Component {
     }
     console.log(expense);
       await axios.put(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, expense);
-      // not sure if this cleanup of state is necessary as we redirect user to other path
       try {
         this.setState({ 
           expenseName: "", 
@@ -84,8 +83,7 @@ class EditExpense extends Component {
           }, 
           expenseCost: ""
         });
-        confirm("Expense was succesfully edited and saved!"); // validation should be added to check this
-        window.location=`/trips/single/${this.state.tripId}`; // redirect to single trip after editing expense
+        window.location=`/trips/single/${this.state.tripId}`;
       } catch (error) {
         this.setState({ error: 'Error' });
       }
@@ -94,9 +92,7 @@ class EditExpense extends Component {
   onDeleteSubmit = async (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this expense?")) {
-
       await axios.delete(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`);
-      // not sure if this cleanup of state is necessary as we redirect user to other path
       try {
         this.setState({ 
           expenseName: "", 
@@ -110,34 +106,25 @@ class EditExpense extends Component {
           }, 
           expenseCost: ""
         });
-        confirm("Expense is deleted!"); // validation should be added to check this
-        window.location=`/trips/single/${this.state.tripId}`; // redirect to single trip after deleting expense
+        window.location=`/trips/single/${this.state.tripId}`;
       } catch (error) {
         this.setState({ error: 'Error' });
       }
     } else return;
   }
 
-  getCategoriesFromTrip = async () => {
+  getTripAndExpenseData = async () => {
     const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`);
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
-      this.setState({
+      let sanitizedExpense = res.data.expenses.filter(myArray => (myArray._id === this.state.expenseId));
+      sanitizedExpense = sanitizedExpense[0];
+        this.setState({
         tripCategories: sanitizedArrayCategories,
-      });
-    } catch (error) {
-      this.setState({ error: 'Error' });
-    }
-  }
-
-  getExpenseData = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`);
-    try {
-      this.setState({
-        expenseName: res.data.expense.name,
-        expenseCost: res.data.expense.cost,
-        expenseCurrency: { value: res.data.expense.currency, label: res.data.expense.currency },
-        expenseCategory: { value: res.data.expense.category, label: res.data.expense.category }
+        expenseName: sanitizedExpense.name, 
+        expenseCost: sanitizedExpense.cost,
+        expenseCurrency: { value: sanitizedExpense.currency, label: sanitizedExpense.currency },
+        expenseCategory: { value: sanitizedExpense.category, label: sanitizedExpense.category },
       });
     } catch (error) {
       this.setState({ error: 'Error' });
@@ -145,9 +132,7 @@ class EditExpense extends Component {
   }
 
   componentDidMount () {
-    // refactor to make one get request? use sth to includes ${this.state.expenseId} and then res.data.foundExpense.currency etc?
-    this.getCategoriesFromTrip();
-    this.getExpenseData();
+    this.getTripAndExpenseData();
   }
  
   render() {
