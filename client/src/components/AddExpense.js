@@ -1,7 +1,8 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
+import ContentWrapper from './ContentWrapper';
 import Button from './Button';
-import { Title, Form, Label, Input, Wrapper, customStyleSelect } from './styled';
+import { Form, Label, Input, customStyleSelect } from './styled';
 import Select from 'react-select';
 
 class AddExpense extends Component {
@@ -9,7 +10,7 @@ class AddExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripId: "5e0dd4da618f3e1f10d4db7f", // temporary
+      tripId: "5e0dd4fa618f3e1f10d4db80", // temporary
       expenseName: "", 
       expenseCategory: 
         {
@@ -97,8 +98,8 @@ class AddExpense extends Component {
 
   render() {
     return (
-      <Wrapper>
-        <Title>Add Expense</Title>
+      <ContentWrapper title="Add Expense">
+
         <Form onSubmit={this.onFormSubmit}>
 
           <Label htmlFor="expenseName-add">Name (3-30 characters):</Label>
@@ -153,7 +154,8 @@ class AddExpense extends Component {
           <Button textOnButton="Add" btnColor="#2EC66D" btnBorder="none"/> 
 
         </Form>
-      </Wrapper>
+
+      </ContentWrapper>
     )
   }
 } 
