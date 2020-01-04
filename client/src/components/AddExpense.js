@@ -10,11 +10,11 @@ class AddExpense extends Component {
     super(props);
     this.state = {
       tripId: "5e0dd4da618f3e1f10d4db7f", // temporary
-      name: "", 
-      category: "",
-      cost: "",
-      currency: "",
-      optionsCurrencies: [
+      expenseName: "", 
+      expenseCategory: "",
+      expenseCost: "",
+      expenseCurrency: "",
+      tripCurrencies: [
         { value: 'PLN', label: 'PLN' },
         { value: 'USD', label: 'USD' },
         { value: 'EUR', label: 'EUR' },
@@ -24,14 +24,7 @@ class AddExpense extends Component {
         { value: 'CAD', label: 'CAD' },
         { value: 'CHF', label: 'CHF' }
       ],
-      optionsCategories: [
-        { value: 'food', label: 'food' },
-        { value: 'travel', label: 'travel' },
-        { value: 'tickets', label: 'tickets' },
-        { value: 'accomodation', label: 'accomodation' },
-        { value: 'health and insurance', label: 'health and insurance' },
-        { value: 'other', label: 'other' }
-      ]
+      tripCategories: ""
     }
   }
 
@@ -46,31 +39,49 @@ class AddExpense extends Component {
   onSelectCurrencyChange = (optionsObject) => {
     const value = optionsObject.value; 
     this.setState({
-      currency: value
+      expenseCurrency: value
     });
   }
 
   onSelectCategoryChange = (optionsObject) => {
     const value = optionsObject.value; 
     this.setState({
-      category: value
+      expenseCategory: value
     });
   }
 
   onFormSubmit = (e) => { 
     e.preventDefault();
-    const expense = {
-      name: this.state.name,
-      category: this.state.category,
-      cost: this.state.cost,
-      currency: this.state.currency
-    }
-    axios.post(`http://localhost:3000/api/trips/${this.state.tripId}/expenses`, expense)
-      .then(res => console.log(res.data));
 
-    // reset inputs to blank to start over again after form submit
-    this.setState({ name: "", category: "", currency: "", cost: "" })
+    const expense = {
+      name: this.state.expenseName,
+      category: this.state.expenseCategory,
+      cost: this.state.expenseCost,
+      currency: this.state.expenseCurrency
+    }
+
+    axios.post(`http://localhost:3000/api/trips/${this.state.tripId}/expenses`, expense)
+    .then(res => console.log(res.data))
+    .then(this.setState({ expenseName: "", expenseCategory: "", expenseCurrency: "", expenseCost: ""}));
   };
+
+  getCategoriesFromTrip = async () => {
+    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`);
+    try {
+      const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
+      this.setState({
+        tripCategories: sanitizedArrayCategories
+      });
+
+    } catch (error) {
+      this.setState({ error: 'Error' });
+    }
+  }
+
+  componentDidMount () {
+    this.getCategoriesFromTrip();
+
+  }
 
   render() {
     return (
@@ -78,17 +89,17 @@ class AddExpense extends Component {
         <Title>Add Expense</Title>
         <Form onSubmit={this.onFormSubmit}>
 
-          <Label htmlFor="name-exp-add">Name (3-30 characters):</Label>
-          <Input minlength="3" maxlength="30" type="text" name="name" id="name-exp-add" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
+          <Label htmlFor="expenseName-add">Name (3-30 characters):</Label>
+          <Input minlength="3" maxlength="30" type="text" name="expenseName" id="expenseName-add" placeholder="Name" required onChange={this.onInputChange} value={this.state.expenseName}/>
 
-          <Label htmlFor="amount-add">Cost (0-10000):</Label>
-          <Input min="0" max="10000" type="number" name="cost" id="cost-add" placeholder="Cost amount" required onChange={this.onInputChange} value={this.state.cost}/>
+          <Label htmlFor="expenseCost-add">Cost (0-10000):</Label>
+          <Input min="0" max="10000" type="number" name="expenseCost" id="expenseCost-add" placeholder="Cost amount" required onChange={this.onInputChange} value={this.state.expenseCost}/>
 
-          <Label htmlFor="currency-add">Currency:</Label>
-          <Select styles={customStyleSelect} options={this.state.optionsCurrencies} type="text" name="currency" id="currency-add" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.currency.value}/>
+          <Label htmlFor="expenseCurrency-add">Currency:</Label>
+          <Select styles={customStyleSelect} options={this.state.tripCurrencies} type="text" name="expenseCurrency" id="expenseCurrency-add" placeholder="Currency" required onChange={this.onSelectCurrencyChange} value={this.state.expenseCurrency.value}/>
 
-          <Label htmlFor="category-add">Category:</Label>
-          <Select styles={customStyleSelect} options={this.state.optionsCategories} type="text" name="category" id="category-add" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.category.value}/>
+          <Label htmlFor="expenseCategory-add">Category:</Label>
+          <Select styles={customStyleSelect} options={this.state.tripCategories} type="text" name="expenseCategory" id="expenseCategory-add" placeholder="Category" required onChange={this.onSelectCategoryChange} value={this.state.expenseCategory.value}/>
 
           <Button textOnButton="Add" btnColor="#2EC66D" btnBorder="none"/> 
 
