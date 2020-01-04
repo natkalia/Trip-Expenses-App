@@ -31,7 +31,7 @@ router.post('/login', async (req, res) => {
   }
 
   const token = user.generateAuthToken();
-  return res.status(200).json({"token": token});  
+  return res.header('x-auth-token', token).send();
 });
 
 // Register new user
@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
   } = validateUser(req.body);
 
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).json({'error': error.details[0].message});
   }
 
   let user = await User.findOne({
@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
   });
 
   if (user) {
-    return res.status(400).send('User already registered');
+    return res.status(400).json('Error: User already registered');
   } 
   
   let newUser = new User(_.pick(req.body, ['name', 'email', 'password']));
@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
   newUser.password = await bcrypt.hash(newUser.password, salt);
 
   await newUser.save();
-  res.send(_.pick(newUser, ['_id', 'name', 'email']));
+  res.json(_.pick(newUser, ['_id', 'name', 'email']));
 });
 
 module.exports = router;
