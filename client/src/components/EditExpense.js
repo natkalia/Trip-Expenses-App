@@ -117,7 +117,7 @@ class EditExpense extends Component {
     const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`);
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
-      let sanitizedExpense = res.data.expenses.filter(myArray => (myArray._id === this.state.expenseId));
+      let sanitizedExpense = res.data.expenses.filter(arr => (arr._id === this.state.expenseId));
       sanitizedExpense = sanitizedExpense[0];
         this.setState({
         tripCategories: sanitizedArrayCategories,
