@@ -58,7 +58,7 @@ export const InputContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-export const Paragraph = styled.p `
+export const ParagraphSmallItalic = styled.p `
   font-style: italic;
   font-weight: 300;
   font-size: 14px;

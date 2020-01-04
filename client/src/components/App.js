@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'universal-cookie'; 
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './Header';
@@ -19,9 +20,18 @@ import { addFirstOne } from '../actions/exampleAction';
 
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const cookies = new Cookies();
+    this.state = {
+      apiResponse: "",
+      travelplanner_jwt: cookies.get('travelplanner_jwt') || ""
+    };
+  }
 
   changeText = () => {
-    this.props.addFirstOne("Zupełenie nowy text")
+    this.props.addFirstOne("Zupełenie nowy text")    
   }
   
   render() {
