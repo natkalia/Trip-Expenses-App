@@ -17,6 +17,9 @@ const HeaderWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   box-shadow: 0px 4px 4px ${theme.colors.bgOverlay};
+  ${theme.media.tablet} {
+    flex-direction: row;
+  }
 `;
 
 const TopLabel = styled.div`
@@ -27,6 +30,9 @@ const TopLabel = styled.div`
   justify-content: space-between;
   padding: 15px 25px;
   box-shadow: 0px 0px 4px ${theme.colors.bgOverlay};
+  ${theme.media.tablet} {
+    box-shadow: none;
+  }
 `;
 
 const AppName = styled.a`
@@ -66,6 +72,9 @@ const Button = styled.button`
 
 const ToggleNavOpen = styled(Button)`
   color: ${theme.colors.neutralDark};
+  ${theme.media.tablet} {
+    display: none;
+  }
 `;
 
 const Nav = styled.nav`
@@ -90,11 +99,14 @@ const NavForNotLoggedIn = styled(Ul)`
 const NavForLoggedIn = styled(Ul)`
   justify-content: space-between;
   display: ${props => props.showMenu ? 'flex' : 'none'};
+  ${theme.media.tablet} {
+    justify-content: flex-end;
+  }
 `;
 
 const Li = styled.li`
   list-style: none;
-  padding: 0 10px;
+  padding: 0 25px;
 `;
 
 const StyledLink = styled(Link)`
@@ -112,7 +124,7 @@ class Header extends Component {
     super(props);
     this.state = {
       menuOpened: true,
-      isLoggedIn: false,
+      isLoggedIn: true,
       activeTab: ""
     }
   }
