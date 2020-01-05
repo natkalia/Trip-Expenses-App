@@ -72,7 +72,6 @@ class AddTrip extends Component {
       mainCurrency: this.state.budgetCurrency.value
 
     }
-    console.log(trip);
     axios.post("http://localhost:3000/api/trips/add", trip)
       .then(res => console.log(res.data))
       .then(() => this.setState({
@@ -86,7 +85,7 @@ class AddTrip extends Component {
             label: "PLN"
           },
       }))
-    //   .then(() => window.location = "/trips/all")
+      .then(() => window.location = "/trips/all")
   };
 
   getSupportedCurrencyList = async () => {
