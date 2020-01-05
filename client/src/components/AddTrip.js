@@ -99,7 +99,6 @@ class AddTrip extends Component {
           label: currency
         }
        });
-      console.log(tripCurrencies);
       this.setState({
         tripCurrencies: tripCurrencies
       })
@@ -149,9 +148,6 @@ class AddTrip extends Component {
             onChange={this.onSelectCurrencyChange} 
             value={this.state.budgetCurrency}
           />
-        <InputContainer>
-
-          </InputContainer>
 
           <Label htmlFor="description-add">Description (10-200 characters):</Label>
           <ParagraphSmallItalic>This field is optional</ParagraphSmallItalic>

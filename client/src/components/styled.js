@@ -207,6 +207,10 @@ export const IsTripFinishedContainer = styled.div `
 `;
 
 export const customStyleSelect = {
+  container: (provided) => ({
+    ...provided,
+    marginBottom: "20px",
+  }),
   option: (provided, state) => ({
     ...provided,
     color: '#000',
