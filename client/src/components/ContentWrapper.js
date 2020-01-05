@@ -5,6 +5,7 @@ import { H2 } from './styled';
 
 const Wrapper = styled.div`
   max-width: 600px;
+  width:100%;
   background-color: rgba(255,255,255,0.85);
   margin: 0 auto 40px;
   padding-bottom:20px;
@@ -17,7 +18,7 @@ const TitleWrapper = styled.div`
   height: 70px;
   margin-bottom: 30px;
   background-color: rgba(255,255,255,0.85);
-  /* box-shadow: 0 4 4 ${theme.colors.neutralMidLight}; */
+  box-shadow: 0 4px 4px ${theme.colors.neutralExtraLight};
 `;
 
 const ContentWrapper = (props) => {
