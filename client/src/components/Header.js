@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '../utils/theme';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 
 const HeaderWrapper = styled.div`
@@ -140,7 +142,7 @@ class Header extends Component {
             <H1>Trip Expenses</H1>
           </AppName>
           <ToggleNavOpen onClick={this.toggleMenu}>
-            {this.state.menuOpened ? 'Zamknij' : 'Otwórz'}
+            <FontAwesomeIcon size="lg" icon={this.state.menuOpened ? faTimes : faBars} />
           </ToggleNavOpen>
         </TopLabel>
 
