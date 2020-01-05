@@ -40,10 +40,24 @@ router.get('/:id', async (req, res) => {
 });
 
 // Delete trip
-router.delete('/:id', (req, res) => {
-  Trip.findByIdAndRemove(req.params.id)
-    .then(() => res.json("Trip was sucessfully deleted."))
-    .catch(() => res.status(404).send('The trip with the given ID was not found'))
+router.delete('/:id', async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const tripId = req.params.id;
+    const userObject = await User.findOne({"_id": userId});
+    if (!userObject) return res.status(404).json({"message": "User not found"});
+    await userObject.trips.remove(tripId);
+    await userObject.save();
+    Trip.findByIdAndRemove(tripId)
+      .then((result) => 
+        {
+          if (!result) return res.status(404).json({"message": "The trip with the given ID was not found"})
+          return res.json({"message": "Trip was sucessfully deleted."})
+        })
+      .catch((error) => res.status(404).send('Something goes wrong', error));
+  } catch (error) {
+    res.status(400).json('Error: ' + error)
+  }
 });
 
 // edit trip information
