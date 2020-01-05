@@ -26,7 +26,7 @@ class Login extends React.Component {
       .then(res => cookies.set('travelplanner_x-auth-token', res.headers["x-auth-token"]))
       .catch(err => console.log(err));
     this.setState({
-      travelplanner_jwt: cookies.get('travelplanner_jwt')
+      travelplanner_jwt: cookies.get('travelplanner_x-auth-token')
     })
   }
 
