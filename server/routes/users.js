@@ -15,6 +15,21 @@ router.get('/:id', async (req, res) => {
 });
 
 
+// Display all trips for user
+// for test can use User id: 5e0fc8800785ca060578b375
+router.get('/:id/trips', async (req, res) => {
+  try {
+    const { trips: tripsFromDatabase } = await User.findOne({'_id' : req.params.id }).populate('trips');
+    return res.status(200).json({ trips: tripsFromDatabase });
+  } catch (error) {
+    const errorObject = error;
+    return res.status(404).json({
+      "message": errorObject.message,
+    });
+  }
+});
+
+
 // User login
 router.post('/login', async (req, res) => {
   const { error } = validateUserOnLogin(req.body);
