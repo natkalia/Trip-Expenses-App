@@ -2,6 +2,29 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ContentWrapper from './ContentWrapper';
 import Chart from 'chart.js';
+import styled from 'styled-components';
+import { theme} from '../utils/theme'; 
+
+const Paragraph = styled.p`
+  color: ${theme.colors.neutralDark};
+  font-size: 20px;
+  width: 100%;
+  margin: 0px auto;
+  text-align: center;
+  margin-bottom: 10px;
+`;
+
+const Li = styled.li`
+  list-style: none;
+  font-size: 16px;
+  font-weight: 300;
+  width: 100%;
+  margin: 0px auto;
+  text-align: left;
+  color: ${theme.colors.neutralMidDark};
+  padding: 0;
+  margin-bottom: 10px;
+`
 
 class TripSummary extends Component {
 
@@ -88,7 +111,8 @@ class TripSummary extends Component {
       this.setState({
         budgetAmount: res.data.budget,
         budgetCurrency: res.data.mainCurrency,
-        spentAmountinMainCurrency: 7 // calculate
+        spentAmountinMainCurrency: 0, // calculate
+        // totalExpensesByCategory: []
       });
     } catch (error) {
       this.setState({ error: 'Error' });
@@ -97,21 +121,21 @@ class TripSummary extends Component {
 
   createChart = () => {
     const ctx = document.getElementById('budgetChart');
+    const arrayAllColors = Object.values(theme.colors); // use Object.values also in different places!!!
 
-    const arrayAllColors = ["#fad390", "#6a89cc","#82ccdd","#b8e994","#e55039", "#4a69bd", "#3c6382", "#3c6382", "#e58e26", "#78e08f"];
     const arrayRandomColors = [];
     this.state.tripCategories.forEach(element => {
       const randomColor = arrayAllColors[Math.floor(Math.random() * arrayAllColors.length)]; 
-      if (arrayRandomColors.includes(randomColor)) {
-        return; // wrong - should be corrected to avoid repeating colors
-      } else {
+      console.log(randomColor);
+      console.log(arrayRandomColors); // correct this
+      if (!arrayRandomColors.includes(randomColor)) {
         arrayRandomColors.push(randomColor);
       }}
     );
 
     const arrayAmounts = [];
     const arrayCategories = [];
-    this.state.totalExpensesByCategory.forEach (element => {
+    this.state.totalExpensesByCategory.forEach(element => {
       arrayAmounts.push(element.amount);
       arrayCategories.push(element.name);
     });
@@ -146,17 +170,20 @@ class TripSummary extends Component {
   render() {
     return (
       <>
+        {/* //change this */}
         <p>{this.state.tripName}</p>  
         <ContentWrapper title="Summary">
 
-          <div>Budget: {this.state.budgetAmount} {this.state.budgetCurrency} </div>
-          <div>Spent: {this.state.spentAmountinMainCurrency} {this.state.budgetCurrency}</div>
-          <div>Left: {this.state.budgetAmount - this.state.spentAmountinMainCurrency} {this.state.budgetCurrency}</div>
+        <div>
+          <Paragraph>Budget: {this.state.budgetAmount} {this.state.budgetCurrency} </Paragraph>
+          <Paragraph>Spent: {this.state.spentAmountinMainCurrency} {this.state.budgetCurrency}</Paragraph>
+          <Paragraph>Left: {this.state.budgetAmount - this.state.spentAmountinMainCurrency} {this.state.budgetCurrency}</Paragraph>
+        </div>
 
           <ul>
             { this.state.totalExpensesByCategory.map((data, i) => {
                 return (
-                  <li key={i}>{data.name + ": " + data.amount + " " + data.currency}</li>
+                  <Li key={i}>{`${data.name}: ${data.amount} ${data.currency}`}</Li>
                 );
               })
             }
