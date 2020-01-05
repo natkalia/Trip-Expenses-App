@@ -25,11 +25,12 @@ const TopLabel = styled.div`
   box-shadow: 0px 0px 4px ${theme.colors.bgOverlay};
 `;
 
-const AppName = styled.div`
+const AppName = styled.a`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 `;
 
 const Logo = styled.img`
@@ -48,7 +49,7 @@ const H1 = styled.h1`
 `;
 
 const Button = styled.button`
-  color: ${theme.colors.neutralDark};
+  color: ${theme.colors.neutralMidLight};
   font-size: 16px;
   background-color: transparent;
   border: none;
@@ -56,9 +57,13 @@ const Button = styled.button`
   &:focus {
     outline: none;
   }
+  &:hover {
+    color:${theme.colors.btnMain};
+  }
 `;
 
 const ToggleNavOpen = styled(Button)`
+  color: ${theme.colors.neutralDark};
 `;
 
 const Nav = styled.nav`
@@ -94,16 +99,19 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${theme.colors.neutralDark};
   font-size: 16px;
+  color: ${props => props.active === "true" ? `${theme.colors.neutralDark}` : `${theme.colors.neutralMidLight}`};
+  &:hover {
+    color: ${theme.colors.btnMain};
+  }
 `;
-
-
 
 class Header extends Component {
   constructor(props){
     super(props);
     this.state = {
       menuOpened: true,
-      isLoggedIn: true
+      isLoggedIn: false,
+      activeTab: ""
     }
   }
   
@@ -117,11 +125,17 @@ class Header extends Component {
     console.log("Wyloguj");
   }
 
+  setChoosen = (e) => {
+    this.setState({
+      activeTab: e.target.id
+    });
+  }
+
   render() {
     return (
       <HeaderWrapper>
         <TopLabel>
-          <AppName>
+          <AppName href="/" title="HomePage">
             <Logo></Logo>
             <H1>Trip Expenses</H1>
           </AppName>
@@ -129,18 +143,56 @@ class Header extends Component {
             {this.state.menuOpened ? 'Zamknij' : 'Otwórz'}
           </ToggleNavOpen>
         </TopLabel>
+
         <Nav>
           <NavForNotLoggedIn
             showMenu={this.state.menuOpened && !this.state.isLoggedIn}
           >
-            <Li><StyledLink to={'/users/login'}>Login</StyledLink></Li>
-            <Li><StyledLink to={'/users/register'}>Sign Up</StyledLink></Li>
+            <Li>
+              <StyledLink
+                to={'/users/login'}
+                onClick={(e) => this.setChoosen(e)}
+                active={`${this.state.activeTab === 'login'}`}
+                id="login"
+              >
+                Login
+              </StyledLink>
+            </Li>
+            <Li>
+              <StyledLink
+                to={'/users/register'}
+                onClick={(e) => this.setChoosen(e)}
+                active={`${this.state.activeTab === 'register'}`}
+                id="register"
+              >
+                Sign Up
+              </StyledLink>
+            </Li>
           </NavForNotLoggedIn>
+
           <NavForLoggedIn
             showMenu={this.state.menuOpened && this.state.isLoggedIn}
           >
-            <Li><StyledLink to={'/trips/all'}>Trips</StyledLink></Li>
-            <Li><StyledLink to={'/users/profile'}>Settings</StyledLink></Li>
+            <Li>
+              <StyledLink
+                to={'/trips/all'}
+                onClick={(e) => this.setChoosen(e)}
+                active={`${this.state.activeTab === 'trips/all'}`}
+                id="trips/all"
+              >
+                Trips
+              </StyledLink>
+            </Li>
+            <Li>
+              <StyledLink
+                to={'/users/profile'}
+                onClick={(e) => this.setChoosen(e)}
+                active={`${this.state.activeTab === 'profile'}`}
+                id="profile"
+              >
+                Settings
+              </StyledLink>
+            </Li>
             <Li><Button onClick={this.logOut}>Log out</Button></Li>
           </NavForLoggedIn>
         </Nav>
