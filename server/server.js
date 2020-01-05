@@ -14,6 +14,8 @@ const mongoose = require('mongoose');
 const tripsRouter = require('./routes/trips');
 const usersRouter = require('./routes/users');
 
+const checkAuthenticated = require('./middleware/auth')
+
 const app = express();
 
 if (!config.get('db.jwtPrivateKey')) {
@@ -42,7 +44,7 @@ if (app.get('env') === 'development') {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/trips', tripsRouter);
+app.use('/api/trips', checkAuthenticated, tripsRouter);
 app.use('/api/users', usersRouter);
 
 const port = process.env.PORT || 5000;
