@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Cookies from 'universal-cookie';
 import { theme } from '../utils/theme';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -136,7 +137,12 @@ class Header extends Component {
   }
 
   logOut = () => {
-    console.log("Wyloguj");
+    const cookies = new Cookies();
+    cookies.remove('travelplanner_x-auth-token', { path: "/users/" });
+    this.setState({ 
+      travelplanner_jwt: "", 
+      isLoggedIn: false 
+    });
   }
 
   setChoosen = (e) => {
