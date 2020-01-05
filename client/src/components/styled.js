@@ -1,14 +1,61 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { theme } from '../utils/theme';
 
 export const H2 = styled.h2 `
   font-size: 24px;
   font-weight:400;
 `
+export const LinkButtonBig = styled(Link)`
+  /* colors prop should be one of: green, greenOutline, grey  */
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  margin: 0 auto 20px;
+  padding: 6.5px;
+  font-size: 20px;
+  font-weight: 400;
+  text-decoration: none;
+  text-align: center;
+  background-color: ${props => (
+    props.color === "green" ? theme.colors.btnMain
+    : props.color === "grey" ? theme.colors.neutralExtraLight
+    : theme.colors.white 
+    )};
+  color: ${props => (
+    props.color === "green" ? theme.colors.white 
+    : props.color === "greenOutline" ? theme.colors.btnMain
+    : theme.colors.neutralMidDark
+    )};
+  border: 1px solid ${props => (
+    props.color === "green" || props.color === "greenOutline" ? theme.colors.btnMain
+    : props.color === "grey" ? theme.colors.neutralLight
+    : theme.colors.neutralMidDark
+    )};
+  border-radius: 5px;  
+  box-shadow: 0 0 4px ${theme.colors.neutralLight};
+  cursor: pointer;
+  transition: .3s;
+
+  &:hover{
+    background-color: ${props => (
+      props.green && '#15AD54'
+      )};
+      font-weight: 600;
+      box-shadow: 0 0 4px 
+  } 
+`;
+
+export const LinkButtonSmall = styled(LinkButtonBig)`
+  min-height: 30px;
+  padding: 0px;
+  font-size: 16px;
+`
+
 // Forms
 
 export const Form = styled.form`
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

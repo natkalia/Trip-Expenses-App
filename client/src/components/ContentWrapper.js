@@ -4,11 +4,21 @@ import { theme } from '../utils/theme';
 import { H2 } from './styled';
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   max-width: 600px;
+  width: 100%;
   background-color: rgba(255,255,255,0.85);
   margin: 0 auto 40px;
   padding-bottom:20px;
 `;
+
+const Container = styled.div`
+  display:flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+`
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -26,7 +36,9 @@ const ContentWrapper = (props) => {
     <TitleWrapper>
       <H2>{props.title}</H2>
     </TitleWrapper>
-    {props.children}
+    <Container>
+      {props.children}
+    </Container>    
   </Wrapper>
   )
 };
