@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import axios from 'axios';
 import {
+  TripHeader,
   ContentWrapper,
   HeaderWrapper,
   InnerContainer,
@@ -35,23 +36,31 @@ class SingleTrip extends Component {
   
   render() {
     return (
-      <ContentWrapper>
+      <>
+        <TripHeader name={this.state.name}/>
+        
+        <ContentWrapper>          
+          <HeaderWrapper>
+            <InnerContainer>
+              <ParagraphAlignedCenter>
+                <b>Start Date:</b> &nbsp;
+                {this.state.startDate ? moment(this.state.startDate).format('YYYY-MM-DD'): ""}
+              </ParagraphAlignedCenter>
+              <ParagraphAlignedCenter> 
+                {this.state.description}
+              </ParagraphAlignedCenter>
+            </InnerContainer>          
+          </HeaderWrapper>
 
-        <HeaderWrapper>
-          <InnerContainer>
-            <ParagraphAlignedCenter>
-              <b>Start Date:</b> &nbsp;
-              {this.state.startDate ? moment(this.state.startDate).format('YYYY-MM-DD'): ""}
-            </ParagraphAlignedCenter>
-            <ParagraphAlignedCenter> 
-              {this.state.description}
-            </ParagraphAlignedCenter>
+          <InnerContainer>  
+            <LinkButtonBig to={`/trips/${this.props.match.params.id}/expenses/add`} color="green">Add Expense</LinkButtonBig>
+            <LinkButtonBig to={`/trips/summary/${this.props.match.params.id}`} color="green">Summary</LinkButtonBig>
+            <LinkButtonBig to={`/`} color="disabled">All Expences</LinkButtonBig>
+            <LinkButtonBig to={`/`} color="disabled">Manage Categories</LinkButtonBig>
+            <LinkButtonBig to={`/`} color="disabled">Manage Currency</LinkButtonBig>
           </InnerContainer>          
-        </HeaderWrapper>
-
-        <LinkButtonBig to={`/trips/${this.props.match.params.id}/expenses/add`} color="green">Add Expense</LinkButtonBig>
-        <LinkButtonBig to={`/trips/summary/${this.props.match.params.id}`} color="greenOutline">Summary</LinkButtonBig>
-      </ContentWrapper>
+        </ContentWrapper>
+      </>      
     )
   }
 }
