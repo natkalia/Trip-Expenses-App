@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-export const checkAuthenticated = async (req, res, next) => {
-  const token = req.headers("x-auth-token") || null;
+const checkAuthenticated = (req, res, next) => {
+  const token = req.headers["x-auth-token"] || null;
   if (!token) return res.status(401).send("Access denied. No token provided");
 
   try {
@@ -18,3 +18,4 @@ export const checkAuthenticated = async (req, res, next) => {
   
 // }
 
+module.exports = { checkAuthenticated }

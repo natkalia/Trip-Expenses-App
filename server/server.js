@@ -13,8 +13,7 @@ const mongoose = require('mongoose');
 
 const tripsRouter = require('./routes/trips');
 const usersRouter = require('./routes/users');
-
-const checkAuthenticated = require('./middleware/auth')
+const { checkAuthenticated } = require('./middleware/auth')
 
 const app = express();
 
