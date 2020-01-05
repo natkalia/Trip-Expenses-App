@@ -38,8 +38,8 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <Header/>
-        <Layout> 
+        <Layout>
+          <Header/>
           <Route path='/' exact component={HomePage} />
           <Route path='/trips/add' component={AddTrip} />
           <Route path='/trips/edit/:id' component={EditTrip} />
@@ -51,12 +51,12 @@ class App extends React.Component {
           <Route path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
           <Route path='/trips/:tripId/expenses/add' component={AddExpense} />
           <Route path='/users/profile' component={UserProfile} />
-        </Layout> 
 
-        {/* do usuniecia później */}
-        {/* <h1>{this.props.text}</h1>
-        <button onClick={this.changeText}>kliknij</button> */}
-        <Footer/>
+          {/* do usuniecia później */}
+          {/* <h1>{this.props.text}</h1>
+          <button onClick={this.changeText}>kliknij</button> */}
+          <Footer/>
+        </Layout>
       </Router>
     )
   }

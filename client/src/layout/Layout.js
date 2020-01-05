@@ -25,7 +25,7 @@ const StyledWrapper = styled.div`
   min-height:100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-image: 
     linear-gradient(${theme.colors.bgOverlay}, ${theme.colors.bgOverlay}),
