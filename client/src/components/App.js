@@ -15,6 +15,7 @@ import TripSummary from './TripSummary';
 import AllTrips from './AllTrips';
 import UserProfile from './UserProfile';
 import Footer from './Footer';
+import Layout from '../layout/Layout';
 
 import { addFirstOne } from '../actions/exampleAction';
 
@@ -38,17 +39,19 @@ class App extends React.Component {
     return (
       <Router>
         <Header/>
-        <Route path='/' exact component={HomePage} />
-        <Route path='/trips/add' component={AddTrip} />
-        <Route path='/trips/edit/:id' component={EditTrip} />
-        <Route path='/users/login' component={SignIn} />
-        <Route path='/users/register' component={RegisterUser} />
-        <Route path='/trips/single/:id' component={SingleTrip} />
-        <Route path='/trips/summary/:id' component={TripSummary} />
-        <Route path='/trips/all' component={AllTrips} />
-        <Route path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
-        <Route path='/trips/:tripId/expenses/add' component={AddExpense} />
-        <Route path='/users/profile' component={UserProfile} />
+        <Layout>
+          <Route path='/' exact component={HomePage} />
+          <Route path='/trips/add' component={AddTrip} />
+          <Route path='/trips/edit/:id' component={EditTrip} />
+          <Route path='/users/login' component={SignIn} />
+          <Route path='/users/register' component={RegisterUser} />
+          <Route path='/trips/single/:id' component={SingleTrip} />
+          <Route path='/trips/summary/:id' component={TripSummary} />
+          <Route path='/trips/all' component={AllTrips} />
+          <Route path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
+          <Route path='/trips/:tripId/expenses/add' component={AddExpense} />
+          <Route path='/users/profile' component={UserProfile} />
+        </Layout> 
 
         {/* do usuniecia później */}
         {/* <h1>{this.props.text}</h1>
