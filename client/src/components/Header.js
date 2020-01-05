@@ -45,7 +45,20 @@ const H1 = styled.h1`
   font-weight: normal;
   color: ${theme.colors.neutralDark};
   margin: 0;
+`;
 
+const Button = styled.button`
+  color: ${theme.colors.neutralDark};
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const ToggleNavOpen = styled(Button)`
 `;
 
 const Nav = styled.nav`
@@ -83,12 +96,6 @@ const StyledLink = styled(Link)`
   font-size: 16px;
 `;
 
-const LogOutButton = styled.button`
-  color: ${theme.colors.neutralDark};
-  font-size: 16px;
-  background-color: transparent;
-  border: none;
-`;
 
 
 class Header extends Component {
@@ -118,7 +125,9 @@ class Header extends Component {
             <Logo></Logo>
             <H1>Trip Expenses</H1>
           </AppName>
-          <div onClick={this.toggleMenu}>otworz</div>
+          <ToggleNavOpen onClick={this.toggleMenu}>
+            {this.state.menuOpened ? 'Zamknij' : 'Otwórz'}
+          </ToggleNavOpen>
         </TopLabel>
         <Nav>
           <NavForNotLoggedIn
@@ -132,7 +141,7 @@ class Header extends Component {
           >
             <Li><StyledLink to={'/trips/all'}>Trips</StyledLink></Li>
             <Li><StyledLink to={'/users/profile'}>Settings</StyledLink></Li>
-            <Li><LogOutButton onClick={this.logOut}>Log out</LogOutButton></Li>
+            <Li><Button onClick={this.logOut}>Log out</Button></Li>
           </NavForLoggedIn>
         </Nav>
       </HeaderWrapper>
