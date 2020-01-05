@@ -76,14 +76,17 @@ class EditTrip extends Component {
   onDeleteSubmit = (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this trip?")) {
-    axios.delete("http://localhost:3000/api/trips/" + this.state.id)
+    // after authorization and Redux change hardcoded values of user id
+    axios.delete("http://localhost:3000/api/trips/" + this.state.id,
+      { data: {userId : "5e0fc8800785ca060578b375"} })
     .then(res => console.log(res.data))
     .then(() => window.location = '/trips/all');
     } else return;
   };
 
   componentDidMount () {
-    axios.get("http://localhost:3000/api/trips/5e0dd4da618f3e1f10d4db7f") // temporary currenTripId
+    // axios.get("http://localhost:3000/api/trips/5e0dd4da618f3e1f10d4db7f") // temporary currenTripId
+    axios.get("http://localhost:3000/api/trips/5e111e5a52ebc005afef16a4") // temporary currenTripId
       .then(res => this.setState({ 
         id: res.data._id,
         name: res.data.name,

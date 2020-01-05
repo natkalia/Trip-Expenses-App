@@ -95,3 +95,25 @@ export const IsTripFinishedContainer = styled.div `
   flex-direction: row;
   margin-bottom: 20px;
 `;
+
+export const customStyleSelect = {
+  option: (provided, state) => ({
+    ...provided,
+    color: '#000',
+    padding: 2,
+    fontFamily: 'Roboto'
+  }),
+  control: (provided) => ({
+    ...provided,
+    borderRadius: "3px",
+    border: '1px solid #000',
+    fontFamily: 'Roboto'
+  }),
+  placeholder: () => ({
+    fontFamily: 'Roboto'
+  }),
+  dropdownIndicator: defaultStyles => ({
+    ...defaultStyles,
+    color: 'purple'
+  })
+}

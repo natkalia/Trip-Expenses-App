@@ -10,5 +10,6 @@ export const colors = {
   neutralMidLight: '#a9a9a9',
   neutralMidDark: '#545454',
   neutralDark: '#333',
+  dark: '#1f1f1f',
   black: '#000',
 }
