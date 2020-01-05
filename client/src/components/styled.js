@@ -106,7 +106,7 @@ export const customStyleSelect = {
   control: (provided) => ({
     ...provided,
     borderRadius: "3px",
-    border: '1px solid #000',
+    // border: '1px solid #000',
     fontFamily: 'Roboto'
   }),
   placeholder: () => ({
