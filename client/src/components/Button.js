@@ -14,13 +14,14 @@ const DefaultButton = styled.button`
   color: ${theme.colors.neutralMidDark};
   user-select: none;
   outline: none;
+  cursor: pointer;
 
-  &:hover {
-    cursor: pointer;  
+  /* &:hover {
+
   } 
   &:focus {
     outline: none;  
-  } 
+  }  */
 `;
 
 const Button = (props) => {
