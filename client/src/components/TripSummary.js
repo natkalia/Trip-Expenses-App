@@ -27,27 +27,27 @@ class TripSummary extends Component {
       totalExpensesByCategory: [  //hardcoded
         {
           name: "transport", 
-          amount: 2, 
+          amount: 20, 
           currency: "PLN"
         },
         {
           name: "food", 
-          amount: 24, 
+          amount: 30, 
           currency: "PLN"
         },
         {
           name: "tickets", 
-          amount: 12, 
+          amount: 50, 
           currency: "PLN"
         },
         {
           name: "other", 
-          amount: 2222, 
+          amount: 10, 
           currency: "PLN"
         },
         {
           name: "accomodation", 
-          amount: 23, 
+          amount: 200, 
           currency: "PLN"
         },
       ]
@@ -97,34 +97,34 @@ class TripSummary extends Component {
 
   createChart = () => {
     const ctx = document.getElementById('budgetChart');
-    const allColors = ["#fad390", "#6a89cc","#82ccdd","#b8e994","#e55039", "#4a69bd", "#3c6382", "#3c6382", "#e58e26", "#78e08f"];
-    const randomColorsForUserCategories = [];
 
+    const arrayAllColors = ["#fad390", "#6a89cc","#82ccdd","#b8e994","#e55039", "#4a69bd", "#3c6382", "#3c6382", "#e58e26", "#78e08f"];
+    const arrayRandomColors = [];
     this.state.tripCategories.forEach(element => {
-      const randomColor = allColors[Math.floor(Math.random() * allColors.length)]; 
-      if (randomColorsForUserCategories.includes(randomColor)) {
+      const randomColor = arrayAllColors[Math.floor(Math.random() * arrayAllColors.length)]; 
+      if (arrayRandomColors.includes(randomColor)) {
         return; // wrong - should be corrected to avoid repeating colors
       } else {
-        randomColorsForUserCategories.push(randomColor);
+        arrayRandomColors.push(randomColor);
       }}
     );
 
-    const sanitizedTotalExpensesByCategory = [];
+    const arrayAmounts = [];
+    const arrayCategories = [];
     this.state.totalExpensesByCategory.forEach (element => {
-      sanitizedTotalExpensesByCategory.push(element.amount);
+      arrayAmounts.push(element.amount);
+      arrayCategories.push(element.name);
     });
-    console.log(sanitizedTotalExpensesByCategory);
 
     const budgetChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: this.state.tripCategories, 
+        labels: arrayCategories, 
         datasets: [
           {
-            label: "Cost (in main budget currency)",
-            backgroundColor: randomColorsForUserCategories, 
-            // data: [1,2,3,4,5,6] // hardcoded
-            data: sanitizedTotalExpensesByCategory
+            label: "Cost amount",
+            backgroundColor: arrayRandomColors, 
+            data: arrayAmounts
           }
         ]
       },
@@ -143,9 +143,6 @@ class TripSummary extends Component {
     await this.createChart();
   }
 
-
-
-
   render() {
     return (
       <>
@@ -157,9 +154,9 @@ class TripSummary extends Component {
           <div>Left: {this.state.budgetAmount - this.state.spentAmountinMainCurrency} {this.state.budgetCurrency}</div>
 
           <ul>
-            { this.state.totalExpensesByCategory.map((data) => {
+            { this.state.totalExpensesByCategory.map((data, i) => {
                 return (
-                  <li>{data.name + ": " + data.amount + " " + data.currency}</li>
+                  <li key={i}>{data.name + ": " + data.amount + " " + data.currency}</li>
                 );
               })
             }
