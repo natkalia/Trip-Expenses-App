@@ -6,6 +6,8 @@ import { theme } from '../utils/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
+import LogoImg from '../images/logo.png';
+
 
 const HeaderWrapper = styled.div`
   background-color: ${theme.colors.whiteOverlay};
@@ -36,9 +38,7 @@ const AppName = styled.a`
 `;
 
 const Logo = styled.img`
-  background-color: red;
-  height: 25px;
-  width: 25px;
+  height: 35px;
   margin-right: 20px;
 `;
 
@@ -138,7 +138,7 @@ class Header extends Component {
       <HeaderWrapper>
         <TopLabel>
           <AppName href="/" title="HomePage">
-            <Logo></Logo>
+            <Logo src={LogoImg} alt="Trip Expenses App"></Logo>
             <H1>Trip Expenses</H1>
           </AppName>
           <ToggleNavOpen onClick={this.toggleMenu}>
