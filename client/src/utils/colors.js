@@ -5,6 +5,7 @@ export const colors = {
   errorMsgText: '#721C24',
   bgOverlay: 'rgba(0,0,0,0.3)',
   white: '#fff',
+  whiteOverlay: 'rgba(255, 255, 255, 0.95)',
   neutralExtraLight: '#dedede',
   neutralLight: '#ced4da',
   neutralMidLight: '#a9a9a9',
