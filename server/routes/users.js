@@ -3,9 +3,10 @@ const express = require('express');
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const { User, validateUser, validateUserOnLogin } = require('../models/user');
+const { checkAuthenticated } = require('../middleware/auth')
 
 // User GET route
-router.get('/:id', async (req, res) => {
+router.get('/:id', checkAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('name email trips');
     res.json(user)
@@ -17,7 +18,7 @@ router.get('/:id', async (req, res) => {
 
 // Display all trips for user
 // for test can use User id: 5e0fc8800785ca060578b375
-router.get('/:id/trips', async (req, res) => {
+router.get('/:id/trips', checkAuthenticated, async (req, res) => {
   try {
     const { trips: tripsFromDatabase } = await User.findOne({'_id' : req.params.id }).populate('trips');
     return res.status(200).json({ trips: tripsFromDatabase });
