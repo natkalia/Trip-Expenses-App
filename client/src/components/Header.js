@@ -83,12 +83,20 @@ const StyledLink = styled(Link)`
   font-size: 16px;
 `;
 
+const LogOutButton = styled.button`
+  color: ${theme.colors.neutralDark};
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+`;
+
+
 class Header extends Component {
   constructor(props){
     super(props);
     this.state = {
-      menuOpened: false,
-      isLoggedIn: false
+      menuOpened: true,
+      isLoggedIn: true
     }
   }
   
@@ -96,6 +104,10 @@ class Header extends Component {
     this.setState((prevState, props) => ({
       menuOpened: !prevState.menuOpened
     }))
+  }
+
+  logOut = () => {
+    console.log("Wyloguj");
   }
 
   render() {
@@ -120,7 +132,7 @@ class Header extends Component {
           >
             <Li><StyledLink to={'/trips/all'}>Trips</StyledLink></Li>
             <Li><StyledLink to={'/users/profile'}>Settings</StyledLink></Li>
-            <Li>Log out</Li>
+            <Li><LogOutButton onClick={this.logOut}>Log out</LogOutButton></Li>
           </NavForLoggedIn>
         </Nav>
       </HeaderWrapper>
