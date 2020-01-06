@@ -4,6 +4,9 @@ import ContentWrapper from './ContentWrapper';
 import Chart from 'chart.js';
 import styled from 'styled-components';
 import { theme} from '../utils/theme'; 
+import {
+  TripHeader
+} from './styled';
 
 const Paragraph = styled.p`
   color: ${theme.colors.neutralDark};
@@ -31,89 +34,97 @@ class TripSummary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripId: "5e0dd4fa618f3e1f10d4db80", // temporary 
-      expenseId: "5e0e0ffd4f0e0f24a0e1ec1b", // temporary 
+      tripName: "",
       budgetAmount: "",
       budgetCurrency: "",
       spentAmountinMainCurrency: "",
-      tripCurrenciesWithRatesToMainCurrency: [
-        { name: 'USD', rate: 3 },
-        { name: 'EUR', rate: 2 },
-        { name: 'GBP', rate: 4 },
-        { name: 'JPY', rate: 7 },
-        { name: 'AUD', rate: 5 },
-        { name: 'CAD', rate: 8 },
-        { name: 'CHF', rate: 9 },
-        { name: 'PLN', rate: 1 }
-      ],
       tripCategories: [],
+      tripCurrenciesWithRatesToMainCurrency: [ //should be fetched from API - what type of data?
+        { name: 'USD', rate: 2 },
+        { name: 'EUR', rate: 2 },
+        { name: 'GBP', rate: 5 },
+        { name: 'JPY', rate: 5 },
+        { name: 'AUD', rate: 1 },
+        { name: 'CAD', rate: 1 },
+        { name: 'CHF', rate: 1 },
+        { name: 'PLN', rate: 1 } // necessary to be able to loop through all expenses
+      ],
       totalExpensesByCategory: [  //hardcoded
         {
           name: "transport", 
-          amount: 20, 
+          amount: 2, 
           currency: "PLN"
         },
         {
           name: "food", 
-          amount: 30, 
+          amount: 3, 
           currency: "PLN"
         },
         {
           name: "tickets", 
-          amount: 50, 
+          amount: 5, 
           currency: "PLN"
         },
         {
           name: "other", 
-          amount: 10, 
+          amount: 1, 
           currency: "PLN"
         },
         {
           name: "accomodation", 
-          amount: 200, 
+          amount: 2, 
           currency: "PLN"
         },
       ]
     }
   }
 
-  getDataFromExpense = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`);
+  getDataFromTrip = async () => {
+    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`);
     try {
-      const expensesArray = [];
-      const sumArray = [];
-      res.data.expenses.forEach(expense => {
-        expensesArray.push({ id: expense._id, cost: expense.cost, currency: expense.currency } )
-      });
-      this.state.tripCurrenciesWithRatesToMainCurrency.forEach(element => {
-        for(let i = 0; i < expensesArray.length; i++) {
-          if (element.name === expensesArray[i].currency) {
-            sumArray.push(expensesArray[i].cost * element.rate);
-          } else continue;
-        }
-      });
-      const finalAmount = sumArray.reduce((x, y) => x + y, 0) 
-
       this.setState({
-        spentAmountinMainCurrency: finalAmount,
-        tripCategories: res.data.categories
+        tripName: res.data.name,
+        budgetAmount: res.data.budget,
+        budgetCurrency: res.data.mainCurrency
       });
-
     } catch (error) {
       this.setState({ error: 'Error' });
     }
-
   }
-  
-  getDataFromTrip = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`);
+
+  getDataFromExpense = async () => {
+    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`);
     try {
-      this.setState({
-        budgetAmount: res.data.budget,
-        budgetCurrency: res.data.mainCurrency,
-        spentAmountinMainCurrency: 0, // calculate
-        // totalExpensesByCategory: []
+      const expensesArray = [];
+      let sumArray = [];
+
+      res.data.expenses.forEach(expense => {
+        expensesArray.push(
+          { 
+            id: expense._id, 
+            cost: expense.cost, 
+            currency: expense.currency 
+          });
       });
+
+      this.state.tripCurrenciesWithRatesToMainCurrency.forEach(element => {
+        for(let i = 0; i < expensesArray.length; i++) {
+          if (
+              (element.name === expensesArray[i].currency) && 
+              (element.name !== this.state.mainCurrency)
+            ) 
+            {
+              sumArray.push(expensesArray[i].cost * element.rate);
+            } else continue;
+        }
+      });
+      sumArray = sumArray.reduce((x, y) => x + y, 0) 
+
+      this.setState({
+        spentAmountinMainCurrency: sumArray,
+        tripCategories: res.data.categories
+      });
+
     } catch (error) {
       this.setState({ error: 'Error' });
     }
@@ -186,9 +197,10 @@ class TripSummary extends Component {
   render() {
     return (
       <>
-        {/* //change this */}
-        <p>{this.state.tripName}</p>  
-        <ContentWrapper title="Summary">
+
+        <TripHeader name={this.state.tripName}/>
+
+        <ContentWrapper title="Trip budget summary">
 
         <div>
           <Paragraph>Budget: {this.state.budgetAmount} {this.state.budgetCurrency} </Paragraph>
@@ -199,7 +211,7 @@ class TripSummary extends Component {
           <ul>
             { this.state.totalExpensesByCategory.map((data, i) => {
                 return (
-                  <Li key={i}>{`${data.name}: ${data.amount} ${data.currency}`}</Li>
+                  <Li key={i}>Total expenses for {`${data.name}: ${data.amount} ${data.currency}`}</Li>
                 );
               })
             }
