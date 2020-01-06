@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './Header';
 import HomePage from './HomePage';
@@ -47,8 +46,4 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  state,
-});
-
-export default connect(mapStateToProps)(App);
+export default App;
