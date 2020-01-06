@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React from 'react';
-import Cookies from 'universal-cookie';
+import { connect } from 'react-redux';
 import { Form, Label, Input } from './styled';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
+import { setLoggedIn } from '../actions/setLoggedIn';
+
 
 class Login extends React.Component {
   constructor(props) {
@@ -21,13 +23,10 @@ class Login extends React.Component {
       password: this.state.password
     }
     const url = "http://localhost:3000/api/users/login";
-    const cookies = new Cookies();
     await axios.post(url, user)
-      .then(res => cookies.set('travelplanner_x-auth-token', res.headers["x-auth-token"]))
+      .then(res => localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]))
+      .then(() => console.log("zalogowany"))
       .catch(err => console.log(err));
-    this.setState({
-      travelplanner_jwt: cookies.get('travelplanner_x-auth-token')
-    })
   }
 
   onInputChange = (inputName, e) => {
@@ -57,4 +56,17 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.isLoggedIn
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoggedIn: isLoggedIn => dispatch(setLoggedIn(isLoggedIn))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
