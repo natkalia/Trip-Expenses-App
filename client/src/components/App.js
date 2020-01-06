@@ -25,7 +25,6 @@ class App extends React.Component {
   }
   
   render() {
-    console.log(this.props);
     return (
       <Router>
         <Layout>
@@ -46,7 +45,6 @@ class App extends React.Component {
       </Router>
     )
   }
-
 }
 
 const mapStateToProps = (state) => ({
