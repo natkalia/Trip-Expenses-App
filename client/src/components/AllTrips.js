@@ -14,6 +14,7 @@ import {
   Label
 } from './styled';
 import PinImage from '../images/pin.png';
+import getToken from '../utils/getToken';
 
 const Card = styled.div`
   margin-bottom: 20px;
@@ -148,7 +149,7 @@ class AllTrips extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/users/5e0cfed451f05203b0575062/trips`)
+    axios.get(`http://localhost:3000/api/users/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({trips: res.data.trips}))
       .catch(err => console.log(err));
   }
