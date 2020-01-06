@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Form, Label, Input } from './styled';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
-import { setLoggedIn } from '../actions/setLoggedIn';
+import { setLoggedIn } from '../redux/actions/userActions';
 
 
 class Login extends React.Component {
@@ -25,7 +25,7 @@ class Login extends React.Component {
     const url = "http://localhost:3000/api/users/login";
     await axios.post(url, user)
       .then(res => localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]))
-      .then(() => console.log("zalogowany"))
+      .then(() => this.props.setLoggedIn(true))
       .catch(err => console.log(err));
   }
 

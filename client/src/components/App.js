@@ -1,6 +1,5 @@
 import React from 'react';
 import Cookies from 'universal-cookie'; 
-import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './Header';
 import HomePage from './HomePage';
@@ -16,8 +15,6 @@ import AllTrips from './AllTrips';
 import UserProfile from './UserProfile';
 import Footer from './Footer';
 import Layout from '../layout/Layout';
-
-import { addFirstOne } from '../redux/actions/exampleAction';
 
 
 class App extends React.Component {
@@ -51,10 +48,6 @@ class App extends React.Component {
           <Route path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
           <Route path='/trips/:tripId/expenses/add' component={AddExpense} />
           <Route path='/users/profile' component={UserProfile} />
-
-          {/* do usuniecia później */}
-          <h1>{this.props.text}</h1>
-          <button onClick={this.changeText}>kliknij</button>
           <Footer/>
         </Layout>
       </Router>
@@ -63,16 +56,4 @@ class App extends React.Component {
 
 }
 
-const mapStateToProps = (state) => {
-  return {
-    text: state.text
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addFirstOne: newText => dispatch(addFirstOne(newText))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
