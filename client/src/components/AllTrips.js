@@ -89,12 +89,6 @@ const PinImg = styled.img`
 const TripCard = (props) => {
   let status = props.trip.isTripFinished ? 'finished' : 'open'; 
     
-  const onInputChange = (e) => {
-    const target = e.target;    
-    const pin = target.checked ? true : false;
-    // console.log("pin", pin)
-  }
-
   return (
     <Card>
       <CardHeader status={status} >
@@ -114,7 +108,7 @@ const TripCard = (props) => {
             </ParagraphAlignedLeft>
           }
           <InputCheckboxContainerCustom>
-            <InputCheckboxCustom type="checkbox" name="isPinned" id={`isPinned-${props.trip._id}`} onChange={onInputChange} checked={props.inPinnedTrips}/>
+            <InputCheckboxCustom type="checkbox" name="isPinned" id={`isPinned-${props.trip._id}`} onChange={props.onInputChange} checked={props.inPinnedTrips}/>
             <Label htmlFor={`isPinned-${props.trip._id}`}>Pin trip to the main page</Label>         
           </InputCheckboxContainerCustom>
 
@@ -132,14 +126,31 @@ class AllTrips extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pinnedTrips: ['5e0e05e341d2741bcb8e4d95', '5e0e061141d2741bcb8e4d96'],
+      pinnedTrips: [],
       trips: []
     };
   }
 
-  async componentDidMount() {
+  onInputChange = (e) => {
+    const pin = e.target.checked ? true : false;
+    const tripId = e.target.id.slice(9, );
+    const pinnedTrips = [...this.state.pinnedTrips]    
+    if (this.state.pinnedTrips.includes(tripId) && !pin){
+      // Remove trip from the list of pinned trips
+      const index = pinnedTrips.indexOf(tripId);
+      if (index > -1) pinnedTrips.splice(index, 1);
+      this.setState({pinnedTrips: pinnedTrips})
+    } else if (!this.state.pinnedTrips.includes(tripId) && pin) {
+      // Add trip to the list of pinned trips
+      pinnedTrips.push(tripId);
+      this.setState({pinnedTrips: pinnedTrips})
+    }
+  }
+
+  componentDidMount() {
     axios.get(`http://localhost:3000/api/users/5e0cfed451f05203b0575062/trips`)
-      .then(res => this.setState({trips: res.data.trips}));
+      .then(res => this.setState({trips: res.data.trips}))
+      .catch(err => console.log(err));
   }
 
   render() {
@@ -150,7 +161,7 @@ class AllTrips extends Component {
           { this.state.trips.length > 0 ? (
             this.state.trips.map((trip) => { 
               const inPinnedTrips = this.state.pinnedTrips.includes(trip._id)
-              return <TripCard trip={trip} inPinnedTrips={inPinnedTrips} key={trip._id}/>
+              return <TripCard trip={trip} inPinnedTrips={inPinnedTrips} onInputChange={this.onInputChange} key={trip._id}/>
               })            
           ) : (
             <ParagraphAlignedCenter>You don 't have any saved trips yet</ParagraphAlignedCenter>
