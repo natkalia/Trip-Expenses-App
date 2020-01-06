@@ -151,7 +151,6 @@ class Header extends Component {
   }
 
   render() {
-    console.log(this.props.isLoggedIn);
     return (
       <HeaderWrapper>
         <TopLabel>

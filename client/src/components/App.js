@@ -15,6 +15,8 @@ import AllTrips from './AllTrips';
 import UserProfile from './UserProfile';
 import Footer from './Footer';
 import Layout from '../layout/Layout';
+import PrivateRoute from './PrivateRoute';
+
 
 
 class App extends React.Component {
@@ -29,16 +31,16 @@ class App extends React.Component {
         <Layout>
           <Header/>
           <Route path='/' exact component={HomePage} />
-          <Route path='/trips/add' component={AddTrip} />
-          <Route path='/trips/edit/:id' component={EditTrip} />
+          <PrivateRoute path='/trips/add' component={AddTrip} />
+          <PrivateRoute path='/trips/edit/:id' component={EditTrip} />
           <Route path='/users/login' component={SignIn} />
           <Route path='/users/register' component={RegisterUser} />
-          <Route path='/trips/single/:id' component={SingleTrip} />
-          <Route path='/trips/summary/:id' component={TripSummary} />
-          <Route path='/trips/all' component={AllTrips} />
-          <Route path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
-          <Route path='/trips/:tripId/expenses/add' component={AddExpense} />
-          <Route path='/users/profile' component={UserProfile} />
+          <PrivateRoute path='/trips/single/:id' component={SingleTrip} />
+          <PrivateRoute path='/trips/summary/:id' component={TripSummary} />
+          <PrivateRoute path='/trips/all' component={AllTrips} />
+          <PrivateRoute path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
+          <PrivateRoute path='/trips/:tripId/expenses/add' component={AddExpense} />
+          <PrivateRoute path='/users/profile' component={UserProfile} />
           <Footer/>
         </Layout>
       </Router>
