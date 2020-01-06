@@ -4,14 +4,17 @@ import ContentWrapper from './ContentWrapper';
 import Button from './Button';
 import { Form, Label, Input, customStyleSelect } from './styled';
 import Select from 'react-select';
+import getToken from '../utils/getToken';
+
+
 
 class EditExpense extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      tripId: "5e0dd4fa618f3e1f10d4db80", // temporary
-      expenseId: "5e0e10274f0e0f24a0e1ec1c", // temporary
+      tripId: "5e1368962bc58a16e4917fe3", // temporary
+      expenseId: "5e136be35221cf1ee0802829", // temporary
       expenseName: "", 
       expenseCategory: 
       {
@@ -68,31 +71,30 @@ class EditExpense extends Component {
       cost: this.state.expenseCost,
       currency: this.state.expenseCurrency.value
     }
-    console.log(expense);
-      await axios.put(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, expense);
-      try {
-        this.setState({ 
-          expenseName: "", 
-          expenseCategory: {
-            value: "", 
-            label: ""
-          },
-          expenseCurrency: {
-            value: "", 
-            label: ""
-          }, 
-          expenseCost: ""
-        });
-        window.location=`/trips/single/${this.state.tripId}`;
-      } catch (error) {
-        this.setState({ error: 'Error' });
-      }
+    await axios.put(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
+    try {
+      this.setState({ 
+        expenseName: "", 
+        expenseCategory: {
+          value: "", 
+          label: ""
+        },
+        expenseCurrency: {
+          value: "", 
+          label: ""
+        }, 
+        expenseCost: ""
+      });
+      this.props.history.push(`/trips/single/${this.state.tripId}`);
+    } catch (error) {
+      this.setState({ error: 'Error' });
+    }
   }
 
   onDeleteSubmit = async (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this expense?")) {
-      await axios.delete(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`);
+      await axios.delete(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
       try {
         this.setState({ 
           expenseName: "", 
@@ -106,7 +108,7 @@ class EditExpense extends Component {
           }, 
           expenseCost: ""
         });
-        window.location=`/trips/single/${this.state.tripId}`;
+        this.props.history.push(`/trips/single/${this.state.tripId}`);
       } catch (error) {
         this.setState({ error: 'Error' });
       }
@@ -114,7 +116,7 @@ class EditExpense extends Component {
   }
 
   getTripAndExpenseData = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`);
+    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
       let sanitizedExpense = res.data.expenses.filter(arr => (arr._id === this.state.expenseId));

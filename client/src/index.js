@@ -4,13 +4,13 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import App from "./components/App";
-import exampleReducer from './reducers/exampleReducer';
 import {loadState, saveState} from './utils/localStorage';
+import userReducer from './redux/reducers/userReducer';
 
 const persistedState = loadState();
 
 const store = createStore(
-  exampleReducer,
+  userReducer,
   persistedState,
   window.devToolsExtension && window.devToolsExtension()
 );
