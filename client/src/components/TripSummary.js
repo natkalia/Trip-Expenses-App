@@ -121,17 +121,32 @@ class TripSummary extends Component {
 
   createChart = () => {
     const ctx = document.getElementById('budgetChart');
-    const arrayAllColors = Object.values(theme.colors); // use Object.values also in different places!!!
+    // source of colors palette: https://flatuicolors.com/palette/fr
+    const arrayColors = [
+      "#fa983a",
+      "#eb2f06",
+      "#1e3799",
+      "#3c6382",
+      "#38ada9",
 
-    const arrayRandomColors = [];
-    this.state.tripCategories.forEach(element => {
-      const randomColor = arrayAllColors[Math.floor(Math.random() * arrayAllColors.length)]; 
-      console.log(randomColor);
-      console.log(arrayRandomColors); // correct this
-      if (!arrayRandomColors.includes(randomColor)) {
-        arrayRandomColors.push(randomColor);
-      }}
-    );
+      "#f6b93b",
+      "#e55039", 
+      "#4a69bd", 
+      "#60a3bc", 
+      "#78e08f",
+
+      "#e58e26",
+      "#b71540",
+      "#0c2461",
+      "#0a3d62",
+      "#079992",
+
+      "#fad390", 
+      "#f8c291",
+      "#6a89cc",
+      "#82ccdd",
+      "#b8e994", 
+    ];
 
     const arrayAmounts = [];
     const arrayCategories = [];
@@ -140,6 +155,7 @@ class TripSummary extends Component {
       arrayCategories.push(element.name);
     });
 
+    // eslint-disable-next-line 
     const budgetChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -147,7 +163,7 @@ class TripSummary extends Component {
         datasets: [
           {
             label: "Cost amount",
-            backgroundColor: arrayRandomColors, 
+            backgroundColor: arrayColors, 
             data: arrayAmounts
           }
         ]
