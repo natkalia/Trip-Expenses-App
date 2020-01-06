@@ -9,6 +9,8 @@ import {
   ParagraphAlignedCenter,
   LinkButtonBig,
 } from './styled';
+import getToken from '../utils/getToken';
+
 
 
 class SingleTrip extends Component {
