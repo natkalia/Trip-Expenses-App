@@ -37,7 +37,7 @@ const TopLabel = styled.div`
   }
 `;
 
-const AppName = styled.a`
+const LogoLink = styled(Link)`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -154,10 +154,10 @@ class Header extends Component {
     return (
       <HeaderWrapper>
         <TopLabel>
-          <AppName href="/" title="HomePage">
+          <LogoLink to={"/"} title="HomePage">
             <Logo src={LogoImg} alt="Trip Expenses App"></Logo>
             <H1>Trip Expenses</H1>
-          </AppName>
+          </LogoLink>
           <ToggleNavOpen onClick={this.toggleMenu}>
             <FontAwesomeIcon size="lg" icon={this.state.menuOpened ? faTimes : faBars} />
           </ToggleNavOpen>
@@ -170,6 +170,7 @@ class Header extends Component {
             <Li>
               <StyledLink
                 to={'/users/login'}
+                title="Login"
                 onClick={(e) => this.setChoosen(e)}
                 active={`${this.state.activeTab === 'login'}`}
                 id="login"
@@ -180,6 +181,7 @@ class Header extends Component {
             <Li>
               <StyledLink
                 to={'/users/register'}
+                title="Sign Up"
                 onClick={(e) => this.setChoosen(e)}
                 active={`${this.state.activeTab === 'register'}`}
                 id="register"
@@ -195,6 +197,7 @@ class Header extends Component {
             <Li>
               <StyledLink
                 to={'/trips/all'}
+                title="Your trips"
                 onClick={(e) => this.setChoosen(e)}
                 active={`${this.state.activeTab === 'trips/all'}`}
                 id="trips/all"
@@ -205,6 +208,7 @@ class Header extends Component {
             <Li>
               <StyledLink
                 to={'/users/profile'}
+                title="Settings"
                 onClick={e => this.setChoosen(e)}
                 active={`${this.state.activeTab === 'profile'}`}
                 id="profile"
