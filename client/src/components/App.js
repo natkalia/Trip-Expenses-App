@@ -17,7 +17,7 @@ import UserProfile from './UserProfile';
 import Footer from './Footer';
 import Layout from '../layout/Layout';
 
-import { addFirstOne } from '../actions/exampleAction';
+import { addFirstOne } from '../redux/actions/exampleAction';
 
 
 class App extends React.Component {
@@ -53,8 +53,8 @@ class App extends React.Component {
           <Route path='/users/profile' component={UserProfile} />
 
           {/* do usuniecia później */}
-          {/* <h1>{this.props.text}</h1>
-          <button onClick={this.changeText}>kliknij</button> */}
+          <h1>{this.props.text}</h1>
+          <button onClick={this.changeText}>kliknij</button>
           <Footer/>
         </Layout>
       </Router>
