@@ -4,7 +4,20 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { theme } from '../utils/theme';
 import ContentWrapper from './ContentWrapper';
-import { LinkButtonBig, LinkButtonSmall, ParagraphAlignedCenter } from './styled';
+import {
+  H4,
+  LinkButtonBig,
+  LinkButtonSmall,
+  ParagraphAlignedCenter,
+  InputCheckbox,
+  InputCheckboxContainer,
+  Label
+} from './styled';
+import PinImage from '../images/pin.png';
+
+const Card = styled.div`
+  margin-bottom: 20px;
+`
 
 const CardHeader = styled.div`
   display: flex;
@@ -17,8 +30,8 @@ const CardHeader = styled.div`
   border-radius: 5px 5px 0 0 ;
 `
 
-const Card = styled.div`
-  margin-bottom: 20px;
+const CardTitle = styled(H4)`
+  margin: 0 0 0 20px;
 `
 
 const CardBody = styled.div`
@@ -58,16 +71,38 @@ const CustomSmallButton = styled(LinkButtonSmall)`
   flex-grow: 1;
 `;
 
+const InputCheckboxCustom = styled(InputCheckbox)`
+  flex: 1;
+  margin-right: 10px;
+`
 
+const InputCheckboxContainerCustom = styled(InputCheckboxContainer)`
+  margin-bottom: 0px;
+`
+
+const PinImg = styled.img`
+  height: 20px;
+  margin: 0 0 0 20px;
+`
+
+// TRIP CARD COMPONENT
 const TripCard = (props) => {
   let status = props.trip.isTripFinished ? 'finished' : 'open'; 
+    
+  const onInputChange = (e) => {
+    const target = e.target;    
+    const pin = target.checked ? true : false;
+    // console.log("pin", pin)
+  }
+
   return (
     <Card>
       <CardHeader status={status} >
-        <Container>
-          {props.trip.name}
-        </Container>        
+        {props.inPinnedTrips && 
+          < PinImg src={PinImage} alt = "Pin" />}          
+        <CardTitle>{props.trip.name}</CardTitle>
       </CardHeader>
+
       <CardBody status={status}>
         <Container>
           <ParagraphAlignedLeft>
@@ -77,10 +112,15 @@ const TripCard = (props) => {
             <ParagraphAlignedLeft>
               {props.trip.description}
             </ParagraphAlignedLeft>
-          }          
+          }
+          <InputCheckboxContainerCustom>
+            <InputCheckboxCustom type="checkbox" name="isPinned" id={`isPinned-${props.trip._id}`} onChange={onInputChange} checked={props.inPinnedTrips}/>
+            <Label htmlFor={`isPinned-${props.trip._id}`}>Pin trip to the main page</Label>         
+          </InputCheckboxContainerCustom>
+
           <ContainerButtons>
             <CustomSmallButton to={`/trips/single/${props.trip._id}`} color="grey"> Expenses </CustomSmallButton>
-            <CustomSmallButton to={`/trips/edit/${props.trip._id}`} color="greyOverlay"> Edit / Delete </CustomSmallButton>
+            <CustomSmallButton to={`/trips/edit/${props.trip._id}`} color="greyOutline"> Edit / Delete </CustomSmallButton>
           </ContainerButtons>            
         </Container>        
       </CardBody>
@@ -92,6 +132,7 @@ class AllTrips extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pinnedTrips: ['5e0e05e341d2741bcb8e4d95', '5e0e061141d2741bcb8e4d96'],
       trips: []
     };
   }
@@ -108,7 +149,8 @@ class AllTrips extends Component {
         <div>
           { this.state.trips.length > 0 ? (
             this.state.trips.map((trip) => { 
-              return <TripCard trip={trip} key={trip._id}/>
+              const inPinnedTrips = this.state.pinnedTrips.includes(trip._id)
+              return <TripCard trip={trip} inPinnedTrips={inPinnedTrips} key={trip._id}/>
               })            
           ) : (
             <ParagraphAlignedCenter>You don 't have any saved trips yet</ParagraphAlignedCenter>

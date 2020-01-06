@@ -11,6 +11,10 @@ export const H3 = styled.h2 `
   font-size: 19px;
   font-weight: 400;
 `
+export const H4 = styled.h2 `
+  font-size: 16px;
+  font-weight: 400;
+`
 
 export const ParagraphAlignedCenter = styled.p`
   font-size: 16px;
@@ -202,9 +206,10 @@ export const Textarea = styled.textarea`
   }
 `;
 
-export const IsTripFinishedContainer = styled.div `
+export const InputCheckboxContainer = styled.div `
   display: flex;
   flex-direction: row;
+  align-items: center;
   margin-bottom: 20px;
 `;
 

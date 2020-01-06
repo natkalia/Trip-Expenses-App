@@ -12,7 +12,7 @@ import {
   DateInput,
   ParagraphSmallItalic,
   Textarea,
-  IsTripFinishedContainer
+  InputCheckboxContainer
 } from './styled';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
@@ -113,10 +113,10 @@ class EditTrip extends Component {
           <ParagraphSmallItalic>This field is optional</ParagraphSmallItalic>
           <Textarea maxlength="200" name="description" id="description-edit" placeholder="Description" onChange={this.onDescriptionChange} value={this.state.description}/>
 
-          <IsTripFinishedContainer>
+          <InputCheckboxContainer>
             <InputCheckbox type="checkbox" name="isTripFinished" id="isTripFinished-edit" onChange={this.onInputChange} checked={this.state.isTripFinished} />
             <Label htmlFor="isTripFinished-edit">Is this trip finished?</Label>
-          </IsTripFinishedContainer>
+          </InputCheckboxContainer>
           
           <Button textOnButton="Edit" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/>     
         </Form> 
