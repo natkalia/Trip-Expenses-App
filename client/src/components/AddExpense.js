@@ -4,6 +4,9 @@ import ContentWrapper from './ContentWrapper';
 import Button from './Button';
 import { Form, Label, Input, customStyleSelect } from './styled';
 import Select from 'react-select';
+import getToken from '../utils/getToken';
+
+
 
 class AddExpense extends Component {
 
@@ -69,7 +72,7 @@ class AddExpense extends Component {
       currency: this.state.expenseCurrency.value
     }
 
-    axios.post(`http://localhost:3000/api/trips/${this.state.tripId}/expenses`, expense)
+    axios.post(`http://localhost:3000/api/trips/${this.state.tripId}/expenses`, expense, { headers: { "x-auth-token": `${getToken()}`}})
     .then(res => console.log(res.data))
     .then(this.setState({ 
       expenseName: "", 
@@ -80,7 +83,7 @@ class AddExpense extends Component {
   };
 
   getCategoriesFromTrip = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`);
+    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`, { headers: { "x-auth-token": `${getToken()}`}});
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
       this.setState({
