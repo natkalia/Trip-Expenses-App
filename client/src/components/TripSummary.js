@@ -49,64 +49,28 @@ class TripSummary extends Component {
         { name: 'CHF', rate: 1 },
         { name: 'PLN', rate: 1 } // necessary to be able to loop through all expenses
       ],
-      totalExpensesByCategory: [  //hardcoded
-        {
-          name: "transport", 
-          amount: 2, 
-          currency: "PLN"
-        },
-        {
-          name: "food", 
-          amount: 3, 
-          currency: "PLN"
-        },
-        {
-          name: "tickets", 
-          amount: 5, 
-          currency: "PLN"
-        },
-        {
-          name: "other", 
-          amount: 1, 
-          currency: "PLN"
-        },
-        {
-          name: "accomodation", 
-          amount: 2, 
-          currency: "PLN"
-        },
-      ]
+      totalExpensesByCategory: []
     }
   }
 
   getDataFromTrip = async () => {
     const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`);
     try {
-      this.setState({
-        tripName: res.data.name,
-        budgetAmount: res.data.budget,
-        budgetCurrency: res.data.mainCurrency
-      });
-    } catch (error) {
-      this.setState({ error: 'Error' });
-    }
-  }
-
-  getDataFromExpense = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`);
-    try {
+      // use data to create expnsesArray with objects representing trip expenses in different currencies
       const expensesArray = [];
-      let sumArray = [];
-
-      res.data.expenses.forEach(expense => {
+      let expensesSum = [];
+      res.data.expenses.forEach(element => {
         expensesArray.push(
           { 
-            id: expense._id, 
-            cost: expense.cost, 
-            currency: expense.currency 
+            id: element._id,
+            name: element.name,
+            cost: element.cost, 
+            currency: element.currency, 
+            category: element.category
           });
       });
 
+       // use expensesArray to create variable expensesSum with one number: all added expenses, recalculated to main currency using currency rates
       this.state.tripCurrenciesWithRatesToMainCurrency.forEach(element => {
         for(let i = 0; i < expensesArray.length; i++) {
           if (
@@ -114,15 +78,35 @@ class TripSummary extends Component {
               (element.name !== this.state.mainCurrency)
             ) 
             {
-              sumArray.push(expensesArray[i].cost * element.rate);
+              expensesSum.push(expensesArray[i].cost * element.rate);
             } else continue;
         }
       });
-      sumArray = sumArray.reduce((x, y) => x + y, 0) 
+      expensesSum = expensesSum.reduce((x, y) => x + y, 0) 
+
+      //calculate data to get values for totalExpensesByCategory
+      const perCategoryArray = res.data.categories.map(function(value) {
+        return {name: value, amount: 0, currency: "PLN"}; // hardcoded currency
+      });
+      expensesArray.forEach(el => {
+        for(let i = 0; i < perCategoryArray.length; i++) {   
+          if (perCategoryArray[i].name === el.category) {
+            let singleExpCurr = el.currency; 
+            let singleRate = 1; // rate calc missing !!!
+            perCategoryArray[i].amount = perCategoryArray[i].amount + (el.cost * singleRate); 
+            return perCategoryArray;
+          } else continue;
+        }
+      });
+      console.log(perCategoryArray);
 
       this.setState({
-        spentAmountinMainCurrency: sumArray,
-        tripCategories: res.data.categories
+        tripName: res.data.name,
+        budgetAmount: res.data.budget,
+        budgetCurrency: res.data.mainCurrency,
+        tripCategories: res.data.categories,
+        spentAmountinMainCurrency: expensesSum,
+        totalExpensesByCategory: perCategoryArray
       });
 
     } catch (error) {
@@ -134,29 +118,10 @@ class TripSummary extends Component {
     const ctx = document.getElementById('budgetChart');
     // source of colors palette: https://flatuicolors.com/palette/fr
     const arrayColors = [
-      "#fa983a",
-      "#eb2f06",
-      "#1e3799",
-      "#3c6382",
-      "#38ada9",
-
-      "#f6b93b",
-      "#e55039", 
-      "#4a69bd", 
-      "#60a3bc", 
-      "#78e08f",
-
-      "#e58e26",
-      "#b71540",
-      "#0c2461",
-      "#0a3d62",
-      "#079992",
-
-      "#fad390", 
-      "#f8c291",
-      "#6a89cc",
-      "#82ccdd",
-      "#b8e994", 
+      "#fa983a", "#eb2f06", "#1e3799", "#3c6382", "#38ada9",
+      "#f6b93b", "#e55039", "#4a69bd", "#60a3bc", "#78e08f",
+      "#e58e26", "#b71540", "#0c2461", "#0a3d62", "#079992",
+      "#fad390", "#f8c291", "#6a89cc", "#82ccdd", "#b8e994"
     ];
 
     const arrayAmounts = [];
@@ -190,16 +155,14 @@ class TripSummary extends Component {
   
   componentDidMount = async () => { // not sure if this is correct approach - long loading, spinner needed?
     await this.getDataFromTrip();
-    await this.getDataFromExpense();
     await this.createChart();
+    console.log(this.state.tripCurrenciesWithRatesToMainCurrency);
   }
 
   render() {
     return (
       <>
-
         <TripHeader name={this.state.tripName}/>
-
         <ContentWrapper title="Trip budget summary">
 
         <div>
