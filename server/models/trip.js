@@ -99,7 +99,6 @@ const tripSchema = new mongoose.Schema({
 
 const Trip = mongoose.model('Trip', tripSchema);
 
-
 function validateTrip(trip) {
   // validateTrip returns an object with:
   // - error key if there is an error with model
@@ -219,3 +218,4 @@ createTrip(validateResult.value);
 exports.Trip = Trip;
 exports.validateTrip = validateTrip;
 exports.validateExpense = validateExpense;
+exports.supportedCurrencies = supportedCurrencies;
