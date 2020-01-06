@@ -9,6 +9,8 @@ import {
   ParagraphAlignedCenter,
   LinkButtonBig,
 } from './styled';
+import getToken from '../utils/getToken';
+
 
 
 class SingleTrip extends Component {
@@ -24,7 +26,7 @@ class SingleTrip extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`)
+    axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({
         id: res.data._id,
         name: res.data.name,
