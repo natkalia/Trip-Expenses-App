@@ -63,7 +63,7 @@ class TripSummary extends Component {
       budgetCurrency: "",
       spentAmountinMainCurrency: "",
       tripCategories: [],
-      tripCurrenciesWithRatesToMainCurrency: [ //should be fetched from API - what type of data?
+      tripCurrenciesWithRatesToMainCurrency: [ //should be fetched from API - to be refactored
         { name: 'USD', rate: 4.2569 },
         { name: 'EUR', rate: 3.8213 },
         { name: 'GBP', rate: 4.9934 },
@@ -71,7 +71,7 @@ class TripSummary extends Component {
         { name: 'AUD', rate: 2.6507 },
         { name: 'CAD', rate: 2.9430 },
         { name: 'CHF', rate: 3.9254 },
-        { name: 'PLN', rate: 1 } // necessary to make sure that always we can loop through all expenses, this can be improved later on
+        { name: 'PLN', rate: 1 } // necessary to make sure that always we can loop through all expenses, this should be refactored to use other main currencies
       ],
       totalExpensesByCategory: []
     }
@@ -79,8 +79,6 @@ class TripSummary extends Component {
 
   getDataFromTrip = async () => {
     const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`);
-    console.log("List of expenses: ", res.data.expenses); // for easier testing
-    console.log("Temporary currency rate table (to PLN)", this.state.tripCurrenciesWithRatesToMainCurrency); // for easier testing
     try {
       // use data to create expnsesArray with objects representing trip expenses in different currencies
       const expensesArray = [];
@@ -96,7 +94,7 @@ class TripSummary extends Component {
           });
       });
 
-       // use expensesArray to create variable expensesSum with one number: all added expenses, recalculated to main currency using currency rates
+      // use expensesArray to create variable expensesSum with one number: all added expenses, recalculated to main currency using currency rates
       this.state.tripCurrenciesWithRatesToMainCurrency.forEach(element => {
         for(let i = 0; i < expensesArray.length; i++) {
           if (
@@ -141,7 +139,6 @@ class TripSummary extends Component {
 
   createChartExpenses = () => {
     const ctx = document.getElementById('expensesChart');
-    // source of colors palette: https://flatuicolors.com/palette/fr
     const arrayColors = [
       "#fa983a", "#eb2f06", "#1e3799", "#3c6382", "#38ada9",
       "#f6b93b", "#e55039", "#4a69bd", "#60a3bc", "#78e08f",
@@ -190,7 +187,7 @@ class TripSummary extends Component {
     });
   }
 
-  componentDidMount = async () => { // not sure if this is correct approach - long loading, spinner needed?
+  componentDidMount = async () => {
     await this.getDataFromTrip();
     await this.createChartExpenses();
   }
