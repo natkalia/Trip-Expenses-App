@@ -26,7 +26,6 @@ const TripNameHeaderWrapper = styled.div`
   background-color: ${theme.colors.trip};
   color: ${theme.colors.white};
   height: 60px;
-  margin-bottom: 40px;
 `
 export const TripHeader = (prop) => {
   return (
@@ -42,7 +41,7 @@ export const ContentWrapper = styled.div `
   max-width: 600px;
   width:100%;
   background-color: rgba(255,255,255,0.85);
-  margin: 0 auto 40px;
+  margin: 40px auto 40px;
   padding-bottom:20px;
 `;
 
@@ -103,9 +102,12 @@ export const LinkButtonBig = styled(Link)`
     background-color: ${props => (
       props.green && '#15AD54'
       )};
-      font-weight: 600;
-      box-shadow: 0 0 4px 
-  } 
+    ${ props => props.color !== "disabled" && 
+    `font-weight: 600;
+      box-shadow: 0 0 4px;    
+    `
+    }
+  }
 `;
 
 export const LinkButtonSmall = styled(LinkButtonBig)`

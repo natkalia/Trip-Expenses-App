@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   max-width: 600px;
   width:100%;
   background-color: rgba(255,255,255,0.85);
-  margin: 0 auto 40px;
+  margin: 40px auto 40px;
   padding-bottom:20px;
 `;
 
