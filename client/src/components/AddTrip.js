@@ -70,9 +70,9 @@ class AddTrip extends Component {
       description:  this.state.description == false ? undefined : this.state.description,
       budget: this.state.budget === "" ? 0 : this.state.budget,
       mainCurrency: this.state.budgetCurrency.value
-
     }
-    axios.post("http://localhost:3000/api/trips/add", trip)
+    let token = localStorage.getItem("travelplanner_x-auth-token");
+    axios.post("http://localhost:3000/api/trips/add", trip, { headers: { "x-auth-token": `${token}`} })
       .then(res => console.log(res.data))
       .then(() => this.setState({
         name: "",
