@@ -11,7 +11,8 @@ const CardHeader = styled.div`
   flex-direction: row;
   align-items: center;
   min-height: 34px;
-  background-color: ${theme.colors.trip};  
+  background-color: ${props => props.status === "open" ? theme.colors.trip 
+    : theme.colors.neutralMidLight};  
   color: ${theme.colors.white};
   border-radius: 5px 5px 0 0 ;
 `
@@ -24,7 +25,8 @@ const CardBody = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${theme.colors.white};
-  border: 1px solid ${theme.colors.trip};  
+  border: 1px solid ${props => props.status === "open" ? theme.colors.trip 
+    : theme.colors.neutralMidLight};  
   border-radius: 0 0 5px 5px;
 `
 
@@ -56,15 +58,17 @@ const CustomSmallButton = styled(LinkButtonSmall)`
   flex-grow: 1;
 `;
 
+
 const TripCard = (props) => {
+  let status = props.trip.isTripFinished ? 'finished' : 'open'; 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader status={status} >
         <Container>
           {props.trip.name}
         </Container>        
       </CardHeader>
-      <CardBody>
+      <CardBody status={status}>
         <Container>
           <ParagraphAlignedLeft>
             start date: &nbsp; {moment(props.trip.startDate).format('YYYY-MM-DD')}
