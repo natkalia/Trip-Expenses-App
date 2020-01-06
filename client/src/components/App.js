@@ -14,6 +14,7 @@ import AddExpense from './AddExpense';
 import TripSummary from './TripSummary';
 import AllTrips from './AllTrips';
 import UserProfile from './UserProfile';
+import CurrenciesRates from './CurrenciesRates';
 import Footer from './Footer';
 import Layout from '../layout/Layout';
 
@@ -51,6 +52,7 @@ class App extends React.Component {
           <Route path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
           <Route path='/trips/:tripId/expenses/add' component={AddExpense} />
           <Route path='/users/profile' component={UserProfile} />
+          <Route path='/currencies' component={CurrenciesRates} />
 
           {/* do usuniecia później */}
           {/* <h1>{this.props.text}</h1>
