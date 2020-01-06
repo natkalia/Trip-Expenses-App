@@ -53,8 +53,8 @@ class App extends React.Component {
           <Route path='/users/profile' component={UserProfile} />
 
           {/* do usuniecia później */}
-          {/* <h1>{this.props.text}</h1>
-          <button onClick={this.changeText}>kliknij</button> */}
+          <h1>{this.props.text}</h1>
+          <button onClick={this.changeText}>kliknij</button>
           <Footer/>
         </Layout>
       </Router>
