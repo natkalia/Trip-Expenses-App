@@ -18,6 +18,9 @@ import {
 import Select from 'react-select';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
+import getToken from '../utils/getToken';
+
+
 
 class EditTrip extends Component {
 
@@ -90,7 +93,7 @@ class EditTrip extends Component {
       budget: this.state.budget,
       mainCurrency: this.state.budgetCurrency.value
     }
-    axios.put("http://localhost:3000/api/trips/edit/" + this.state.id, trip)
+    axios.put("http://localhost:3000/api/trips/edit/" + this.state.id, trip, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
       .then(() => window.location = `/trips/single/${this.state.id}`);
   };
@@ -100,7 +103,8 @@ class EditTrip extends Component {
     if(window.confirm("Are you sure you want to delete this trip?")) {
     // after authorization and Redux change hardcoded values of user id
     axios.delete("http://localhost:3000/api/trips/" + this.state.id,
-      { data: {userId : "5e0fc8800785ca060578b375"} })
+      { data: {userId : "5e0fc8800785ca060578b375"} },
+      { headers: { "x-auth-token": `${getToken()}`} })
     .then(res => console.log(res.data))
     .then(() => window.location = '/trips/all');
     } else return;
@@ -108,7 +112,9 @@ class EditTrip extends Component {
 
   getSupportedCurrencyList = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/currencies/list');
+      const response = await axios.get(
+        'http://localhost:3000/api/currencies/list',
+        { headers: { "x-auth-token": `${getToken()}`} });
       const { data: { currencies }} = response;
       const tripCurrencies = currencies.map((currency) => {
         return {
@@ -126,7 +132,7 @@ class EditTrip extends Component {
 
   componentDidMount () {
     // axios.get("http://localhost:3000/api/trips/5e0dd4da618f3e1f10d4db7f") // temporary currenTripId
-    axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`) // temporary currenTripId
+    axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} }) // temporary currenTripId
       .then(res => this.setState({ 
           id: res.data._id,
           name: res.data.name,

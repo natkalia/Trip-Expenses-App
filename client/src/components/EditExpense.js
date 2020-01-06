@@ -4,6 +4,9 @@ import ContentWrapper from './ContentWrapper';
 import Button from './Button';
 import { Form, Label, Input, customStyleSelect } from './styled';
 import Select from 'react-select';
+import getToken from '../utils/getToken';
+
+
 
 class EditExpense extends Component {
 
@@ -68,31 +71,30 @@ class EditExpense extends Component {
       cost: this.state.expenseCost,
       currency: this.state.expenseCurrency.value
     }
-    console.log(expense);
-      await axios.put(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, expense);
-      try {
-        this.setState({ 
-          expenseName: "", 
-          expenseCategory: {
-            value: "", 
-            label: ""
-          },
-          expenseCurrency: {
-            value: "", 
-            label: ""
-          }, 
-          expenseCost: ""
-        });
-        window.location=`/trips/single/${this.state.tripId}`;
-      } catch (error) {
-        this.setState({ error: 'Error' });
-      }
+    await axios.put(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
+    try {
+      this.setState({ 
+        expenseName: "", 
+        expenseCategory: {
+          value: "", 
+          label: ""
+        },
+        expenseCurrency: {
+          value: "", 
+          label: ""
+        }, 
+        expenseCost: ""
+      });
+      window.location=`/trips/single/${this.state.tripId}`;
+    } catch (error) {
+      this.setState({ error: 'Error' });
+    }
   }
 
   onDeleteSubmit = async (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this expense?")) {
-      await axios.delete(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`);
+      await axios.delete(`http://localhost:3000/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
       try {
         this.setState({ 
           expenseName: "", 

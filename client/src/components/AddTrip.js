@@ -16,6 +16,9 @@ import {
 import Select from 'react-select';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
+import getToken from '../utils/getToken';
+
+
 
 class AddTrip extends Component {
 
@@ -71,8 +74,7 @@ class AddTrip extends Component {
       budget: this.state.budget === "" ? 0 : this.state.budget,
       mainCurrency: this.state.budgetCurrency.value
     }
-    let token = localStorage.getItem("travelplanner_x-auth-token");
-    axios.post("http://localhost:3000/api/trips/add", trip, { headers: { "x-auth-token": `${token}`} })
+    axios.post("http://localhost:3000/api/trips/add", trip, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
       .then(() => this.setState({
         name: "",
@@ -90,7 +92,7 @@ class AddTrip extends Component {
 
   getSupportedCurrencyList = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/currencies/list');
+      const response = await axios.get('http://localhost:3000/api/currencies/list', { headers: { "x-auth-token": `${getToken()}`} });
       const { data: { currencies }} = response;
       const tripCurrencies = currencies.map((currency) => {
         return {
