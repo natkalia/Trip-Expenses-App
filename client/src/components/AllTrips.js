@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import moment from 'moment';
 import { theme } from '../utils/theme';
 import ContentWrapper from './ContentWrapper';
-import { LinkButtonBig, LinkButtonSmall } from './styled';
+import { LinkButtonBig, LinkButtonSmall, ParagraphAlignedCenter } from './styled';
 
 const CardHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 34px;
+  min-height: 34px;
   background-color: ${theme.colors.trip};  
+  color: ${theme.colors.white};
   border-radius: 5px 5px 0 0 ;
 `
 
-const LinkTrip = styled(Link)`
-  width: 100%;
-  color: ${theme.colors.white};
-  text-decoration: none;
-  transition: 0.3s;
-  &:hover {
-    font-weight: 600;
-  }
+const Card = styled.div`
+  margin-bottom: 20px;
 `
 
 const CardBody = styled.div`
@@ -46,45 +41,76 @@ const Container = styled.div`
   width: 80%;
   margin: 0 auto;
 `
+const ContainerButtons = styled.div `
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-items: space-between;
+  margin: 10px auto;
+`
+
+const CustomSmallButton = styled(LinkButtonSmall)`
+  margin: 0px 10px 15px;
+  width: 40%;
+  min-width: 150px;
+  flex-grow: 1;
+`;
 
 const TripCard = (props) => {
   return (
-    <>
+    <Card>
       <CardHeader>
         <Container>
-          <LinkTrip>{props.trip.name}</LinkTrip>
+          {props.trip.name}
         </Container>        
       </CardHeader>
       <CardBody>
         <Container>
           <ParagraphAlignedLeft>
-            start date: {props.trip.startDate}
+            start date: &nbsp; {moment(props.trip.startDate).format('YYYY-MM-DD')}
           </ParagraphAlignedLeft>
-          <ParagraphAlignedLeft>
-            {props.trip.description}
-          </ParagraphAlignedLeft>
-          <LinkButtonSmall color="">Mały przycisk</LinkButtonSmall>
+          {props.trip.description &&
+            <ParagraphAlignedLeft>
+              {props.trip.description}
+            </ParagraphAlignedLeft>
+          }          
+          <ContainerButtons>
+            <CustomSmallButton to={`/trips/single/${props.trip._id}`} color="grey"> Expenses </CustomSmallButton>
+            <CustomSmallButton to={`/trips/edit/${props.trip._id}`} color="greyOverlay"> Edit / Delete </CustomSmallButton>
+          </ContainerButtons>            
         </Container>        
       </CardBody>
-    </>  
+    </Card>  
   )
 }
 
-
-
 class AllTrips extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      trips: []
+    };
+  }
 
   async componentDidMount() {
-    // const trips = await axios.get(`http://localhost:3000/api/users/5e0cfed451f05203b0575062`)
-    //   .then(res => res.data.trips);  
+    axios.get(`http://localhost:3000/api/users/5e0cfed451f05203b0575062/trips`)
+      .then(res => this.setState({trips: res.data.trips}));
   }
 
   render() {
-    const trip1 = {name: "Trip1", startDate: "2010-10-01", description:"Hardcoded description"}
     return (
       <ContentWrapper title="Your Trips">
         <LinkButtonBig to={`/trips/add`} color="green">Add a new trip</LinkButtonBig>
-        <TripCard trip={trip1} />
+        <div>
+          { this.state.trips.length > 0 ? (
+            this.state.trips.map((trip) => { 
+              return <TripCard trip={trip} key={trip._id}/>
+              })            
+          ) : (
+            <ParagraphAlignedCenter>You don 't have any saved trips yet</ParagraphAlignedCenter>
+          )} 
+        </div>
+               
       </ContentWrapper>
     )
   }
