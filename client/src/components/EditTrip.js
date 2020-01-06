@@ -103,8 +103,10 @@ class EditTrip extends Component {
     if(window.confirm("Are you sure you want to delete this trip?")) {
     // after authorization and Redux change hardcoded values of user id
     axios.delete("http://localhost:3000/api/trips/" + this.state.id,
-      { data: {userId : "5e0fc8800785ca060578b375"} },
-      { headers: { "x-auth-token": `${getToken()}`} })
+      { 
+        data: {userId : "5e0fc8800785ca060578b375"},
+        headers: { "x-auth-token": `${getToken()}`} 
+      })
     .then(res => console.log(res.data))
     .then(() => window.location = '/trips/all');
     } else return;
