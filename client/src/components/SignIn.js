@@ -25,7 +25,7 @@ class Login extends React.Component {
     const url = "http://localhost:3000/api/users/login";
     await axios.post(url, user)
       .then(res => localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]))
-      .then(() => this.props.setLoggedIn(true))
+      .then(() => this.props.setLoggedIn())
       .catch(err => console.log(err));
   }
 
@@ -65,7 +65,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setLoggedIn: isLoggedIn => dispatch(setLoggedIn(isLoggedIn))
+    setLoggedIn: () => dispatch(setLoggedIn())
   }
 }
 

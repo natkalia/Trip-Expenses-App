@@ -1,9 +1,9 @@
 const SET_LOGGED_IN = 'SET_LOGGED_IN';
 
-const setLoggedIn = (payload) => ({
+const setLoggedIn = () => ({
   type: SET_LOGGED_IN,
   payload: {
-    isLoggedIn: payload
+    isLoggedIn: true
   }
 });
 
