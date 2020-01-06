@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React from 'react';
-import Cookies from 'universal-cookie';
 import { Form, Label, Input } from './styled';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
@@ -21,13 +20,9 @@ class Login extends React.Component {
       password: this.state.password
     }
     const url = "http://localhost:3000/api/users/login";
-    const cookies = new Cookies();
     await axios.post(url, user)
-      .then(res => cookies.set('travelplanner_x-auth-token', res.headers["x-auth-token"]))
+      .then(res => localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]))
       .catch(err => console.log(err));
-    this.setState({
-      travelplanner_jwt: cookies.get('travelplanner_x-auth-token')
-    })
   }
 
   onInputChange = (inputName, e) => {
