@@ -33,6 +33,7 @@
     "react-scripts": "3.3.0",
     "react-select": "^3.0.8",
     "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
     "styled-components": "^4.4.1",
     "universal-cookie": "^4.0.3"
   },
