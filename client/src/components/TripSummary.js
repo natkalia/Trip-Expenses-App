@@ -3,31 +3,55 @@ import axios from 'axios';
 import ContentWrapper from './ContentWrapper';
 import Chart from 'chart.js';
 import styled from 'styled-components';
-import { theme} from '../utils/theme'; 
+import { theme } from '../utils/theme'; 
 import {
-  TripHeader
+  TripHeader, 
+  InnerContainer,
+  H3
 } from './styled';
 
 const Paragraph = styled.p`
   color: ${theme.colors.neutralDark};
   font-size: 20px;
-  width: 100%;
-  margin: 0px auto;
   text-align: center;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin: 5px;
 `;
 
 const Li = styled.li`
-  list-style: none;
-  font-size: 16px;
-  font-weight: 300;
+  list-style: circle;
+  font-size: 14px;
+  font-weight: 400;
   width: 100%;
   margin: 0px auto;
   text-align: left;
-  color: ${theme.colors.neutralMidDark};
+  ${theme.colors.neutralMidDark};
   padding: 0;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 `
+const ChartContainer = styled.div` 
+  width: 80%;
+  margin: 0 auto;
+`
+
+const ColoredLine = styled.hr` 
+  width: 70%;
+  height: 3px;
+  margin: 10px auto;
+  ${theme.colors.neutralMidDark};
+`
+
+const UnorderedList = styled.ul` 
+  margin: 20px auto;
+  width: 80%;
+`
+
+const SubTitle = styled(H3)`
+  color: ${theme.colors.neutralDark};
+  margin: 10px auto;
+  text-align: center;
+  font-weight: 700;
+`;
 
 class TripSummary extends Component {
 
@@ -115,8 +139,8 @@ class TripSummary extends Component {
     }
   }
 
-  createChart = () => {
-    const ctx = document.getElementById('budgetChart');
+  createChartExpenses = () => {
+    const ctx = document.getElementById('expensesChart');
     // source of colors palette: https://flatuicolors.com/palette/fr
     const arrayColors = [
       "#fa983a", "#eb2f06", "#1e3799", "#3c6382", "#38ada9",
@@ -133,7 +157,7 @@ class TripSummary extends Component {
     });
 
     // eslint-disable-next-line 
-    const budgetChart = new Chart(ctx, {
+    const expensesChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
         labels: arrayCategories, 
@@ -147,16 +171,28 @@ class TripSummary extends Component {
       },
       options: {
         title: {
+          display: false,
+          text: 'Total expenses by category:',
+        },
+        legend: {
           display: true,
-          text: 'Expenses by category:'
-        }
+          labels: {
+            fontSize: 14,
+            fontFamily: theme.fonts.default,
+            fontColor: theme.colors.neutralDark
+          },
+          boxWidth: 40,
+          position: "top",
+          align: "center"
+        },
+        
       }
     });
   }
-  
+
   componentDidMount = async () => { // not sure if this is correct approach - long loading, spinner needed?
     await this.getDataFromTrip();
-    await this.createChart();
+    await this.createChartExpenses();
   }
 
   render() {
@@ -164,24 +200,48 @@ class TripSummary extends Component {
       <>
         <TripHeader name={this.state.tripName}/>
         <ContentWrapper title="Trip budget summary">
-
-        <div>
-          <Paragraph>Budget: {this.state.budgetAmount} {this.state.budgetCurrency} </Paragraph>
-          <Paragraph>Spent: {Math.floor(this.state.spentAmountinMainCurrency, 2)} {this.state.budgetCurrency}</Paragraph>
-          <Paragraph>Left: {Math.floor(this.state.budgetAmount - this.state.spentAmountinMainCurrency, 2)} {this.state.budgetCurrency}</Paragraph>
-        </div>
-
-          <ul>
-            { this.state.totalExpensesByCategory.map((data, i) => {
-                return (
-                  <Li key={i}>Total expenses for {`${data.name}: ${Math.floor(data.amount)} ${data.currency}`}</Li>
-                );
-              })
-            }
-         </ul>
-
-          <canvas id="budgetChart" width="400" height="400"></canvas>
-
+          <InnerContainer>
+            <Paragraph> 
+              {
+                `Budget: 
+                ${this.state.budgetAmount} 
+                ${this.state.budgetCurrency}`
+              }
+            </Paragraph>
+            <Paragraph>
+              {
+                `Spent: 
+                ${Math.floor(this.state.spentAmountinMainCurrency, 2)} 
+                ${this.state.budgetCurrency}`
+              } 
+            </Paragraph>
+            <Paragraph>
+              {
+                `Left: 
+                ${Math.floor((this.state.budgetAmount - this.state.spentAmountinMainCurrency), 2)} 
+                ${this.state.budgetCurrency}`
+              } 
+            </Paragraph>
+            <ColoredLine/>
+            <SubTitle>Total expenses by category</SubTitle>
+            <UnorderedList>
+                { this.state.totalExpensesByCategory.map((data, i) => {
+                    return (
+                      <Li key={i}>
+                        {
+                          `${data.name}: 
+                          ${Math.floor(data.amount)} 
+                          ${data.currency}`
+                        }
+                      </Li>
+                    );
+                  })
+                }
+            </UnorderedList>
+            <ChartContainer>
+              <canvas id="expensesChart" width="300" height="300"></canvas>
+            </ChartContainer>
+          </InnerContainer>
         </ContentWrapper>
       </>
     )
