@@ -83,7 +83,7 @@ class EditExpense extends Component {
           }, 
           expenseCost: ""
         });
-        window.location=`/trips/single/${this.state.tripId}`;
+        this.props.history.push(`/trips/single/${this.state.tripId}`);
       } catch (error) {
         this.setState({ error: 'Error' });
       }
@@ -106,7 +106,7 @@ class EditExpense extends Component {
           }, 
           expenseCost: ""
         });
-        window.location=`/trips/single/${this.state.tripId}`;
+        this.props.history.push(`/trips/single/${this.state.tripId}`);
       } catch (error) {
         this.setState({ error: 'Error' });
       }

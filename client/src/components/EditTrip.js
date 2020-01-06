@@ -92,7 +92,7 @@ class EditTrip extends Component {
     }
     axios.put("http://localhost:3000/api/trips/edit/" + this.state.id, trip)
       .then(res => console.log(res.data))
-      .then(() => window.location = `/trips/single/${this.state.id}`);
+      .then(() => this.props.history.push(`/trips/single/${this.state.id}`));
   };
 
   onDeleteSubmit = (e) => {
@@ -102,7 +102,7 @@ class EditTrip extends Component {
     axios.delete("http://localhost:3000/api/trips/" + this.state.id,
       { data: {userId : "5e0fc8800785ca060578b375"} })
     .then(res => console.log(res.data))
-    .then(() => window.location = '/trips/all');
+    .then(() => this.props.history.push('/trips/all'));
     } else return;
   };
 

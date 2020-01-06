@@ -130,7 +130,6 @@ class Header extends Component {
     super(props);
     this.state = {
       menuOpened: true,
-      isLoggedIn: true,
       activeTab: ""
     }
   }
@@ -142,7 +141,7 @@ class Header extends Component {
   }
 
   logOut = () => {
-    this.props.setLoggedIn();
+    this.props.setLoggedOut();
   }
 
   setChoosen = (e) => {
@@ -152,6 +151,7 @@ class Header extends Component {
   }
 
   render() {
+    console.log(this.props.isLoggedIn);
     return (
       <HeaderWrapper>
         <TopLabel>
@@ -166,7 +166,7 @@ class Header extends Component {
 
         <Nav>
           <NavForNotLoggedIn
-            showMenu={this.state.menuOpened && !this.state.isLoggedIn}
+            showMenu={this.state.menuOpened && !this.props.isLoggedIn}
           >
             <Li>
               <StyledLink
@@ -191,7 +191,7 @@ class Header extends Component {
           </NavForNotLoggedIn>
 
           <NavForLoggedIn
-            showMenu={this.state.menuOpened && this.state.isLoggedIn}
+            showMenu={this.state.menuOpened && this.props.isLoggedIn}
           >
             <Li>
               <StyledLink

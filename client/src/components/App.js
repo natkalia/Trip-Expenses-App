@@ -1,5 +1,5 @@
 import React from 'react';
-import Cookies from 'universal-cookie'; 
+import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './Header';
 import HomePage from './HomePage';
@@ -20,19 +20,10 @@ import Layout from '../layout/Layout';
 class App extends React.Component {
   constructor(props) {
     super(props);
-
-    const cookies = new Cookies();
-    this.state = {
-      apiResponse: "",
-      travelplanner_jwt: cookies.get('travelplanner_jwt') || ""
-    };
-  }
-
-  changeText = () => {
-    this.props.addFirstOne("Zupełenie nowy text")    
   }
   
   render() {
+    console.log(this.props);
     return (
       <Router>
         <Layout>
@@ -56,4 +47,8 @@ class App extends React.Component {
 
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  state,
+});
+
+export default connect(mapStateToProps)(App);
