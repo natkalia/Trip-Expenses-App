@@ -38,6 +38,7 @@ const CardTitle = styled(H4)`
 const CardBody = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 15px 0 0 0;
   background-color: ${theme.colors.white};
   border: 1px solid ${props => props.status === "open" ? theme.colors.trip 
     : theme.colors.neutralMidLight};  
@@ -48,13 +49,13 @@ const ParagraphAlignedLeft = styled.p`
   font-size: 16px;
   font-weight: 400;
   text-align: left;
-  margin-bottom: 10px;
+  margin: 0 0 8px 0;
 `
 
 const Container = styled.div`
   display:flex;
   flex-direction: column;
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 `
 const ContainerButtons = styled.div `
@@ -62,11 +63,11 @@ const ContainerButtons = styled.div `
   flex-direction: row;
   flex-wrap: wrap;
   justify-items: space-between;
-  margin: 10px auto;
+  margin: 0 auto;
 `
 
 const CustomSmallButton = styled(LinkButtonSmall)`
-  margin: 0px 10px 15px;
+  margin: 0px 10px 20px;
   width: 40%;
   min-width: 150px;
   flex-grow: 1;
@@ -78,7 +79,7 @@ const InputCheckboxCustom = styled(InputCheckbox)`
 `
 
 const InputCheckboxContainerCustom = styled(InputCheckboxContainer)`
-  margin-bottom: 0px;
+  margin-bottom: 15px;
 `
 
 const PinImg = styled.img`
@@ -112,7 +113,6 @@ const TripCard = (props) => {
             <InputCheckboxCustom type="checkbox" name="isPinned" id={`isPinned-${props.trip._id}`} onChange={props.onInputChange} checked={props.inPinnedTrips}/>
             <Label htmlFor={`isPinned-${props.trip._id}`}>Pin trip to the main page</Label>         
           </InputCheckboxContainerCustom>
-
           <ContainerButtons>
             <CustomSmallButton to={`/trips/single/${props.trip._id}`} color="grey"> Expenses </CustomSmallButton>
             <CustomSmallButton to={`/trips/edit/${props.trip._id}`} color="greyOutline"> Edit / Delete </CustomSmallButton>
@@ -149,7 +149,7 @@ class AllTrips extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/users/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`http://localhost:3000/api/users/5e1388c0ba5aad423c1d7475/trips`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({trips: res.data.trips}))
       .catch(err => console.log(err));
   }
