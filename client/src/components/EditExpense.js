@@ -13,8 +13,8 @@ class EditExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripId: "5e0dd4fa618f3e1f10d4db80", // temporary
-      expenseId: "5e0e10274f0e0f24a0e1ec1c", // temporary
+      tripId: "5e1368962bc58a16e4917fe3", // temporary
+      expenseId: "5e136be35221cf1ee0802829", // temporary
       expenseName: "", 
       expenseCategory: 
       {
@@ -116,7 +116,7 @@ class EditExpense extends Component {
   }
 
   getTripAndExpenseData = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`);
+    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
       let sanitizedExpense = res.data.expenses.filter(arr => (arr._id === this.state.expenseId));
