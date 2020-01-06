@@ -13,6 +13,10 @@ const mongoose = require('mongoose');
 
 const tripsRouter = require('./routes/trips');
 const usersRouter = require('./routes/users');
+const currencyRouter = require('./routes/currencies');
+
+const { checkAuthenticated } = require('./middleware/auth')
+
 
 const app = express();
 
@@ -42,8 +46,9 @@ if (app.get('env') === 'development') {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/trips', tripsRouter);
+app.use('/api/trips', checkAuthenticated, tripsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/currencies', currencyRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
