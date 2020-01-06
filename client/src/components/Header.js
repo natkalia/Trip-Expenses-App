@@ -115,7 +115,9 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${theme.colors.neutralDark};
   font-size: 16px;
-  color: ${props => props.active === "true" ? `${theme.colors.neutralDark}` : `${theme.colors.neutralMidLight}`};
+  color: ${props => (
+    props.active === "true" ? theme.colors.neutralDark : theme.colors.neutralMidLight
+  )};
   &:hover {
     color: ${theme.colors.btnMain};
   }
