@@ -87,7 +87,7 @@ class AddTrip extends Component {
             label: "PLN"
           },
       }))
-      .then(() => window.location = "/trips/all")
+      .then(() => this.props.history.push("/trips/all"))
   };
 
   getSupportedCurrencyList = async () => {
