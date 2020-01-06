@@ -72,7 +72,9 @@ router.put('/edit/:id', (req, res) => {
           name: req.body.name,
           description: req.body.description,
           startDate: req.body.startDate,
-          isTripFinished: req.body.isTripFinished
+          isTripFinished: req.body.isTripFinished,
+          budget: req.body.budget,
+          mainCurrency: req.body.mainCurrency
         });
         trip.save()
           .then(() => res.json('Trip modified!'))

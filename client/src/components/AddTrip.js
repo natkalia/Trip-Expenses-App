@@ -10,8 +10,10 @@ import {
   DateInput, 
   InputContainer, 
   ParagraphSmallItalic,
-  Textarea
+  Textarea,
+  customStyleSelect
 } from './styled';
+import Select from 'react-select';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
 
@@ -22,7 +24,14 @@ class AddTrip extends Component {
     this.state = {
       name: "", 
       startDate: Date.now(), 
-      description: undefined 
+      description: undefined,
+      budget: "",
+      budgetCurrency:
+        {
+          value: "PLN",
+          label: "PLN"
+        },
+      tripCurrencies: []
     };
   }
 
@@ -41,20 +50,65 @@ class AddTrip extends Component {
     })
   }
 
+  onSelectCurrencyChange = (optionsObject) => {
+    const selectValue = optionsObject.value;
+    this.setState({
+      budgetCurrency:
+        {
+          value: selectValue,
+          label: selectValue
+        }
+    })
+  }
+
   onFormSubmit = (e) => { 
     e.preventDefault();
     const trip = {
       name: this.state.name,
       startDate: moment(this.state.startDate).format(),
       // eslint-disable-next-line
-      description:  this.state.description == false ? undefined : this.state.description
+      description:  this.state.description == false ? undefined : this.state.description,
+      budget: this.state.budget === "" ? 0 : this.state.budget,
+      mainCurrency: this.state.budgetCurrency.value
+
     }
     axios.post("http://localhost:3000/api/trips/add", trip)
       .then(res => console.log(res.data))
-      .then(() => this.setState({ name: "", startDate: new Date(), description: "" }))
+      .then(() => this.setState({
+        name: "",
+        startDate: new Date(),
+        description: undefined,
+        budget: "",
+        budgetCurrency:
+          {
+            value: "PLN",
+            label: "PLN"
+          },
+      }))
       .then(() => window.location = "/trips/all")
   };
 
+  getSupportedCurrencyList = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/currencies/list');
+      const { data: { currencies }} = response;
+      const tripCurrencies = currencies.map((currency) => {
+        return {
+          value: currency,
+          label: currency
+        }
+       });
+      this.setState({
+        tripCurrencies: tripCurrencies
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  componentDidMount () {
+    if (!this.state.tripCurrencies.length) this.getSupportedCurrencyList();
+  }
  
   render() {
     return (
@@ -67,7 +121,32 @@ class AddTrip extends Component {
           <InputContainer>
             <Label htmlFor="startDate-add">Start date:</Label>
             <DatePicker customInput={<DateInput/>} dateFormat="yyyy/MM/dd" type="text" name="startDate" id="startDate-add" selected={this.state.startDate} onChange={this.onDateChange} todayButton="Today"/>
-          </InputContainer>          
+          </InputContainer>
+
+          <Label htmlFor="budget-add">Budget: (from 0 to 1 million)</Label>
+          <Input 
+            min="0"
+            max="100000000" 
+            type="number" 
+            name="budget" 
+            id="budget-add" 
+            placeholder="Your budget" 
+            required 
+            onChange={this.onInputChange} 
+            value={this.state.budget}
+          />
+
+          <Label htmlFor="budgetCurrency-add">Currency:</Label>
+          <Select 
+            styles={customStyleSelect} 
+            options={this.state.tripCurrencies} 
+            type="text" 
+            name="budgetCurrency" 
+            id="budgetCurrency-add" 
+            required 
+            onChange={this.onSelectCurrencyChange} 
+            value={this.state.budgetCurrency}
+          />
 
           <Label htmlFor="description-add">Description (10-200 characters):</Label>
           <ParagraphSmallItalic>This field is optional</ParagraphSmallItalic>
