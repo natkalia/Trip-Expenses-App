@@ -95,7 +95,7 @@ class EditTrip extends Component {
     }
     axios.put("http://localhost:3000/api/trips/edit/" + this.state.id, trip, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
-      .then(() => window.location = `/trips/single/${this.state.id}`);
+      .then(() => this.props.history.push(`/trips/single/${this.state.id}`));
   };
 
   onDeleteSubmit = (e) => {
@@ -108,7 +108,7 @@ class EditTrip extends Component {
         headers: { "x-auth-token": `${getToken()}`} 
       })
     .then(res => console.log(res.data))
-    .then(() => window.location = '/trips/all');
+    .then(() => this.props.history.push('/trips/all'));
     } else return;
   };
 

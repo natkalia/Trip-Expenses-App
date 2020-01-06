@@ -1,8 +1,11 @@
 import axios from 'axios';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Form, Label, Input } from './styled';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
+import { setLoggedIn } from '../redux/actions/userActions';
+
 
 class Login extends React.Component {
   constructor(props) {
@@ -22,6 +25,8 @@ class Login extends React.Component {
     const url = "http://localhost:3000/api/users/login";
     await axios.post(url, user)
       .then(res => localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]))
+      .then(() => this.props.setLoggedIn())
+      .then(() => this.props.history.push('/trips/all'))
       .catch(err => console.log(err));
   }
 
@@ -52,4 +57,17 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.isLoggedIn
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoggedIn: () => dispatch(setLoggedIn())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

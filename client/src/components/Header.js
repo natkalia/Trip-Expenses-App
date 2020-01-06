@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import { theme } from '../utils/theme';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import LogoImg from '../images/logo.png';
+import { setLoggedOut } from '../redux/actions/userActions';
 
 
 const HeaderWrapper = styled.div`
@@ -35,7 +37,7 @@ const TopLabel = styled.div`
   }
 `;
 
-const AppName = styled.a`
+const LogoLink = styled(Link)`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -113,18 +115,21 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${theme.colors.neutralDark};
   font-size: 16px;
-  color: ${props => props.active === "true" ? `${theme.colors.neutralDark}` : `${theme.colors.neutralMidLight}`};
+  color: ${props => (
+    props.active === "true" ? theme.colors.neutralDark : theme.colors.neutralMidLight
+  )};
   &:hover {
     color: ${theme.colors.btnMain};
   }
 `;
+
+
 
 class Header extends Component {
   constructor(props){
     super(props);
     this.state = {
       menuOpened: true,
-      isLoggedIn: true,
       activeTab: ""
     }
   }
@@ -136,7 +141,7 @@ class Header extends Component {
   }
 
   logOut = () => {
-    console.log("Wyloguj");
+    this.props.setLoggedOut();
   }
 
   setChoosen = (e) => {
@@ -149,10 +154,10 @@ class Header extends Component {
     return (
       <HeaderWrapper>
         <TopLabel>
-          <AppName href="/" title="HomePage">
+          <LogoLink to={"/"} title="HomePage">
             <Logo src={LogoImg} alt="Trip Expenses App"></Logo>
             <H1>Trip Expenses</H1>
-          </AppName>
+          </LogoLink>
           <ToggleNavOpen onClick={this.toggleMenu}>
             <FontAwesomeIcon size="lg" icon={this.state.menuOpened ? faTimes : faBars} />
           </ToggleNavOpen>
@@ -160,11 +165,12 @@ class Header extends Component {
 
         <Nav>
           <NavForNotLoggedIn
-            showMenu={this.state.menuOpened && !this.state.isLoggedIn}
+            showMenu={this.state.menuOpened && !this.props.isLoggedIn}
           >
             <Li>
               <StyledLink
                 to={'/users/login'}
+                title="Login"
                 onClick={(e) => this.setChoosen(e)}
                 active={`${this.state.activeTab === 'login'}`}
                 id="login"
@@ -175,6 +181,7 @@ class Header extends Component {
             <Li>
               <StyledLink
                 to={'/users/register'}
+                title="Sign Up"
                 onClick={(e) => this.setChoosen(e)}
                 active={`${this.state.activeTab === 'register'}`}
                 id="register"
@@ -185,11 +192,12 @@ class Header extends Component {
           </NavForNotLoggedIn>
 
           <NavForLoggedIn
-            showMenu={this.state.menuOpened && this.state.isLoggedIn}
+            showMenu={this.state.menuOpened && this.props.isLoggedIn}
           >
             <Li>
               <StyledLink
                 to={'/trips/all'}
+                title="Your trips"
                 onClick={(e) => this.setChoosen(e)}
                 active={`${this.state.activeTab === 'trips/all'}`}
                 id="trips/all"
@@ -200,7 +208,8 @@ class Header extends Component {
             <Li>
               <StyledLink
                 to={'/users/profile'}
-                onClick={(e) => this.setChoosen(e)}
+                title="Settings"
+                onClick={e => this.setChoosen(e)}
                 active={`${this.state.activeTab === 'profile'}`}
                 id="profile"
               >
@@ -215,4 +224,17 @@ class Header extends Component {
   }
 };
 
-export default Header;
+
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.isLoggedIn
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoggedOut: () => dispatch(setLoggedOut())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
