@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import { theme } from '../utils/theme';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import LogoImg from '../images/logo.png';
+import { setLoggedOut } from '../redux/actions/userActions';
 
 
 const HeaderWrapper = styled.div`
@@ -119,6 +121,8 @@ const StyledLink = styled(Link)`
   }
 `;
 
+
+
 class Header extends Component {
   constructor(props){
     super(props);
@@ -136,7 +140,7 @@ class Header extends Component {
   }
 
   logOut = () => {
-    console.log("Wyloguj");
+    this.props.setLoggedIn();
   }
 
   setChoosen = (e) => {
@@ -200,7 +204,7 @@ class Header extends Component {
             <Li>
               <StyledLink
                 to={'/users/profile'}
-                onClick={(e) => this.setChoosen(e)}
+                onClick={e => this.setChoosen(e)}
                 active={`${this.state.activeTab === 'profile'}`}
                 id="profile"
               >
@@ -215,4 +219,17 @@ class Header extends Component {
   }
 };
 
-export default Header;
+
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.isLoggedIn
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoggedOut: () => dispatch(setLoggedOut())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
