@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { theme } from '../utils/theme';
 import ContentWrapper from './ContentWrapper';
-import { H2, H3, InnerContainer, LinkButtonBig, LinkButtonSmall } from './styled';
+import { H2, H3, InnerContainer, LinkButtonSmall } from './styled';
 
 const SectionTitle = styled(H3)`
   &::after{
@@ -33,15 +33,19 @@ const Section = styled.div`
 
 const DataGroup = styled.div`
   display: flex;
-  flex-direction: row;
-  ${theme.media.tablet} {
-    flex-direction:column;
+  flex-direction: column;
+  margin-bottom: 10px;
+  ${theme.media.landscapePhone} {
+    flex-direction: row;
   }
 `;
 
-const LabelData = styled.div`
+const LabelData = styled(ParagraphAlignedLeft)`
   width: 90px;
   margin-right: 20px;
+`
+const DisabledText = styled(ParagraphAlignedLeft)`
+  color: ${theme.colors.neutralMidDark};
 `
 
 class UserProfile extends Component {
@@ -53,11 +57,11 @@ class UserProfile extends Component {
             <SectionTitle>Your Profile Information</SectionTitle>
             <DataGroup>
               <LabelData>User Name:</LabelData>
-              <ParagraphAlignedLeft>Anna Piwonska</ParagraphAlignedLeft>
+              <DisabledText></DisabledText>
             </DataGroup>
             <DataGroup>
               <LabelData>Email:</LabelData>
-              <ParagraphAlignedLeft>anna@test.pl</ParagraphAlignedLeft>
+              <DisabledText></DisabledText>
             </DataGroup>      
           </Section>
           <Section>
