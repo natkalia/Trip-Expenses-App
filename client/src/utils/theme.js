@@ -5,6 +5,7 @@ export const theme = {
   colors,
   fonts,
   media: {
+    landscapePhone: '@media (min-width: 576px)',
     tablet: '@media (min-width: 728px)',
     desktop: '@media (min-width: 1024px)',
   }
