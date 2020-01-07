@@ -46,7 +46,7 @@ if (app.get('env') === 'development') {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/trips', tripsRouter);
+app.use('/api/trips', checkAuthenticated, tripsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/currencies', currencyRouter);
 
