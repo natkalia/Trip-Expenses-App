@@ -215,16 +215,16 @@ export const customStyleSelect = {
     ...provided,
     color: '#000',
     padding: 2,
-    fontFamily: 'Roboto'
+    fontFamily: theme.fonts.default
   }),
   control: (provided) => ({
     ...provided,
     borderRadius: "3px",
     // border: '1px solid #000',
-    fontFamily: 'Roboto'
+    fontFamily: theme.fonts.default
   }),
   placeholder: () => ({
-    fontFamily: 'Roboto'
+    fontFamily: theme.fonts.default
   }),
   dropdownIndicator: defaultStyles => ({
     ...defaultStyles,
