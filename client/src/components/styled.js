@@ -159,18 +159,19 @@ export const Input = styled.input`
   }
 `;
 
-export const InputCheckbox = styled(Input)`
-  flex: 30%;
-  margin: auto;
+export const InputCheckbox = styled.input`
+  margin: 0 15px;
 `
 
 export const DateInput = styled(Input)`
-  width: 40%;
+  width: 110px;
   margin: 0;
   text-align: center;
 `;
 
 export const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-bottom: 20px;
 `;
 
