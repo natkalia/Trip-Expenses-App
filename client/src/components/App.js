@@ -36,7 +36,7 @@ class App extends React.Component {
           <PrivateRoute path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
           <PrivateRoute path='/trips/:tripId/expenses/add' component={AddExpense} />
           <PrivateRoute path='/users/profile' component={UserProfile} />
-          <PrivateRoute path='/currencies' component={CurrenciesRates} />
+          <PrivateRoute path='/trips/currencies/:tripId' component={CurrenciesRates} />
           <Footer/>
         </Layout>
       </Router>
