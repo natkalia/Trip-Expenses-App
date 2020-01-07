@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
 
 const StyledWrapper = styled.div`
   min-height:100vh;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
