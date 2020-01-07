@@ -12,6 +12,7 @@ import AddExpense from './AddExpense';
 import TripSummary from './TripSummary';
 import AllTrips from './AllTrips';
 import UserProfile from './UserProfile';
+import CurrenciesRates from './CurrenciesRates';
 import Footer from './Footer';
 import Layout from '../layout/Layout';
 import PrivateRoute from './PrivateRoute';
@@ -35,6 +36,7 @@ class App extends React.Component {
           <PrivateRoute path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
           <PrivateRoute path='/trips/:tripId/expenses/add' component={AddExpense} />
           <PrivateRoute path='/users/profile' component={UserProfile} />
+          <PrivateRoute path='/trips/currencies/:tripId' component={CurrenciesRates} />
           <Footer/>
         </Layout>
       </Router>
