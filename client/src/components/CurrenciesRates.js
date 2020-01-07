@@ -32,7 +32,7 @@ const SingleRate = styled.li`
   align-items: center;
   border-bottom: 1px solid ${theme.colors.neutralMidLight};
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   line-height: 1;
   padding: .75rem;
   text-align: left;
@@ -48,19 +48,19 @@ const SingleRate = styled.li`
 
 const RateName = styled.span`
   font-weight: 700;
+  text-align: center;
   text-transform: uppercase;
-  width: 30%;
 `;
 
 const RateNumber = styled.span`
   font-size: 1.2em;
-  width: 50%;
 `;
 
 const RatesDate = styled.span`
   font-weight: 700;
   padding: 0 .5em;
 `;
+
 
 class CurrenciesRates extends Component {
 
@@ -171,8 +171,8 @@ class CurrenciesRates extends Component {
     return dataToRender.map((currency) => {
       return (
         <SingleRate key={currency.name}>
-          <RateName>{currency.name}</RateName>
-          <RateNumber>{currency.rate.toFixed(3)}</RateNumber>
+          <RateName>1 {currency.name}</RateName>
+          <RateNumber>{currency.rate.toFixed(2)}</RateNumber>
         </SingleRate>
       )
     })
