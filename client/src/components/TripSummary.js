@@ -62,23 +62,12 @@ class TripSummary extends Component {
     super(props);
     this.state = {
       tripName: "",
-      tripCategories: [], // simple array
-      tripBudget: 0, // number
-      tripMainCurrency: "", // PLN, GBP etc.
-      totalExpensesByCategory: [], // array of objects representing expenses, in original currency
-      sumExpenses: 0, // one number
-
-      temporaryRates: [  // to be replaced
-        { name: 'USD', rate: 4.2569 },
-        { name: 'EUR', rate: 3.8213 },
-        { name: 'GBP', rate: 4.9934 },
-        { name: 'JPY', rate: 3.5358 },
-        { name: 'AUD', rate: 2.6507 },
-        { name: 'CAD', rate: 2.9430 },
-        { name: 'CHF', rate: 3.9254 },
-        { name: 'PLN', rate: 1 } 
-      ],
-
+      tripCategories: [], 
+      tripBudget: 0, 
+      tripMainCurrency: "", 
+      totalExpensesByCategory: [], 
+      sumExpenses: 0, 
+      ratesObjectFromState: ratesObject
     }
   }
 
@@ -86,6 +75,19 @@ class TripSummary extends Component {
 
     const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
+
+      // modify object with currencies table to get one array of currencies rate in relation to main currency
+      let finalRatesList = this.state.ratesObjectFromState.data;
+
+      // find proper rates table (array) in the object, based on mainCurrency, and return only this one
+      for (const property in finalRatesList) {
+        if (property === res.data.mainCurrency) {
+          finalRatesList = finalRatesList[property];
+        } else {
+          continue;
+        }
+      }
+
       // use data to create expnsesArray with objects representing trip expenses in different currencies
       const expensesArray = [];
       res.data.expenses.forEach(element => {
@@ -99,51 +101,28 @@ class TripSummary extends Component {
           });
       });
 
-      // check rates
-      let clone = ratesObject.data;
-      console.log(clone);
-
-      // find proper rates table (array) in the list of all tables fetched from API, based on mainCurrency
-      for (const property in clone) {
-        if (property === res.data.mainCurrency) {
-          console.log("yes");
-          clone = clone[property];
-        } else {
-          continue;
-        }
-      } 
-      console.log(clone);
-      
-      //
-
-      // use expensesArray to create variable expensesSum with array of objects representing each expense, recalculated to main currency using currency rates
+      // use expensesArray to create expensesSum with array of objects representing each expense
+      // already recalculated to main currency using currency rates
+      // finally reduce expensesSum to one number: all added expenses i
       let expensesSum = [];
-
-      this.state.temporaryRates.forEach(element => {
-
+      finalRatesList.forEach(element => {
         for(let i = 0; i < expensesArray.length; i++) {
-          if (
-              (element.name === expensesArray[i].currency) && 
-              (element.name !== this.state.tripMainCurrency)
-            ) 
-            {
+          if (element.name === expensesArray[i].currency) {
               expensesSum.push(expensesArray[i].cost * element.rate);
             } else continue;
         }
-
       });
-
-      // convert expensesSum to one number: all added expenses
       expensesSum = expensesSum.reduce((x, y) => x + y, 0) 
+      console.log(expensesSum);
 
-      //calculate data to get values for totalExpensesByCategory in state
+      // calculate data to get values for totalExpensesByCategory in state
       const perCategoryArray = res.data.categories.map(function(value) {
         return {name: value, amount: 0, currency: res.data.mainCurrency}; 
       });
       expensesArray.forEach(el => {
         for(let i = 0; i < perCategoryArray.length; i++) {   
           if (perCategoryArray[i].name === el.category) {
-            const obj = this.state.temporaryRates.find(o => o.name === el.currency);
+            const obj = finalRatesList.find(o => o.name === el.currency);
             const singleRate = obj.rate;
             perCategoryArray[i].amount = perCategoryArray[i].amount + (el.cost * singleRate); 
             return perCategoryArray;
