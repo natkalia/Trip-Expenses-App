@@ -38,6 +38,8 @@ class AllExpenses extends Component {
 
   async componentDidMount () {
     // here we will get expenses data
+    await this.getActualTripInfo();
+    console.log(JSON.stringify(this.state.expenses, null, 2));
   }
 
   render() {
