@@ -9,7 +9,6 @@ import {
   LinkButtonBig,
   LinkButtonSmall,
   ParagraphAlignedCenter,
-  InputCheckbox,
   InputCheckboxContainer,
   Label
 } from './styled';
@@ -73,9 +72,8 @@ const CustomSmallButton = styled(LinkButtonSmall)`
   flex-grow: 1;
 `;
 
-const InputCheckboxCustom = styled(InputCheckbox)`
-  flex: 1;
-  margin-right: 10px;
+const InputCheckboxCustom = styled.input`
+  margin: 0 10px 5px 0;
 `
 
 const InputCheckboxContainerCustom = styled(InputCheckboxContainer)`
