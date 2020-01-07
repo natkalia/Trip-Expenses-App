@@ -26,7 +26,8 @@ class Login extends React.Component {
     await axios.post(url, user)
       .then(res => localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]))
       .then(() => this.props.setLoggedIn())
-      .then(() => this.props.history.push('/trips/all'))
+      // .then(() => this.props.history.push('/trips/all'))
+      .then(() => this.props.history.push('/trips/summary/5e143f9b418b0b2c18ea401d'))
       .catch(err => console.log(err));
   }
 

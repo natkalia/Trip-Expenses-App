@@ -11,6 +11,8 @@ import {
   H3
 } from './styled';
 
+import { ratesObject } from './RatesList';
+
 const Paragraph = styled.p`
   color: ${theme.colors.neutralDark};
   font-size: 20px;
@@ -60,8 +62,8 @@ class TripSummary extends Component {
     super(props);
     this.state = {
       tripName: "",
-      budgetAmount: "",
-      budgetCurrency: "",
+      tripBudget: "",
+      tripMainCurrency: "",
       spentAmountinMainCurrency: "",
       tripCategories: [],
       tripCurrenciesWithRatesToMainCurrency: [ //should be fetched from API - to be refactored
@@ -100,7 +102,7 @@ class TripSummary extends Component {
         for(let i = 0; i < expensesArray.length; i++) {
           if (
               (element.name === expensesArray[i].currency) && 
-              (element.name !== this.state.mainCurrency)
+              (element.name !== this.state.tripMainCurrency)
             ) 
             {
               expensesSum.push(expensesArray[i].cost * element.rate);
@@ -126,8 +128,8 @@ class TripSummary extends Component {
 
       this.setState({
         tripName: res.data.name,
-        budgetAmount: res.data.budget,
-        budgetCurrency: res.data.mainCurrency,
+        tripBudget: res.data.budget,
+        tripMainCurrency: res.data.mainCurrency,
         tripCategories: res.data.categories,
         spentAmountinMainCurrency: expensesSum,
         totalExpensesByCategory: perCategoryArray
@@ -191,6 +193,7 @@ class TripSummary extends Component {
   componentDidMount = async () => {
     await this.getDataFromTrip();
     await this.createChartExpenses();
+    console.log(ratesObject);
   }
 
   render() {
@@ -202,22 +205,22 @@ class TripSummary extends Component {
             <Paragraph> 
               {
                 `Budget: 
-                ${this.state.budgetAmount} 
-                ${this.state.budgetCurrency}`
+                ${this.state.tripBudget} 
+                ${this.state.tripMainCurrency}`
               }
             </Paragraph>
             <Paragraph>
               {
                 `Spent: 
                 ${Math.floor(this.state.spentAmountinMainCurrency, 2)} 
-                ${this.state.budgetCurrency}`
+                ${this.state.tripMainCurrency}`
               } 
             </Paragraph>
             <Paragraph>
               {
                 `Left: 
-                ${Math.floor((this.state.budgetAmount - this.state.spentAmountinMainCurrency), 2)} 
-                ${this.state.budgetCurrency}`
+                ${Math.floor((this.state.tripBudget - this.state.spentAmountinMainCurrency), 2)} 
+                ${this.state.tripMainCurrency}`
               } 
             </Paragraph>
             <ColoredLine/>
