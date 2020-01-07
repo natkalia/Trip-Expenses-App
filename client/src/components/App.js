@@ -13,6 +13,7 @@ import TripSummary from './TripSummary';
 import AllTrips from './AllTrips';
 import UserProfile from './UserProfile';
 import CurrenciesRates from './CurrenciesRates';
+import AllExpenses from './AllExpenses';
 import Footer from './Footer';
 import Layout from '../layout/Layout';
 import PrivateRoute from './PrivateRoute';
