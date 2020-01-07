@@ -26,7 +26,7 @@ const expenseSchema = new mongoose.Schema({
   name: {
     type: String,
     minlength: 3,
-    maxlength: 30,
+    maxlength: 40,
     trim: true,
     required: [true, 'You should define expense name']
   },
@@ -153,7 +153,7 @@ function validateExpense(expenseObject, categoriesArray) {
     name: Joi.string()
       .trim()
       .min(3)
-      .max(30)
+      .max(40)
       .required(),
     category: Joi.string()
       .required()
@@ -165,7 +165,6 @@ function validateExpense(expenseObject, categoriesArray) {
       .precision(2)
       .required(),
     currency: Joi.string()
-      // .default(Joi.ref('/mainCurrency'))
       .valid(...supportedCurrencies)
       .required()
   });

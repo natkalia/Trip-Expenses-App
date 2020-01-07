@@ -143,10 +143,10 @@ class EditExpense extends Component {
 
         <Form onSubmit={this.onEditSubmit}>
 
-          <Label htmlFor="expenseName-edit">Name (3-30 characters):</Label>
+          <Label htmlFor="expenseName-edit">Name (3-40 characters):</Label>
           <Input 
             minlength="3" 
-            maxlength="30" 
+            maxlength="40" 
             type="text" 
             name="expenseName" 
             id="expenseName-edit"
