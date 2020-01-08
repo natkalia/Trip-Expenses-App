@@ -55,11 +55,11 @@ class SingleTrip extends Component {
           </InfoWrapper>
 
           <InnerContainer>  
-            <LinkButtonBig to={`/trips/${this.props.match.params.id}/expenses/add`} color="green">Add Expense</LinkButtonBig>
-            <LinkButtonBig to={`/trips/summary/${this.props.match.params.id}`} color="green">Summary</LinkButtonBig>
-            <LinkButtonBig to={`/`} color="disabled">All Expenses</LinkButtonBig>
-            <LinkButtonBig to={`/`} color="disabled">Manage Categories</LinkButtonBig>
-            <LinkButtonBig to={`/`} color="disabled">Manage Currency</LinkButtonBig>
+            <LinkButtonBig to={`/trips/${this.props.match.params.tripId}/expenses/add`} color="green">Add Expense</LinkButtonBig>
+            <LinkButtonBig to={`/trips/summary/${this.props.match.params.tripId}`} color="green">Summary</LinkButtonBig>
+            <LinkButtonBig to={`#`} color="disabled">All Expenses</LinkButtonBig>
+            <LinkButtonBig to={`#`} color="disabled">Manage Categories</LinkButtonBig>
+            <LinkButtonBig to={`/trips/currencies/${this.props.match.params.tripId}`} color="greyOutline">Manage Currency</LinkButtonBig>
           </InnerContainer>          
         </ContentWrapper>
       </>      
