@@ -13,8 +13,10 @@ class EditExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripId: "5e1368962bc58a16e4917fe3", // temporary
-      expenseId: "5e136be35221cf1ee0802829", // temporary
+      // tripId: "5e1368962bc58a16e4917fe3", // temporary
+      // expenseId: "5e136be35221cf1ee0802829", // temporary
+      tripId: this.props.match.params.tripId,
+      expenseId: this.props.match.params.expenseId,
       expenseName: "", 
       expenseCategory: 
       {
@@ -143,10 +145,10 @@ class EditExpense extends Component {
 
         <Form onSubmit={this.onEditSubmit}>
 
-          <Label htmlFor="expenseName-edit">Name (3-30 characters):</Label>
+          <Label htmlFor="expenseName-edit">Name (3-40 characters):</Label>
           <Input 
             minlength="3" 
-            maxlength="30" 
+            maxlength="40" 
             type="text" 
             name="expenseName" 
             id="expenseName-edit"

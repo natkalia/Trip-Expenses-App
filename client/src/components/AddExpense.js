@@ -105,10 +105,10 @@ class AddExpense extends Component {
 
         <Form onSubmit={this.onFormSubmit}>
 
-          <Label htmlFor="expenseName-add">Name (3-30 characters):</Label>
+          <Label htmlFor="expenseName-add">Name (3-40 characters):</Label>
           <Input 
             minlength="3" 
-            maxlength="30" 
+            maxlength="40" 
             type="text" 
             name="expenseName" 
             id="expenseName-add" 
