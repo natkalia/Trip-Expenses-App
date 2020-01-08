@@ -39,34 +39,13 @@ export const TripHeader = (prop) => {
   )
 }
 
-export const ContentWrapper = styled.div `
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  width:100%;
-  background-color: rgba(255,255,255,0.85);
-  margin: 40px auto 40px;
-  padding-bottom:20px;
-  box-shadow: 0 0 5px ${theme.colors.neutralMidDark};
-  ${theme.media.landscapePhone} {  
-    border-radius: ${theme.radius.bg};
-    width: 90%;
-  }
-`;
-
-export const HeaderWrapper = styled.div `
+export const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items:center;
-  justify-content:center;
+  justify-content: center;
   min-height: 70px;
-  padding: 20px 0;
-  margin-bottom: 30px;
-  background-color: rgba(255,255,255,0.85);
-  box-shadow: 0 4px 4px ${theme.colors.neutralExtraLight};
-  ${theme.media.landscapePhone} {  
-    border-radius: ${theme.radius.bg} ${theme.radius.bg} 0 0;
-  }
+  margin-bottom: 20px;
 `;
 
 export const InnerContainer = styled.div`

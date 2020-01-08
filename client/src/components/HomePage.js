@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { theme } from '../utils/theme';
-import { ContentWrapper } from './styled.js';
 import HomePageImage from '../images/map-with-pins.png';
 import PinImage from '../images/pin.png';
 
-const ContentWrapperCustom = styled(ContentWrapper)`    
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 900px;
   min-width: 300px;
+  background-color: rgba(255,255,255,0.85);
+  margin: 40px auto 40px;
+  padding-bottom: 20px;
+  box-shadow: 0 0 5px ${theme.colors.neutralMidDark};
   border-radius: 0;
-  ${theme.media.tablet} {
+  ${theme.media.landscapePhone} {
     width: 90%;    
     border-radius: ${theme.radius.bg};
   }
@@ -82,7 +87,7 @@ const BodyWrapper = styled.div`
 class HomePage extends Component {
   render() {
     return(
-      <ContentWrapperCustom>
+      <ContentWrapper>
           <HeaderWrapper>
             <ImageWrapper>
               <ImgHomePage src={HomePageImage} alt="Map image"/>
@@ -98,9 +103,8 @@ class HomePage extends Component {
               <ListItem>Control your expenses in different categories</ListItem>
               <ListItem>Check if you remain within your budget</ListItem>
             </List>
-          </BodyWrapper>
-        
-      </ContentWrapperCustom>
+          </BodyWrapper>        
+      </ContentWrapper>
     )
   }
 }

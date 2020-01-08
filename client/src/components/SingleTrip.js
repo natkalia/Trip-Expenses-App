@@ -3,12 +3,12 @@ import moment from 'moment';
 import axios from 'axios';
 import {
   TripHeader,
-  ContentWrapper,
-  HeaderWrapper,
+  InfoWrapper,
   InnerContainer,
   ParagraphAlignedCenter,
   LinkButtonBig,
 } from './styled';
+import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
 
 
@@ -41,8 +41,8 @@ class SingleTrip extends Component {
       <>
         <TripHeader name={this.state.name}/>
         
-        <ContentWrapper>          
-          <HeaderWrapper>
+        <ContentWrapper title="Trip Details">          
+          <InfoWrapper>
             <InnerContainer>
               <ParagraphAlignedCenter>
                 <b>Start Date:</b> &nbsp;
@@ -52,7 +52,7 @@ class SingleTrip extends Component {
                 {this.state.description}
               </ParagraphAlignedCenter>
             </InnerContainer>          
-          </HeaderWrapper>
+          </InfoWrapper>
 
           <InnerContainer>  
             <LinkButtonBig to={`/trips/${this.props.match.params.id}/expenses/add`} color="green">Add Expense</LinkButtonBig>
