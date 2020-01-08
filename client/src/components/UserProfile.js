@@ -49,6 +49,13 @@ const DisabledText = styled(ParagraphAlignedLeft)`
 `
 
 class UserProfile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "Temp Username", // temporary
+      email: "temp@user.email.pl" // temporary
+    }
+  }
   render() {
     return (
       <ContentWrapper title="Settings">
@@ -57,20 +64,20 @@ class UserProfile extends Component {
             <SectionTitle>Your Profile Information</SectionTitle>
             <DataGroup>
               <LabelData>User Name:</LabelData>
-              <DisabledText></DisabledText>
+                <DisabledText>{this.state.name}</DisabledText>
             </DataGroup>
             <DataGroup>
               <LabelData>Email:</LabelData>
-              <DisabledText></DisabledText>
+                <DisabledText>{this.state.email}</DisabledText>
             </DataGroup>      
           </Section>
           <Section>
             <SectionTitle>Category settings:</SectionTitle>
-            <Button to={`/`} color="disabled">Manage Categories</Button>
+            <Button to={`#`} color="disabled">Manage Categories</Button>
           </Section>
           <Section>
             <SectionTitle>Currency settings:</SectionTitle>
-            <Button to={`/`} color="disabled">Manage Currency</Button>
+            <Button to={`#`} color="disabled">Manage Currency</Button>
           </Section>
         </InnerContainer>
       </ContentWrapper>
