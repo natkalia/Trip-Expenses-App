@@ -73,8 +73,6 @@ class TripSummary extends Component {
 
   getDataFromTrip = async () => {
 
-    console.log(ratesObject);
-
     const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
 
