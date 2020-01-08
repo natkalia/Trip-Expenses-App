@@ -131,7 +131,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setChoosenTrip: () => dispatch(setChoosenTrip())
+    setChoosenTrip: (tripId, tripName) => dispatch(setChoosenTrip(tripId, tripName))
   }
 }
 
