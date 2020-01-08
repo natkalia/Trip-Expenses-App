@@ -23,12 +23,12 @@ const clearState = () => ({
   payload: {}
 });
 
-const setChoosenTrip = (tripId, tripName) => ({
+const setChoosenTrip = (id, name) => ({
   type: SET_CHOOSEN_TRIP,
   payload: {
     choosenTrip: {
-      tripId,
-      tripName
+      id,
+      name
     }
   }
 });

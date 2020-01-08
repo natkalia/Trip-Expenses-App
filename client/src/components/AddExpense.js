@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
+import { connect } from 'react-redux';
 import ContentWrapper from './ContentWrapper';
 import Button from './Button';
 import { Form, Label, Input, customStyleSelect } from './styled';
@@ -13,7 +14,6 @@ class AddExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripId: "5e0dd4fa618f3e1f10d4db80", // temporary
       expenseName: "", 
       expenseCategory: 
         {
@@ -72,7 +72,7 @@ class AddExpense extends Component {
       currency: this.state.expenseCurrency.value
     }
 
-    axios.post(`http://localhost:3000/api/trips/${this.state.tripId}/expenses`, expense, { headers: { "x-auth-token": `${getToken()}`}})
+    axios.post(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses`, expense, { headers: { "x-auth-token": `${getToken()}`}})
     .then(res => console.log(res.data))
     .then(this.setState({ 
       expenseName: "", 
@@ -83,7 +83,7 @@ class AddExpense extends Component {
   };
 
   getCategoriesFromTrip = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`, { headers: { "x-auth-token": `${getToken()}`}});
+    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`}});
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
       this.setState({
@@ -162,5 +162,11 @@ class AddExpense extends Component {
     )
   }
 } 
-  
-export default AddExpense;
+
+const mapStateToProps = (state) => {
+  return {
+    choosenTripId: state.choosenTrip.id
+  }
+}
+
+export default connect(mapStateToProps)(AddExpense);
