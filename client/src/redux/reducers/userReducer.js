@@ -1,12 +1,14 @@
 import {
   SET_LOGGED_IN,
   SET_LOGGED_OUT,
-  CLEAR_STATE
+  CLEAR_STATE,
+  SET_CHOOSEN_TRIP
 } from '../actions/userActions';
 
 
 const initialState = {
-  isLoggedIn: false
+  isLoggedIn: false,
+  choosenTrip: {}
 };
 
 const userReducer = (state = initialState, action) => {
@@ -17,6 +19,8 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state,action.payload)
     case CLEAR_STATE:
       return {}
+    case SET_CHOOSEN_TRIP:
+      return Object.assign({}, state,action.payload)
     default:
       return state
   }
