@@ -19,6 +19,14 @@ const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
   }
+
+  a, input:focus {
+    outline: none;
+  }
+
+  button::-moz-focus-inner {
+    border: 0;
+  }
 `;
 
 const StyledWrapper = styled.div`

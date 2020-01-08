@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { theme } from '../utils/theme';
 import ContentWrapper from './ContentWrapper';
-import { H2, H3, InnerContainer, LinkButtonSmall } from './styled';
+import { H3, InnerContainer, LinkButtonSmall } from './styled';
 
 const SectionTitle = styled(H3)`
   &::after{
