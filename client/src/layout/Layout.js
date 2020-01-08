@@ -1,6 +1,11 @@
 import React from 'react';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faWallet, faDollarSign } from '@fortawesome/free-solid-svg-icons'
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { theme } from '../utils/theme';
+
+// Add favicons that will be used in the project
+library.add(faWallet, faDollarSign);
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Open+Sans:300i,400,600|Rubik:400,500,700&display=swap');
@@ -18,6 +23,14 @@ const GlobalStyle = createGlobalStyle`
   
   *, *::before, *::after {
     box-sizing: border-box;
+  }
+
+  a, input:focus {
+    outline: none;
+  }
+
+  button::-moz-focus-inner {
+    border: 0;
   }
 `;
 
