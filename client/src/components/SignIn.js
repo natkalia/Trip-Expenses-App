@@ -27,10 +27,8 @@ class Login extends React.Component {
       .then(res => localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]))
       .then(() => this.props.setLoggedIn())
       .then(() => this.props.history.push('/trips/all'))
-      // Uncomment and change :tripId for testing CurrencyComponent
-      // Change Currency in Edit Trip or in Mongo Compass for test
-      // different currency rates
-      // .then(() => this.props.history.push('/trips/currencies/5e13afa0da2daf0ef07a3b8b'))
+      // Uncomment and change :tripId for testing Expenses View
+      // .then(() => this.props.history.push('/trips/5e13afa0da2daf0ef07a3b8b/expenses/all'))
       .catch(err => console.log(err));
   }
 

@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import { theme } from '../utils/theme';
 import {
   ParagraphAlignedCenter,
-  TripHeader
+  TripHeader,
+  Ul
 } from './styled';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
@@ -13,12 +14,6 @@ import getToken from '../utils/getToken';
 const LeadingText = styled(ParagraphAlignedCenter)`
   font-size: 1.2em;
   margin-bottom: 1.2em;
-`;
-
-const Ul = styled.ul`
-  list-style: none;
-  padding: 0;
-  width: 100%;
 `;
 
 const CurrencyContainer = styled.div`
