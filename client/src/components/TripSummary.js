@@ -88,7 +88,7 @@ class TripSummary extends Component {
         }
       }
 
-      // use data to create expnsesArray with objects representing trip expenses in different currencies
+      // use data to create expensesArray with objects representing trip expenses in different currencies
       const expensesArray = [];
       res.data.expenses.forEach(element => {
         expensesArray.push(
@@ -195,7 +195,9 @@ class TripSummary extends Component {
 
   componentDidMount = async () => {
     await this.getDataFromTrip();
-    await this.createChartExpenses();
+    if (this.state.sumExpenses !== 0) {
+      await this.createChartExpenses();
+    }
   }
 
   render() {
