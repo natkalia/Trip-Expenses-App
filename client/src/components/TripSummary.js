@@ -11,6 +11,8 @@ import {
   H3
 } from './styled';
 
+import { ratesObject } from './RatesList';
+
 const Paragraph = styled.p`
   color: ${theme.colors.neutralDark};
   font-size: 20px;
@@ -60,30 +62,34 @@ class TripSummary extends Component {
     super(props);
     this.state = {
       tripName: "",
-      budgetAmount: "",
-      budgetCurrency: "",
-      spentAmountinMainCurrency: "",
-      tripCategories: [],
-      tripCurrenciesWithRatesToMainCurrency: [ //should be fetched from API - to be refactored
-        { name: 'USD', rate: 4.2569 },
-        { name: 'EUR', rate: 3.8213 },
-        { name: 'GBP', rate: 4.9934 },
-        { name: 'JPY', rate: 3.5358 },
-        { name: 'AUD', rate: 2.6507 },
-        { name: 'CAD', rate: 2.9430 },
-        { name: 'CHF', rate: 3.9254 },
-        { name: 'PLN', rate: 1 } // necessary to make sure that always we can loop through all expenses, this should be refactored to use other main currencies
-      ],
-      totalExpensesByCategory: []
+      tripCategories: [], 
+      tripBudget: 0, 
+      tripMainCurrency: "", 
+      totalExpensesByCategory: [], 
+      sumExpenses: 0, 
+      ratesObjectFromState: ratesObject
     }
   }
 
   getDataFromTrip = async () => {
+
     const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
-      // use data to create expnsesArray with objects representing trip expenses in different currencies
+
+      // modify object with currencies table to get one array of currencies rate in relation to main currency
+      let finalRatesList = this.state.ratesObjectFromState.data;
+
+      // find proper rates table (array) in the object, based on mainCurrency, and return only this one
+      for (const property in finalRatesList) {
+        if (property === res.data.mainCurrency) {
+          finalRatesList = finalRatesList[property];
+        } else {
+          continue;
+        }
+      }
+
+      // use data to create expensesArray with objects representing trip expenses in different currencies
       const expensesArray = [];
-      let expensesSum = [];
       res.data.expenses.forEach(element => {
         expensesArray.push(
           { 
@@ -95,28 +101,27 @@ class TripSummary extends Component {
           });
       });
 
-      // use expensesArray to create variable expensesSum with one number: all added expenses, recalculated to main currency using currency rates
-      this.state.tripCurrenciesWithRatesToMainCurrency.forEach(element => {
+      // use expensesArray to create expensesSum with array of objects representing each expense
+      // already recalculated to main currency using currency rates
+      // finally reduce expensesSum to one number: all added expenses i
+      let expensesSum = [];
+      finalRatesList.forEach(element => {
         for(let i = 0; i < expensesArray.length; i++) {
-          if (
-              (element.name === expensesArray[i].currency) && 
-              (element.name !== this.state.mainCurrency)
-            ) 
-            {
+          if (element.name === expensesArray[i].currency) {
               expensesSum.push(expensesArray[i].cost * element.rate);
             } else continue;
         }
       });
-      expensesSum = expensesSum.reduce((x, y) => x + y, 0) 
+      expensesSum = expensesSum.reduce((x, y) => x + y, 0)
 
-      //calculate data to get values for totalExpensesByCategory in state
+      // calculate data to get values for totalExpensesByCategory in state
       const perCategoryArray = res.data.categories.map(function(value) {
         return {name: value, amount: 0, currency: res.data.mainCurrency}; 
       });
       expensesArray.forEach(el => {
         for(let i = 0; i < perCategoryArray.length; i++) {   
           if (perCategoryArray[i].name === el.category) {
-            const obj = this.state.tripCurrenciesWithRatesToMainCurrency.find(o => o.name === el.currency);
+            const obj = finalRatesList.find(o => o.name === el.currency);
             const singleRate = obj.rate;
             perCategoryArray[i].amount = perCategoryArray[i].amount + (el.cost * singleRate); 
             return perCategoryArray;
@@ -126,10 +131,10 @@ class TripSummary extends Component {
 
       this.setState({
         tripName: res.data.name,
-        budgetAmount: res.data.budget,
-        budgetCurrency: res.data.mainCurrency,
+        tripBudget: res.data.budget,
+        tripMainCurrency: res.data.mainCurrency,
         tripCategories: res.data.categories,
-        spentAmountinMainCurrency: expensesSum,
+        sumExpenses: expensesSum,
         totalExpensesByCategory: perCategoryArray
       });
 
@@ -190,7 +195,9 @@ class TripSummary extends Component {
 
   componentDidMount = async () => {
     await this.getDataFromTrip();
-    await this.createChartExpenses();
+    if (this.state.sumExpenses !== 0) {
+      await this.createChartExpenses();
+    }
   }
 
   render() {
@@ -202,22 +209,22 @@ class TripSummary extends Component {
             <Paragraph> 
               {
                 `Budget: 
-                ${this.state.budgetAmount} 
-                ${this.state.budgetCurrency}`
+                ${this.state.tripBudget} 
+                ${this.state.tripMainCurrency}`
               }
             </Paragraph>
             <Paragraph>
               {
                 `Spent: 
-                ${Math.floor(this.state.spentAmountinMainCurrency, 2)} 
-                ${this.state.budgetCurrency}`
+                ${Math.floor(this.state.sumExpenses, 2)} 
+                ${this.state.tripMainCurrency}`
               } 
             </Paragraph>
             <Paragraph>
               {
                 `Left: 
-                ${Math.floor((this.state.budgetAmount - this.state.spentAmountinMainCurrency), 2)} 
-                ${this.state.budgetCurrency}`
+                ${Math.floor((this.state.tripBudget - this.state.sumExpenses), 2)} 
+                ${this.state.tripMainCurrency}`
               } 
             </Paragraph>
             <ColoredLine/>
