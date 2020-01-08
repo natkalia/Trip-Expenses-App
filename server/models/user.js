@@ -42,7 +42,9 @@ userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign({
     _id: this._id,
     name: this.name,
-  }, config.get('db.jwtPrivateKey'));
+  }, 
+  // config.get('db.jwtPrivateKey'));
+  process.env.JWT_PRIVATEKEY); //deployment
   return token;
 }
 
