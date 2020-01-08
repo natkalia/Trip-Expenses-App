@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // App routes
-app.use('/api/trips', tripsRouter);
+app.use('/api/trips', checkAuthenticated, tripsRouter);
 // app.use('/api/trips', tripsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/currencies', currencyRouter);
