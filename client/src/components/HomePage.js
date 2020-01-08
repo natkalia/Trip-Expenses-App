@@ -12,7 +12,7 @@ const ContentWrapperCustom = styled(ContentWrapper)`
   border-radius: 0;
   ${theme.media.tablet} {
     width: 90%;    
-    border-radius: 10px;
+    border-radius: ${theme.radius.bg};
   }
 `;
 
