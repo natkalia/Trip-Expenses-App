@@ -32,7 +32,7 @@ class App extends React.Component {
           <Route path='/users/login' component={SignIn} />
           <Route path='/users/register' component={RegisterUser} />
           <PrivateRoute path='/trips/single/:id' component={SingleTrip} />
-          <PrivateRoute path='/trips/summary/:id' component={TripSummary} />
+          <PrivateRoute path='/trips/summary/:id' component={TripSummary} />    
           <PrivateRoute path='/trips/all' component={AllTrips} />
           <PrivateRoute path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
           <PrivateRoute path='/trips/:tripId/expenses/add' component={AddExpense} />
