@@ -73,6 +73,8 @@ class TripSummary extends Component {
 
   getDataFromTrip = async () => {
 
+    console.log(ratesObject);
+
     const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
 
@@ -112,8 +114,7 @@ class TripSummary extends Component {
             } else continue;
         }
       });
-      expensesSum = expensesSum.reduce((x, y) => x + y, 0) 
-      console.log(expensesSum);
+      expensesSum = expensesSum.reduce((x, y) => x + y, 0)
 
       // calculate data to get values for totalExpensesByCategory in state
       const perCategoryArray = res.data.categories.map(function(value) {
