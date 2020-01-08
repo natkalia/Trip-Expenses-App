@@ -1,8 +1,5 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
-import moment from 'moment';
-import styled from 'styled-components';
-import { theme } from '../utils/theme';
 import {
   LinkButtonBig,
   TripHeader
@@ -31,6 +28,8 @@ class AllExpenses extends Component {
   getActualExpenses = async () => {
     try {
       // it returns only data - don't change state
+      // it is used to filter & sort data
+      // if we will keep all expenses in Redux it may call data from Redux
       const result = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.tripId}/expenses`, { headers: { "x-auth-token": `${getToken()}`} });
       const { expenses } = result.data;
       return expenses;
@@ -44,10 +43,9 @@ class AllExpenses extends Component {
   getActualTripInfo = async () => {
     try {
       const result = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.tripId}`, { headers: { "x-auth-token": `${getToken()}`} });
-      const { expenses, name, _id: tripId } = result.data;
+      const { name, _id: tripId } = result.data;
       this.setState({
         name: name,
-        expenses: expenses,
         tripId: tripId,
       });
     } catch(error) {
@@ -58,13 +56,11 @@ class AllExpenses extends Component {
   async componentDidMount () {
     // here we will get expenses data
     await this.getActualTripInfo();
-    console.log('State 1:');
-    console.log(JSON.stringify(this.state.expenses, null, 2));
     const onlyExpenses = await this.getActualExpenses();
     onlyExpenses.reverse();
     this.setState({expenses : onlyExpenses});
-    console.log('State 2:');
-    console.log(JSON.stringify(this.state.expenses, null, 2));
+    // what we get from state:
+    // console.log(JSON.stringify(this.state.expenses, null, 2));
   }
 
   render() {
@@ -82,7 +78,7 @@ class AllExpenses extends Component {
 
             </ExpensesList>
           ) : (
-            <p>Ohm, you haven't any entered expenses yet.</p>
+            <p>Oh, you haven't entered any expenses yet.</p>
           )}
         </ContentWrapper>
       </>
