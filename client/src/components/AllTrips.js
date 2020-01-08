@@ -147,7 +147,7 @@ class AllTrips extends Component {
   }
 
   componentDidMount() {
-    axios.get(`api/users/5e15ea4b2bab1300221a67a7/trips`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`/api/users/5e15ea4b2bab1300221a67a7/trips`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({trips: res.data.trips}))
       .catch(err => console.log(err));
   }

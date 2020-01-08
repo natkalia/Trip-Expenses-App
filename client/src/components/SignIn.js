@@ -26,10 +26,7 @@ class Login extends React.Component {
     await axios.post(url, user)
       .then(res => localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]))
       .then(() => this.props.setLoggedIn())
-      // .then(() => this.props.history.push('/trips/all'))
-      // Uncomment and change :tripId for testing CurrencyComponent
-      // Change Currency in Edit Trip or in Mongo Compass for test
-      // different currency rates
+      .then(() => this.props.history.push('/trips/all'))
       .catch(err => console.log(err));
   }
 
