@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import {
   TripHeader,
   InfoWrapper,
@@ -25,7 +26,7 @@ class SingleTrip extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({
         id: res.data._id,
         name: res.data.name,
@@ -54,15 +55,15 @@ class SingleTrip extends Component {
           </InfoWrapper>
 
           <InnerContainer>  
-            <LinkButtonBig to={`/trips/${this.props.match.params.tripId}/expenses/add`} color="green">
+            <LinkButtonBig to={`/trips/${this.props.choosenTripId}/expenses/add`} color="green">
               <FontAwesomeIcon icon="dollar-sign"/>&nbsp;&nbsp;Add Expense
             </LinkButtonBig>
-            <LinkButtonBig to={`/trips/summary/${this.props.match.params.tripId}`} color="green">
+            <LinkButtonBig to={`/trips/summary/${this.props.choosenTripId}`} color="green">
               <FontAwesomeIcon icon="wallet"/>&nbsp;&nbsp;Budget Overview
             </LinkButtonBig>
-            <LinkButtonBig to={`#`} color="disabled">All Expenses</LinkButtonBig>
+            <LinkButtonBig to={`/trips/${this.props.choosenTripId}/expenses/all`} color="greyOutline">All Expenses</LinkButtonBig>
             <LinkButtonBig to={`#`} color="disabled">Manage Categories</LinkButtonBig>
-            <LinkButtonBig to={`/trips/currencies/${this.props.match.params.tripId}`} color="greyOutline">Manage Currency</LinkButtonBig>
+            <LinkButtonBig to={`/trips/currencies/${this.props.choosenTripId}`} color="greyOutline">Manage Currency</LinkButtonBig>
           </InnerContainer>          
         </ContentWrapper>
       </>      
@@ -70,4 +71,10 @@ class SingleTrip extends Component {
   }
 }
 
-export default SingleTrip;
+const mapStateToProps = (state) => {
+  return {
+    choosenTripId: state.choosenTrip.id
+  }
+}
+
+export default connect(mapStateToProps)(SingleTrip);
