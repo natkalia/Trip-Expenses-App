@@ -51,15 +51,15 @@ app.use('/api/trips', checkAuthenticated, tripsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/currencies', currencyRouter);
 
-// Deployment - serve static
+// Development - serve static from public
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Production - serve static from build
 if (process.env.NODE_ENV === 'production') {
-
   app.use(express.static(path.join(__dirname, '../client/build')));
-
-  // app.get('*', (req, res) => {
-  //   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-    // res.sendFile(path.join(__dirname + "../client/build/index.html"));
-  // }); 
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build'));
+  }); 
 }
 
 const port = process.env.PORT || 5000;
