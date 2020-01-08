@@ -3,15 +3,14 @@ import moment from 'moment';
 import axios from 'axios';
 import {
   TripHeader,
-  ContentWrapper,
-  HeaderWrapper,
+  InfoWrapper,
   InnerContainer,
   ParagraphAlignedCenter,
   LinkButtonBig,
 } from './styled';
+import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class SingleTrip extends Component {
 
@@ -41,8 +40,8 @@ class SingleTrip extends Component {
       <>
         <TripHeader name={this.state.name}/>
         
-        <ContentWrapper>          
-          <HeaderWrapper>
+        <ContentWrapper title="Trip Details">          
+          <InfoWrapper>
             <InnerContainer>
               <ParagraphAlignedCenter>
                 <b>Start Date:</b> &nbsp;
@@ -52,14 +51,18 @@ class SingleTrip extends Component {
                 {this.state.description}
               </ParagraphAlignedCenter>
             </InnerContainer>          
-          </HeaderWrapper>
+          </InfoWrapper>
 
           <InnerContainer>  
-            <LinkButtonBig to={`/trips/${this.props.match.params.id}/expenses/add`} color="green">Add Expense</LinkButtonBig>
-            <LinkButtonBig to={`/trips/summary/${this.props.match.params.id}`} color="green">Summary</LinkButtonBig>
-            <LinkButtonBig to={`/`} color="disabled">All Expenses</LinkButtonBig>
-            <LinkButtonBig to={`/`} color="disabled">Manage Categories</LinkButtonBig>
-            <LinkButtonBig to={`/`} color="disabled">Manage Currency</LinkButtonBig>
+            <LinkButtonBig to={`/trips/${this.props.match.params.tripId}/expenses/add`} color="green">
+              <FontAwesomeIcon icon="dollar-sign"/>&nbsp;&nbsp;Add Expense
+            </LinkButtonBig>
+            <LinkButtonBig to={`/trips/summary/${this.props.match.params.tripId}`} color="green">
+              <FontAwesomeIcon icon="wallet"/>&nbsp;&nbsp;Budget Overview
+            </LinkButtonBig>
+            <LinkButtonBig to={`#`} color="disabled">All Expenses</LinkButtonBig>
+            <LinkButtonBig to={`#`} color="disabled">Manage Categories</LinkButtonBig>
+            <LinkButtonBig to={`/trips/currencies/${this.props.match.params.tripId}`} color="greyOutline">Manage Currency</LinkButtonBig>
           </InnerContainer>          
         </ContentWrapper>
       </>      

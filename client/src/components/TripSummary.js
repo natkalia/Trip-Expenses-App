@@ -204,7 +204,7 @@ class TripSummary extends Component {
     return (
       <>
         <TripHeader name={this.state.tripName}/>
-        <ContentWrapper title="Trip budget summary">
+        <ContentWrapper title="Budget Overview">
           <InnerContainer>
             <Paragraph> 
               {
