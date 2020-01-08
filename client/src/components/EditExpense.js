@@ -13,7 +13,6 @@ class EditExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // Uncomment before PR ⤵️⤵️⤵️
       // tripId: "5e1368962bc58a16e4917fe3", // temporary
       // expenseId: "5e136be35221cf1ee0802829", // temporary
       tripId: this.props.match.params.tripId,
