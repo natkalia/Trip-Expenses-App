@@ -11,6 +11,10 @@ export const H3 = styled.h2 `
   font-size: 19px;
   font-weight: 400;
 `
+export const H4 = styled.h2 `
+  font-size: 16px;
+  font-weight: 400;
+`
 
 export const ParagraphAlignedCenter = styled.p`
   font-size: 16px;
@@ -26,7 +30,6 @@ const TripNameHeaderWrapper = styled.div`
   background-color: ${theme.colors.trip};
   color: ${theme.colors.white};
   height: 60px;
-  margin-bottom: 40px;
 `
 export const TripHeader = (prop) => {
   return (
@@ -42,7 +45,7 @@ export const ContentWrapper = styled.div `
   max-width: 600px;
   width:100%;
   background-color: rgba(255,255,255,0.85);
-  margin: 0 auto 40px;
+  margin: 40px auto 40px;
   padding-bottom:20px;
 `;
 
@@ -103,9 +106,12 @@ export const LinkButtonBig = styled(Link)`
     background-color: ${props => (
       props.green && '#15AD54'
       )};
-      font-weight: 600;
-      box-shadow: 0 0 4px 
-  } 
+    ${ props => props.color !== "disabled" && 
+    `font-weight: 600;
+      box-shadow: 0 0 4px;    
+    `
+    }
+  }
 `;
 
 export const LinkButtonSmall = styled(LinkButtonBig)`
@@ -118,7 +124,7 @@ export const LinkButtonSmall = styled(LinkButtonBig)`
 // Forms
 
 export const Form = styled.form`
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -153,18 +159,19 @@ export const Input = styled.input`
   }
 `;
 
-export const InputCheckbox = styled(Input)`
-  flex: 30%;
-  margin: auto;
+export const InputCheckbox = styled.input`
+  margin: 0 15px;
 `
 
 export const DateInput = styled(Input)`
-  width: 40%;
+  width: 110px;
   margin: 0;
   text-align: center;
 `;
 
 export const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-bottom: 20px;
 `;
 
@@ -200,9 +207,10 @@ export const Textarea = styled.textarea`
   }
 `;
 
-export const IsTripFinishedContainer = styled.div `
+export const InputCheckboxContainer = styled.div `
   display: flex;
   flex-direction: row;
+  align-items: center;
   margin-bottom: 20px;
 `;
 
@@ -215,16 +223,16 @@ export const customStyleSelect = {
     ...provided,
     color: '#000',
     padding: 2,
-    fontFamily: 'Roboto'
+    fontFamily: theme.fonts.default
   }),
   control: (provided) => ({
     ...provided,
     borderRadius: "3px",
     // border: '1px solid #000',
-    fontFamily: 'Roboto'
+    fontFamily: theme.fonts.default
   }),
   placeholder: () => ({
-    fontFamily: 'Roboto'
+    fontFamily: theme.fonts.default
   }),
   dropdownIndicator: defaultStyles => ({
     ...defaultStyles,
