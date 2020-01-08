@@ -30,7 +30,7 @@ class Login extends React.Component {
       // Uncomment and change :tripId for testing CurrencyComponent
       // Change Currency in Edit Trip or in Mongo Compass for test
       // different currency rates
-      // .then(() => this.props.history.push('/trips/currencies/5e13afa0da2daf0ef07a3b8b'))
+      .then(() => this.props.history.push('/trips/currencies/5e0cbdfc6828585720c92036'))
       .catch(err => console.log(err));
   }
 
