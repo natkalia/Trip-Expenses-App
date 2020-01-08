@@ -143,7 +143,7 @@ class Header extends Component {
   logOut = () => {
     this.props.setLoggedOut();
     this.props.clearState();
-    localStorage.removeItem('state');
+    localStorage.removeItem('travelplanner_x-auth-token');
   }
 
   setChoosen = (e) => {
