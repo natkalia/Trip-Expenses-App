@@ -26,7 +26,7 @@ class SingleTrip extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({
         id: res.data._id,
         name: res.data.name,

@@ -79,7 +79,7 @@ class CurrenciesRates extends Component {
 
   getActualTripInfo = async () => {
     try {
-      const result = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.tripId}`, { headers: { "x-auth-token": `${getToken()}`} });
+      const result = await axios.get(`/api/trips/${this.props.match.params.tripId}`, { headers: { "x-auth-token": `${getToken()}`} });
       const { mainCurrency, name } = result.data;
       this.setState({
         name: name,
@@ -92,7 +92,7 @@ class CurrenciesRates extends Component {
 
   getSupportedCurrencyList = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/currencies/list');
+      const response = await axios.get('/api/currencies/list');
       const { data: { currencies }} = response;
       const tripCurrencies = currencies.map((currency) => {
         return {

@@ -79,7 +79,7 @@ class TripSummary extends Component {
   }
 
   getDataFromTrip = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} });
+    const res = await axios.get(`/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       // use data to create expnsesArray with objects representing trip expenses in different currencies
       const expensesArray = [];
