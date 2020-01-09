@@ -115,7 +115,7 @@ class EditTrip extends Component {
   };
 
   componentDidMount () {
-    axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} }) // temporary currenTripId
+    axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({ 
           id: res.data._id,
           name: res.data.name,
