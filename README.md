@@ -92,6 +92,19 @@ npm run start:app
 - external exchange rates API: https://api.exchangerate-api.com/v4/latest/
 
 ## To improve:
+- keeping user logged in after page refresh
+- secure Private Route (change the validation method)
+- redux refactor 
+- improve solution with exchange rates object
+- add animation to dropdown menu
+- remove or hash password in login payload
+- change user status to "loggedIn" after registration
+
+## Future features:
+- adding / modifying custom categories
+- searching in user trips
+- sortig user trips
+- sorting and filtering user expenses
 
 
 ## About CodersCamp
