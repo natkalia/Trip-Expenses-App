@@ -61,8 +61,8 @@ class SingleTrip extends Component {
             <LinkButtonBig to={`/trips/summary/${this.props.choosenTripId}`} color="green">
               <FontAwesomeIcon icon="wallet"/>&nbsp;&nbsp;Budget Overview
             </LinkButtonBig>
-            <LinkButtonBig to={`/trips/${this.props.choosenTripId}/expenses/all`} color="greyOutline">All Expenses</LinkButtonBig>
-            <LinkButtonBig to={`#`} color="disabled">Manage Categories</LinkButtonBig>
+            <LinkButtonBig to={`/trips/${this.props.choosenTripId}/expenses/all`} color="greenOutline">All Expenses</LinkButtonBig>
+            <LinkButtonBig to={`/trips/edit/${this.props.choosenTripId}`} color="greenOutline">Edit / Delete Trip </LinkButtonBig>
             <LinkButtonBig to={`/trips/currencies/${this.props.choosenTripId}`} color="greyOutline">Exchange Rates</LinkButtonBig>
           </InnerContainer>          
         </ContentWrapper>

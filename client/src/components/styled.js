@@ -25,7 +25,7 @@ export const ParagraphAlignedCenter = styled.p`
 const TripNameHeaderWrapper = styled.div`
   display: flex;
   width: 100%;
-  align-content: center;
+  align-items: center;
   justify-content: center;
   background-color: ${theme.colors.trip};
   color: ${theme.colors.white};
@@ -196,7 +196,7 @@ export const ParagraphSmallItalic = styled.p `
   font-size: 14px;
   color: ${theme.colors.neutralMidDark};
   padding: 0;
-  margin-bottom: 3px;
+  margin: 3px 0;
 `;
 
 export const Textarea = styled.textarea`

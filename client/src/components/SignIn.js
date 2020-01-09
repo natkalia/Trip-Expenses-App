@@ -10,14 +10,15 @@ import {
   setCurrencyList,
   setUserId
 } from '../redux/actions/userActions';
-
+import ErrorMessage from './ErrorMessage';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      error: "",
     }    
   }
 
@@ -38,7 +39,13 @@ class Login extends React.Component {
       .then(() => getSupportedCurrencies())
       .then((list) => this.props.setCurrencyList(list))
       .then(() => this.props.history.push('/trips/all'))
-      .catch(err => console.log(err));
+      .catch((err) => {
+        if (err.response.data) {
+          this.setState({error: err.response.data.error});
+        } else {
+          this.setState({error: 'Something went wrong'});
+        }
+      });
   }
 
   onInputChange = (inputName, e) => {
@@ -50,6 +57,9 @@ class Login extends React.Component {
   render() { 
     return (
       <ContentWrapper title="Login">
+
+        <ErrorMessage error={this.state.error}></ErrorMessage>
+
         <Form onSubmit={this.onFormSubmit}>
 
           <Label htmlFor="login-email">Email:</Label>
