@@ -133,6 +133,7 @@ class CurrenciesRates extends Component {
 
     if (!this.props.exchangeRates ||
       this.props.exchangeRates.date !== todayDate) {
+        console.log('Im here?');
         const actualCurrencyRates = await  getActualCurrencyRates(this.props.currencyList);
         console.log(actualCurrencyRates);
         this.props.setExchangeRates(actualCurrencyRates);

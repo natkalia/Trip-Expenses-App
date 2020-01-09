@@ -7,7 +7,6 @@ const getSingleCurencyRates = async (currencyShortcut, currenciesArray) => {
     const currencyApiAddress = 'https://api.exchangerate-api.com/v4/latest/';
     const response = await axios.get(`${currencyApiAddress}${currencyShortcut}`);
     const { base : currencyName, rates } = response.data;
-    console.log(rates);
     const requiredCourses = currenciesArray;
     const requiredRates = Object.keys(rates)
       .filter((key) => requiredCourses.includes(key))
@@ -27,7 +26,6 @@ const getSingleCurencyRates = async (currencyShortcut, currenciesArray) => {
 const getActualCurrencyRates = async (arrayCurrencies) => {
   const currenciesArray = arrayCurrencies;
   const currenciesTables = [];
-  console.log(currenciesArray);
   currenciesArray.forEach((currency) => {
     const ratesTable = getSingleCurencyRates(currency, currenciesArray);
     currenciesTables.push(ratesTable);
@@ -44,11 +42,14 @@ const getActualCurrencyRates = async (arrayCurrencies) => {
     });
     formattedCurrenciesData[paidCurrence] = rates;
   });
+  console.log('Formatted Currencies Data');
   console.log(formattedCurrenciesData);
-  return { 
-    date: moment().format("YYYY-MM-DD"),
-    data: formattedCurrenciesData
+  const objectToReturn = {
+    "date": moment().format("YYYY-MM-DD"),
+    "data": formattedCurrenciesData
   }
+  console.log('Object to return');
+  return objectToReturn;
 };
 
 export default getActualCurrencyRates;
