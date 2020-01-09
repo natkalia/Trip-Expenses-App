@@ -38,10 +38,11 @@ const setChoosenTrip = (id, name, mainCurrency) => ({
   }
 });
 
-const updateChoosenTrip = (name) => ({
+const updateChoosenTrip = (name, mainCurrency) => ({
   type: UPDATE_CHOOSEN_TRIP,
   payload: {
-      name
+      name,
+      mainCurrency
   }
 });
 

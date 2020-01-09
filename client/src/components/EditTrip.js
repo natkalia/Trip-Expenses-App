@@ -98,7 +98,7 @@ class EditTrip extends Component {
     }
     axios.put("http://localhost:3000/api/trips/edit/" + this.props.choosenTripId, trip, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
-      .then(() => this.props.updateChoosenTrip(trip.name))
+      .then(() => this.props.updateChoosenTrip(trip.name, trip.mainCurrency))
       .then(() => this.props.history.push(`/trips/single/${this.props.choosenTripId}`));
   };
 
@@ -209,7 +209,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateChoosenTrip: name => dispatch(updateChoosenTrip(name)),
+    updateChoosenTrip: (name, mainCurrency) => dispatch(updateChoosenTrip(name, mainCurrency)),
     clearChoosenTrip: () => dispatch(clearChoosenTrip())
   }
 }
