@@ -75,18 +75,18 @@ class CurrenciesRates extends Component {
   getSingleCurencyRates = async (currencyShortcut, currenciesArray) => {
     try {
       const currencyApiAddress = 'https://api.exchangerate-api.com/v4/latest/';
-    const response = await axios.get(`${currencyApiAddress}${currencyShortcut}`)
-    const { base : currencyName, rates } = response.data;
-    const requiredCourses = currenciesArray
-    const requiredRates = Object.keys(rates)
-      .filter((key) => requiredCourses.includes(key))
-      .reduce((obj, key) => {
-        return {
-          ...obj,
-          [key]: rates[key]
-        }
-      }, {})
-    return { currencyName : currencyName, rates : requiredRates};
+      const response = await axios.get(`${currencyApiAddress}${currencyShortcut}`)
+      const { base : currencyName, rates } = response.data;
+      const requiredCourses = currenciesArray
+      const requiredRates = Object.keys(rates)
+        .filter((key) => requiredCourses.includes(key))
+        .reduce((obj, key) => {
+          return {
+            ...obj,
+            [key]: rates[key]
+          }
+        }, {})
+      return { currencyName : currencyName, rates : requiredRates};
     } catch (error) {
       console.log(error);
       return { currencyName: currencyShortcut, rates: "unavailable"}
