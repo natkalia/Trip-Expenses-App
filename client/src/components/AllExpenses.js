@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
+import { connect } from 'react-redux';
 import {
   LinkButtonBig,
   TripHeader
@@ -30,7 +31,7 @@ class AllExpenses extends Component {
       // it returns only data - don't change state
       // it is used to filter & sort data
       // if we will keep all expenses in Redux it may call data from Redux
-      const result = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.tripId}/expenses`, { headers: { "x-auth-token": `${getToken()}`} });
+      const result = await axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses`, { headers: { "x-auth-token": `${getToken()}`} });
       const { expenses } = result.data;
       return expenses;
     } catch (error) {
@@ -42,7 +43,7 @@ class AllExpenses extends Component {
   // we will connect Redux and get trip name from it
   getActualTripInfo = async () => {
     try {
-      const result = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.tripId}`, { headers: { "x-auth-token": `${getToken()}`} });
+      const result = await axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} });
       const { name, _id: tripId } = result.data;
       this.setState({
         name: name,
@@ -86,4 +87,10 @@ class AllExpenses extends Component {
   }
 } 
   
-export default AllExpenses;
+const mapStateToProps = (state) => {
+  return {
+    choosenTripId: state.choosenTrip.id
+  }
+}
+
+export default connect(mapStateToProps)(AllExpenses);

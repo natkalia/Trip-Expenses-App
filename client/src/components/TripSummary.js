@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
+import { connect } from 'react-redux';
 import ContentWrapper from './ContentWrapper';
 import Chart from 'chart.js';
 import styled from 'styled-components';
@@ -73,7 +74,7 @@ class TripSummary extends Component {
 
   getDataFromTrip = async () => {
 
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} });
+    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
 
       // modify object with currencies table to get one array of currencies rate in relation to main currency
@@ -253,4 +254,11 @@ class TripSummary extends Component {
   }
 }
 
-export default TripSummary;
+
+const mapStateToProps = (state) => {
+  return {
+    choosenTripId: state.choosenTrip.id
+  }
+}
+
+export default connect(mapStateToProps)(TripSummary);

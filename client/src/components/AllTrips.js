@@ -1,125 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import styled from 'styled-components';
-import moment from 'moment';
-import { theme } from '../utils/theme';
 import ContentWrapper from './ContentWrapper';
 import {
-  H4,
   LinkButtonBig,
-  LinkButtonSmall,
   ParagraphAlignedCenter,
-  InputCheckboxContainer,
-  Label
 } from './styled';
-import PinImage from '../images/pin.png';
 import getToken from '../utils/getToken';
+import TripCard from './TripCard';
 
-const Card = styled.div`
-  margin-bottom: 20px;
-`
-
-const CardHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  min-height: 34px;
-  background-color: ${props => props.status === "open" ? theme.colors.trip 
-    : theme.colors.neutralMidLight};  
-  color: ${theme.colors.white};
-  border-radius: 5px 5px 0 0 ;
-`
-
-const CardTitle = styled(H4)`
-  margin: 0 0 0 20px;
-`
-
-const CardBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 15px 0 0 0;
-  background-color: ${theme.colors.white};
-  border: 1px solid ${props => props.status === "open" ? theme.colors.trip 
-    : theme.colors.neutralMidLight};  
-  border-radius: 0 0 5px 5px;
-`
-
-const ParagraphAlignedLeft = styled.p`
-  font-size: 16px;
-  font-weight: 400;
-  text-align: left;
-  margin: 0 0 8px 0;
-`
-
-const Container = styled.div`
-  display:flex;
-  flex-direction: column;
-  width: 90%;
-  margin: 0 auto;
-`
-const ContainerButtons = styled.div `
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-items: space-between;
-  margin: 0 auto;
-`
-
-const CustomSmallButton = styled(LinkButtonSmall)`
-  margin: 0px 10px 20px;
-  width: 40%;
-  min-width: 150px;
-  flex-grow: 1;
-`;
-
-const InputCheckboxCustom = styled.input`
-  margin: 0 10px 5px 0;
-`
-
-const InputCheckboxContainerCustom = styled(InputCheckboxContainer)`
-  margin-bottom: 15px;
-`
-
-const PinImg = styled.img`
-  height: 20px;
-  margin: 0 0 0 20px;
-`
-
-// TRIP CARD COMPONENT
-const TripCard = (props) => {
-  let status = props.trip.isTripFinished ? 'finished' : 'open'; 
-    
-  return (
-    <Card>
-      <CardHeader status={status} >
-        {props.inPinnedTrips && 
-          < PinImg src={PinImage} alt = "Pin" />}          
-        <CardTitle>{props.trip.name}</CardTitle>
-      </CardHeader>
-
-      <CardBody status={status}>
-        <Container>
-          <ParagraphAlignedLeft>
-            start date: &nbsp; {moment(props.trip.startDate).format('YYYY-MM-DD')}
-          </ParagraphAlignedLeft>
-          {props.trip.description &&
-            <ParagraphAlignedLeft>
-              {props.trip.description}
-            </ParagraphAlignedLeft>
-          }
-          <InputCheckboxContainerCustom>
-            <InputCheckboxCustom type="checkbox" name="isPinned" id={`isPinned-${props.trip._id}`} onChange={props.onInputChange} checked={props.inPinnedTrips}/>
-            <Label htmlFor={`isPinned-${props.trip._id}`}>Pin trip to the main page</Label>         
-          </InputCheckboxContainerCustom>
-          <ContainerButtons>
-            <CustomSmallButton to={`/trips/single/${props.trip._id}`} color="grey"> Details </CustomSmallButton>
-            <CustomSmallButton to={`/trips/edit/${props.trip._id}`} color="greyOutline"> Edit / Delete </CustomSmallButton>
-          </ContainerButtons>            
-        </Container>        
-      </CardBody>
-    </Card>  
-  )
-}
 
 class AllTrips extends Component {
   constructor(props) {
@@ -147,7 +35,7 @@ class AllTrips extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/users/5e1388c0ba5aad423c1d7475/trips`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`http://localhost:3000/api/users/5e0cfed451f05203b0575062/trips`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({trips: res.data.trips}))
       .catch(err => console.log(err));
   }
@@ -170,6 +58,7 @@ class AllTrips extends Component {
       </ContentWrapper>
     )
   }
-}
+};
+
 
 export default AllTrips;

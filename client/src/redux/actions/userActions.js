@@ -1,5 +1,7 @@
 const SET_LOGGED_IN = 'SET_LOGGED_IN';
 const SET_LOGGED_OUT = 'SET_LOGGED_OUT';
+const CLEAR_STATE = 'CLEAR_STATE';
+const SET_CHOOSEN_TRIP = 'SET_CHOOSEN_TRIP';
 
 
 const setLoggedIn = () => ({
@@ -16,9 +18,28 @@ const setLoggedOut = () => ({
   }
 });
 
+const clearState = () => ({
+  type: CLEAR_STATE,
+  payload: {}
+});
+
+const setChoosenTrip = (id, name) => ({
+  type: SET_CHOOSEN_TRIP,
+  payload: {
+    choosenTrip: {
+      id,
+      name
+    }
+  }
+});
+
 export {
   setLoggedIn,
   setLoggedOut,
+  clearState,
+  setChoosenTrip,
   SET_LOGGED_IN,
-  SET_LOGGED_OUT
+  SET_LOGGED_OUT,
+  CLEAR_STATE,
+  SET_CHOOSEN_TRIP
 }

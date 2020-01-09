@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; 
 import DatePicker from 'react-datepicker';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -93,16 +94,16 @@ class EditTrip extends Component {
       budget: this.state.budget,
       mainCurrency: this.state.budgetCurrency.value
     }
-    axios.put("http://localhost:3000/api/trips/edit/" + this.state.id, trip, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.put("http://localhost:3000/api/trips/edit/" + this.props.choosenTripId, trip, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
-      .then(() => this.props.history.push(`/trips/single/${this.state.id}`));
+      .then(() => this.props.history.push(`/trips/single/${this.props.choosenTripId}`));
   };
 
   onDeleteSubmit = (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this trip?")) {
     // after authorization and Redux change hardcoded values of user id
-    axios.delete("http://localhost:3000/api/trips/" + this.state.id,
+    axios.delete("http://localhost:3000/api/trips/" + this.props.choosenTripId,
       { 
         data: {userId : "5e0fc8800785ca060578b375"},
         headers: { "x-auth-token": `${getToken()}`} 
@@ -210,4 +211,11 @@ class EditTrip extends Component {
   }
 } 
   
-export default EditTrip;
+
+const mapStateToProps = (state) => {
+  return {
+    choosenTripId: state.choosenTrip.id
+  }
+}
+
+export default connect(mapStateToProps)(EditTrip);
