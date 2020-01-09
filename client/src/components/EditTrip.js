@@ -25,6 +25,7 @@ import formatCurrencies from '../utils/formatCurrencies';
 import { updateChoosenTrip, clearChoosenTrip } from '../redux/actions/userActions';
 
 
+
 class EditTrip extends Component {
 
   constructor(props) {
@@ -203,7 +204,8 @@ const mapStateToProps = (state) => {
     choosenTripId: state.choosenTrip.id,
     choosenTripName: state.choosenTrip.name,
     currencyList: state.currencyList,
-    userId: state.userId
+    userId: state.userId,
+    mainCurrency: state.mainCurrency
   }
 }
 

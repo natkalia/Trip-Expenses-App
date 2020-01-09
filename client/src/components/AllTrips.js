@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import moment from 'moment';
 import ContentWrapper from './ContentWrapper';
 import {
   LinkButtonBig,
@@ -8,7 +9,8 @@ import {
 } from './styled';
 import getToken from '../utils/getToken';
 import TripCard from './TripCard';
-
+import getActualCurrencyRates from '../utils/getActualCurrencyRates';
+import { setExchangeRates } from '../redux/actions/userActions';
 
 
 class AllTrips extends Component {
@@ -37,6 +39,7 @@ class AllTrips extends Component {
   }
 
   componentDidMount() {
+    const todayDate = moment().format("YYYY-MM-DD");
     axios.get(`/api/users/${this.props.userId}/trips`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => {
         const trips = res.data.trips;
@@ -44,7 +47,15 @@ class AllTrips extends Component {
         this.setState({trips: trips})
       })
       .catch(err => console.log(err));
-  }
+      if (!this.props.exchangeRates ||
+        this.props.exchangeRates.date !== todayDate) {
+          getActualCurrencyRates(this.props.currencyList)
+            .then((res) => {
+              this.props.setExchangeRates(res);
+            })
+      }
+    }  
+
 
   render() {
     return (
@@ -69,8 +80,16 @@ class AllTrips extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    userId: state.userId
+    userId: state.userId,
+    exchangeRates: state.exchangeRates,
+    currencyList: state.currencyList
   }
 }
 
-export default connect(mapStateToProps)(AllTrips);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setExchangeRates: (exchangeRates) => dispatch(setExchangeRates(exchangeRates)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllTrips);
