@@ -64,7 +64,7 @@ class AddExpense extends Component {
       currency: this.state.expenseCurrency.value
     }
 
-    axios.post(`/api/trips/${this.state.tripId}/expenses`, expense, { headers: { "x-auth-token": `${getToken()}`}})
+    axios.post(`/api/trips/${this.props.choosenTripId}/expenses`, expense, { headers: { "x-auth-token": `${getToken()}`}})
     .then(res => console.log(res.data))
     .then(this.setState({ 
       expenseName: "", 
