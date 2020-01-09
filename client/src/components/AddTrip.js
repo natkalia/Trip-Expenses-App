@@ -80,7 +80,7 @@ class AddTrip extends Component {
       tripData: trip,
       userData: this.props.userId
     }
-    axios.post("http://localhost:3000/api/trips/add", postData, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.post("/api/trips/add", postData, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
       .then(() => this.setState({
         name: "",
