@@ -13,8 +13,6 @@ class EditExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripId: this.props.choosenTripId,
-      expenseId: this.props.choosenExpenseId,
       expenseName: "", 
       expenseCategory: 
       {
@@ -108,7 +106,7 @@ class EditExpense extends Component {
     const res = await axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
-      let sanitizedExpense = res.data.expenses.filter(arr => (arr._id === this.state.expenseId));
+      let sanitizedExpense = res.data.expenses.filter(arr => (arr._id === this.props.choosenExpenseId));
       sanitizedExpense = sanitizedExpense[0];
         this.setState({
         tripCategories: sanitizedArrayCategories,
