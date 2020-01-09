@@ -30,7 +30,7 @@ class AllExpenses extends Component {
       // it returns only data - don't change state
       // it is used to filter & sort data
       // if we will keep all expenses in Redux it may call data from Redux
-      const result = await axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses`, { headers: { "x-auth-token": `${getToken()}`} });
+      const result = await axios.get(`/api/trips/${this.props.choosenTripId}/expenses`, { headers: { "x-auth-token": `${getToken()}`} });
       const { expenses } = result.data;
       return expenses;
     } catch (error) {
