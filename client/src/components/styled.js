@@ -108,6 +108,27 @@ export const LinkButtonSmall = styled(LinkButtonBig)`
   font-size: 16px;
 `
 
+export const LinkText = styled(Link)`
+  font-size: 16px;
+  color: #767676;
+  margin-bottom: 10px;
+  text-decoration: none;  
+  &:visited{
+    color: #767676;
+    text-decoration: none;
+  }
+  &:hover {
+    color: ${theme.colors.neutralMidDark}; 
+  }
+`
+
+export const NavLinksContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+  align-items: flex-start;
+`
+
 // Formatted helpers
 export const Ul = styled.ul`
   list-style: none;

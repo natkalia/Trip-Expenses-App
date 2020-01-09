@@ -7,12 +7,13 @@ import { theme } from '../utils/theme';
 import {
   ParagraphAlignedCenter,
   TripHeader,
-  Ul
+  Ul,
+  LinkText,
+  NavLinksContainer
 } from './styled';
 import ContentWrapper from './ContentWrapper';
 import formatCurrencies from '../utils/formatCurrencies';
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const LeadingText = styled(ParagraphAlignedCenter)`
   font-size: 1.2em;
@@ -193,6 +194,11 @@ class CurrenciesRates extends Component {
               Your budget currency is: {this.props.choosenTripMainCurrency}
             </LeadingText>
             { this.renderRatesList() }
+            <NavLinksContainer>
+              <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+                <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+              </LinkText>
+            </NavLinksContainer>
         </ContentWrapper>
       </>
     )
