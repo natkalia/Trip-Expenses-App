@@ -75,7 +75,7 @@ class AddExpense extends Component {
   };
 
   getCategoriesFromTrip = async () => {
-    const res = await axios.get(`/api/trips/${this.state.tripId}`, { headers: { "x-auth-token": `${getToken()}`}});
+    const res = await axios.get(`/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`}});
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
       this.setState({
