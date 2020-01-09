@@ -39,7 +39,6 @@ const StyledWrapper = styled.div`
   min-width: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   background-image: 
     linear-gradient(${theme.colors.bgOverlay}, ${theme.colors.bgOverlay}),
