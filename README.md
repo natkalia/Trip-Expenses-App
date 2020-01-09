@@ -42,7 +42,7 @@ Managing trip expenses:
 - adding / modifying / deleting expenses (amount, currency, category, description)
 - generating trip summary - 
     comparison of spent and left amount according to budget, 
-    graph with expenses devided into categories
+    graph with expenses divided into categories
 - main features can be used only by logged in users
 - exchange rates are converted dynamically to main budget currency using external API
 
