@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
   }
 
   const token = user.generateAuthToken();
-  return res.header('x-auth-token', token).send();
+  return res.status(200).header('x-auth-token', token).json({ "userId" : user._id });
 });
 
 // Register new user

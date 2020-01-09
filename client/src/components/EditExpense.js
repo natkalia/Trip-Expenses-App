@@ -6,6 +6,7 @@ import Button from './Button';
 import { Form, Label, Input, customStyleSelect } from './styled';
 import Select from 'react-select';
 import getToken from '../utils/getToken';
+import formatCurrencies from '../utils/formatCurrencies';
 
 
 
@@ -14,7 +15,6 @@ class EditExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // expenseId: "5e136be35221cf1ee0802829", // temporary
       tripId: this.props.choosenTripId,
       expenseId: this.props.match.params.expenseId,
       expenseName: "", 
@@ -29,16 +29,7 @@ class EditExpense extends Component {
         value: "", 
         label: ""
       },
-      tripCurrencies: [
-        { value: 'PLN', label: 'PLN' },
-        { value: 'USD', label: 'USD' },
-        { value: 'EUR', label: 'EUR' },
-        { value: 'GBP', label: 'GBP' },
-        { value: 'JPY', label: 'JPY' },
-        { value: 'AUD', label: 'AUD' },
-        { value: 'CAD', label: 'CAD' },
-        { value: 'CHF', label: 'CHF' }
-      ],
+      tripCurrencies: formatCurrencies(this.props.currencyList),
       tripCategories: []
     }
   }
@@ -211,7 +202,8 @@ class EditExpense extends Component {
   
 const mapStateToProps = (state) => {
   return {
-    choosenTripId: state.choosenTrip.id
+    choosenTripId: state.choosenTrip.id,
+    currencyList: state.currencyList
   }
 }
 

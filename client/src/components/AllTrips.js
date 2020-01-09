@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import ContentWrapper from './ContentWrapper';
 import {
@@ -7,6 +8,7 @@ import {
 } from './styled';
 import getToken from '../utils/getToken';
 import TripCard from './TripCard';
+
 
 
 class AllTrips extends Component {
@@ -21,7 +23,7 @@ class AllTrips extends Component {
   onInputChange = (e) => {
     const pin = e.target.checked ? true : false;
     const tripId = e.target.id.slice(9, );
-    const pinnedTrips = [...this.state.pinnedTrips]    
+    const pinnedTrips = [...this.state.pinnedTrips]
     if (this.state.pinnedTrips.includes(tripId) && !pin){
       // Remove trip from the list of pinned trips
       const index = pinnedTrips.indexOf(tripId);
@@ -35,7 +37,7 @@ class AllTrips extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/users/5e0cfed451f05203b0575062/trips`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`http://localhost:3000/api/users/${this.props.userId}/trips`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({trips: res.data.trips}))
       .catch(err => console.log(err));
   }
@@ -61,4 +63,10 @@ class AllTrips extends Component {
 };
 
 
-export default AllTrips;
+const mapStateToProps = (state) => {
+  return {
+    userId: state.userId
+  }
+}
+
+export default connect(mapStateToProps)(AllTrips);

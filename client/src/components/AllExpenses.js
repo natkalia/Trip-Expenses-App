@@ -12,6 +12,8 @@ import {
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
 
+
+
 class AllExpenses extends Component {
 
   constructor(props) {

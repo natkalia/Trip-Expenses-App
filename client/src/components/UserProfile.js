@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
 import styled from 'styled-components';
 import { theme } from '../utils/theme';
 import ContentWrapper from './ContentWrapper';
 import { H3, InnerContainer, LinkButtonSmall } from './styled';
+import getToken from '../utils/getToken';
 
 const SectionTitle = styled(H3)`
   &::after{
@@ -52,10 +55,27 @@ class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Temp Username", // temporary
-      email: "temp@user.email.pl" // temporary
+      name: "",
+      email: ""
     }
   }
+
+  handleNotChosenTrip() {
+    alert('You have to choose trip first');
+    return '';
+  }
+
+  componentDidMount() {
+    axios.get(`http://localhost:3000/api/users/${this.props.userId}`, { headers: { "x-auth-token": `${getToken()}`} })
+      .then(res => {
+        this.setState({
+          name: res.data.name,
+          email: res.data.email
+        });
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
     return (
       <ContentWrapper title="Settings">
@@ -85,4 +105,10 @@ class UserProfile extends Component {
   }
 }
 
-export default UserProfile;
+const mapStateToProps = (state) => {
+  return {
+    userId: state.userId,
+  }
+}
+
+export default connect(mapStateToProps)(UserProfile);
