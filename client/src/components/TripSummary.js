@@ -13,9 +13,9 @@ import {
   LinkText,
   NavLinksContainer
 } from './styled';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ratesObject } from './RatesList';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import getActualCurrencyRates from '../utils/getActualCurrencyRates';
+import { setExchangeRates } from '../redux/actions/userActions';
 const Paragraph = styled.p`
   color: ${theme.colors.neutralDark};
   font-size: 20px;
@@ -64,13 +64,10 @@ class TripSummary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripName: "",
       tripCategories: [], 
       tripBudget: 0, 
-      tripMainCurrency: "", 
       totalExpensesByCategory: [], 
       sumExpenses: 0, 
-      ratesObjectFromState: ratesObject
     }
   }
 
@@ -79,11 +76,11 @@ class TripSummary extends Component {
     try {
 
       // modify object with currencies table to get one array of currencies rate in relation to main currency
-      let finalRatesList = this.state.ratesObjectFromState.data;
+      let finalRatesList = this.props.exchangeRates;
 
       // find proper rates table (array) in the object, based on mainCurrency, and return only this one
       for (const property in finalRatesList) {
-        if (property === res.data.mainCurrency) {
+        if (property === this.props.choosenTripMainCurrency) {
           finalRatesList = finalRatesList[property];
         } else {
           continue;
@@ -114,11 +111,11 @@ class TripSummary extends Component {
             } else continue;
         }
       });
-      expensesSum = expensesSum.reduce((x, y) => x + y, 0)
+      expensesSum = expensesSum.reduce((x, y) => x + y, 0);
 
       // calculate data to get values for totalExpensesByCategory in state
-      const perCategoryArray = res.data.categories.map(function(value) {
-        return {name: value, amount: 0, currency: res.data.mainCurrency}; 
+      let perCategoryArray = res.data.categories.map((value) => {
+        return {name: value, amount: 0, currency: this.props.choosenTripMainCurrency }; 
       });
       expensesArray.forEach(el => {
         for(let i = 0; i < perCategoryArray.length; i++) {   
@@ -132,9 +129,7 @@ class TripSummary extends Component {
       });
 
       this.setState({
-        tripName: res.data.name,
         tripBudget: res.data.budget,
-        tripMainCurrency: res.data.mainCurrency,
         tripCategories: res.data.categories,
         sumExpenses: expensesSum,
         totalExpensesByCategory: perCategoryArray
@@ -197,6 +192,10 @@ class TripSummary extends Component {
 
   componentDidMount = async () => {
     await this.getDataFromTrip();
+    // if (!this.props.exchangeRates) {
+    //   const exchangeRates = await getActualCurrencyRates(this.props.currencyList);
+    // //   await this.props.setExchangeRates(exchangeRates);
+    // // }
     if (this.state.sumExpenses !== 0) {
       await this.createChartExpenses();
     }
@@ -212,21 +211,21 @@ class TripSummary extends Component {
               {
                 `Budget: 
                 ${this.state.tripBudget} 
-                ${this.state.tripMainCurrency}`
+                ${this.props.choosenTripMainCurrency}`
               }
             </Paragraph>
             <Paragraph>
               {
                 `Spent: 
                 ${Math.floor(this.state.sumExpenses, 2)} 
-                ${this.state.tripMainCurrency}`
+                ${this.props.choosenTripMainCurrency}`
               } 
             </Paragraph>
             <Paragraph>
               {
                 `Left: 
                 ${Math.floor((this.state.tripBudget - this.state.sumExpenses), 2)} 
-                ${this.state.tripMainCurrency}`
+                ${this.props.choosenTripMainCurrency}`
               } 
             </Paragraph>
             <ColoredLine/>
@@ -264,8 +263,15 @@ class TripSummary extends Component {
 const mapStateToProps = (state) => {
   return {
     choosenTripId: state.choosenTrip.id,
-    choosenTripName: state.choosenTrip.name
+    exchangeRates: state.exchangeRates.data,
+    currencyList: state.currencyList,
+    choosenTripName: state.choosenTrip.name,
+    choosenTripMainCurrency: state.choosenTrip.mainCurrency
   }
 }
-
-export default connect(mapStateToProps)(TripSummary);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setExchangeRates: (exchangeRates) => dispatch(setExchangeRates(exchangeRates)),
+  }
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TripSummary);

@@ -28,6 +28,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { updateChoosenTrip, clearChoosenTrip } from '../redux/actions/userActions';
 
 
+
 class EditTrip extends Component {
 
   constructor(props) {
@@ -119,7 +120,6 @@ class EditTrip extends Component {
     } else return;
   };
 
-  //tu można by chyba brać te wszystkie dane z reduxa, jeśli wcześniej je tam dodamy
   componentDidMount () {
     axios.get(`/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({ 
@@ -215,7 +215,8 @@ const mapStateToProps = (state) => {
     choosenTripId: state.choosenTrip.id,
     choosenTripName: state.choosenTrip.name,
     currencyList: state.currencyList,
-    userId: state.userId
+    userId: state.userId,
+    mainCurrency: state.mainCurrency
   }
 }
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import moment from 'moment';
 import styled from 'styled-components';
 import { theme } from '../utils/theme';
@@ -13,7 +12,9 @@ import {
 } from './styled';
 import ContentWrapper from './ContentWrapper';
 import formatCurrencies from '../utils/formatCurrencies';
+import getActualCurrencyRates from '../utils/getActualCurrencyRates';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { setExchangeRates } from '../redux/actions/userActions';
 
 const LeadingText = styled(ParagraphAlignedCenter)`
   font-size: 1.2em;
@@ -67,59 +68,11 @@ class CurrenciesRates extends Component {
     super(props);
     this.state = {
       tripCurrencies: formatCurrencies(this.props.currencyList),
-      currenciesRates: undefined
     };
   }
 
-
-  getSingleCurencyRates = async (currencyShortcut, currenciesArray) => {
-    try {
-      const currencyApiAddress = 'https://api.exchangerate-api.com/v4/latest/';
-      const response = await axios.get(`${currencyApiAddress}${currencyShortcut}`)
-      const { base : currencyName, rates } = response.data;
-      const requiredCourses = currenciesArray
-      const requiredRates = Object.keys(rates)
-        .filter((key) => requiredCourses.includes(key))
-        .reduce((obj, key) => {
-          return {
-            ...obj,
-            [key]: rates[key]
-          }
-        }, {})
-      return { currencyName : currencyName, rates : requiredRates};
-    } catch (error) {
-      console.log(error);
-      return { currencyName: currencyShortcut, rates: "unavailable"}
-    }
-   }
-
-  getActualCurrencyRates = async () => {
-    const currenciesArray = this.state.tripCurrencies.map((o) => o.value);
-    const currenciesTables = [];
-    currenciesArray.forEach((currency) => {
-      const ratesTable = this.getSingleCurencyRates(currency, currenciesArray);
-      currenciesTables.push(ratesTable);
-    })
-    const currenciesData = await Promise.all(currenciesTables);
-   
-    const formattedCurrenciesData = {};
-    currenciesArray.forEach((paidCurrence) => {
-      const rates = currenciesData.map((c) => {
-        return { 
-          name: c.currencyName,
-          rate: c.rates[paidCurrence]
-        }
-      });
-      formattedCurrenciesData[paidCurrence] = rates;
-    });
-    return { 
-      date: moment().format("YYYY-MM-DD"),
-      data: formattedCurrenciesData
-    }
-  }
-
   getChosenCurrencyRates(actualCurrency) {
-    const ratesData = this.state.currenciesRates.data[actualCurrency];
+    const ratesData = this.props.exchangeRates.data[actualCurrency];
     const requiredRatesData = ratesData.filter((c) => c.name !== actualCurrency);
     const sortedData = requiredRatesData.sort((a,b) => {
       const nameA = a.name.toUpperCase();
@@ -143,10 +96,10 @@ class CurrenciesRates extends Component {
   }
   
   renderRatesList () {
-    if (this.state.currenciesRates) {
+    if (this.props.exchangeRates) {
       const actualCurrency = this.props.choosenTripMainCurrency;
       const dataToRender = this.getChosenCurrencyRates(actualCurrency);
-      const { date : dateRates } = this.state.currenciesRates;
+      const { date : dateRates } = this.props.exchangeRates;
       const formattedDate = moment(dateRates).format('LL');
       return (
         <>
@@ -173,15 +126,16 @@ class CurrenciesRates extends Component {
     )
   }
 
-  async componentDidMount () {
-
+  componentDidMount () {
     const todayDate = moment().format("YYYY-MM-DD");
-
-    if (!this.state.currenciesRates ||
-      this.state.currenciesRates.date !== todayDate) this.getActualCurrencyRates()
-      .then((res) => {
-        this.setState({currenciesRates: res});
-      })
+    if (!this.props.exchangeRates ||
+      this.props.exchangeRates.date !== todayDate) {
+        getActualCurrencyRates(this.props.currencyList)
+          .then((res) => {
+            this.props.setExchangeRates(res);
+          })
+          .then(() => console.log('Currencies updated'));
+        }
   }
 
   render() {
@@ -210,8 +164,15 @@ const mapStateToProps = (state) => {
     choosenTripName: state.choosenTrip.name,
     choosenTripId: state.choosenTrip.id,
     choosenTripMainCurrency: state.choosenTrip.mainCurrency,
-    currencyList: state.currencyList
+    currencyList: state.currencyList,
+    exchangeRates: state.exchangeRates
   }
 }
 
-export default connect(mapStateToProps)(CurrenciesRates);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setExchangeRates: (exchangeRates) => dispatch(setExchangeRates(exchangeRates)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CurrenciesRates);
