@@ -34,14 +34,14 @@ router.get('/:id/trips', checkAuthenticated, async (req, res) => {
 // User login
 router.post('/login', async (req, res) => {
   const { error } = validateUserOnLogin(req.body);
-  if (error) return res.status(400).json(`${error.details[0].message}`);
+  if (error) return res.status(400).json({'error': error.details[0].message});
 
   var user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).json('Invalid email or password');
+  if (!user) return res.status(400).json({'error': 'Invalid email or password'});
 
   try {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(400).send('Invalid email or password');
+    if (!validPassword) return res.status(400).json({'error': 'Invalid email or password'});
   } catch (err) {
     res.status(400).json('Error: ' + error)
   }
@@ -66,7 +66,7 @@ router.post('/', async (req, res) => {
   });
 
   if (user) {
-    return res.status(400).json('Error: User already registered');
+    return res.status(400).json({'error': 'User already registered'});
   } 
   
   let newUser = new User(_.pick(req.body, ['name', 'email', 'password']));

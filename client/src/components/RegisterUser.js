@@ -33,17 +33,10 @@ class Signup extends React.Component {
       .then(() => this.props.history.push('/users/login'))
       .catch(err => {
         if (err.response.data) {
-          const errorMessage = err.response.data.error;
-          console.log(errorMessage);
-          alert(`
-            Sorry, sth goes wrong
-            ${errorMessage}`);
+          this.setState({error: err.response.data.error});
         } else {
-          console.log(err);
-          alert('Sth goes wrong');
+          this.setState({error: 'Something went wrong'});
         }
-        
-        // alert(`We are sorry. Sth went wrong.\n ${err.data.error} `)
       });
   }
 
@@ -61,12 +54,12 @@ class Signup extends React.Component {
           <ErrorMessage error={this.state.error}></ErrorMessage>
 
           <Label htmlFor="signup-name">Name:</Label>
-          <ParagraphSmallItalic>Username should be 4-10 characters long</ParagraphSmallItalic>
+          <ParagraphSmallItalic>Username should be 4-20 characters long</ParagraphSmallItalic>
           <Input type="text" name="name" id="signup-name" placeholder="Name" required 
           onChange={this.onInputChange.bind(this, "name")} value={this.state.name}/>
 
           <Label htmlFor="signup-email">Email:</Label>
-          <Input type="email" name="email" id="signup-email" placeholder="Email" required 
+          <Input type="email" name="email" id="signup-email" placeholder="Email" required novalidate
           onChange={this.onInputChange.bind(this, "email")} value={this.state.email} />
           
           <Label htmlFor="signup-password">Password:</Label>     
