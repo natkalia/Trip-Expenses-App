@@ -89,7 +89,7 @@ router.post('/:id/expenses', async (req, res) => {
     const { categories : tripCategories }  = tripFromDatabase;
     const { error, value } = validateExpense(req.body, tripCategories);
     if (error) {
-      return res.status(400).send(error.details[0].message);
+      return res.status(400).json({error: error.details[0].message});
     }
     tripFromDatabase.expenses.push(value);
     const changedTrip = await tripFromDatabase.save();

@@ -16,6 +16,7 @@ import Select from 'react-select';
 import getToken from '../utils/getToken';
 import formatCurrencies from '../utils/formatCurrencies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ErrorMessage from './ErrorMessage';
 
 
 class AddExpense extends Component {
@@ -36,7 +37,8 @@ class AddExpense extends Component {
           label: "PLN"
         },
       tripCurrencies: formatCurrencies(this.props.currencyList),
-      tripCategories: []
+      tripCategories: [],
+      error: "",
     }
   }
 
@@ -79,7 +81,15 @@ class AddExpense extends Component {
       expenseCategory: {value: "travel", label: "travel"}, 
       expenseCurrency: {value: "PLN", label: "PLN"}, 
       expenseCost: ""
-    }));
+    }))
+    .catch(err => {
+        if (err.response.data) {
+          this.setState({error: err.response.data.error});
+        } else {
+          this.setState({error: 'Something went wrong'});
+        }
+      });
+
   };
 
   getCategoriesFromTrip = async () => {
@@ -105,6 +115,7 @@ class AddExpense extends Component {
         <TripHeader name={this.props.choosenTripName}/>
         <ContentWrapper title="Add Expense">
 
+          <ErrorMessage error={this.state.error}></ErrorMessage>
           <Form onSubmit={this.onFormSubmit}>
 
             <Label htmlFor="expenseName-add">Name (3-40 characters):</Label>
