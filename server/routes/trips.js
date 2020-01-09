@@ -130,7 +130,6 @@ router.get('/:tripId/expenses/:expenseId', async (req, res) => {
       })
     }
     const expense = trip.expenses.id(req.params.expenseId);
-    console.log('Expense', expense);
     if (expense === null) {
       return res.status(404).json({
         "message": "Expense not found"
@@ -206,7 +205,6 @@ router.delete('/:tripId/expenses/:expenseId', async (req, res) => {
       })
     }
     const deletedExpense = trip.expenses.id(req.params.expenseId).remove();
-    console.log(deletedExpense);
     await trip.save();
     return res.status(200).send(
       {
