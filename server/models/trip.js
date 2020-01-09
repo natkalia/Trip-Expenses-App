@@ -111,7 +111,7 @@ function validateTrip(trip) {
     name: Joi.string()
       .trim()
       .min(5)
-      .max(30)
+      .max(100)
       .required(),
     startDate: Joi.date()
       // .default(Date.now)
