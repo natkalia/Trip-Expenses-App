@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React from 'react';
-import { Form, Label, Input } from './styled';
+import { Form, Label, Input, ParagraphSmallItalic } from './styled';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
+import ErrorMessage from './ErrorMessage';
 
 class Signup extends React.Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class Signup extends React.Component {
     this.state = {
       name: "",
       email: "",
-      password: ""
+      password: "",
+      error:"",
     }    
   }
 
@@ -55,17 +57,23 @@ class Signup extends React.Component {
     return (
       <ContentWrapper title="Sign Up">
         <Form onSubmit={this.onFormSubmit}>
+          
+          <ErrorMessage error={this.state.error}></ErrorMessage>
+
           <Label htmlFor="signup-name">Name:</Label>
+          <ParagraphSmallItalic>Username should be 4-10 characters long</ParagraphSmallItalic>
           <Input type="text" name="name" id="signup-name" placeholder="Name" required 
           onChange={this.onInputChange.bind(this, "name")} value={this.state.name}/>
 
           <Label htmlFor="signup-email">Email:</Label>
           <Input type="email" name="email" id="signup-email" placeholder="Email" required 
           onChange={this.onInputChange.bind(this, "email")} value={this.state.email} />
-
-          <Label htmlFor="signup-password">Password:</Label>
+          
+          <Label htmlFor="signup-password">Password:</Label>     
+          <ParagraphSmallItalic>Password should be minimum 8 characters long and should contain a number, a lowercase, a capital letter and special character (!@#$%^&amp;)</ParagraphSmallItalic>     
           <Input type="password" name="password" id="signup-password" placeholder="Password" required 
-          onChange={this.onInputChange.bind(this, "password")} value={this.state.password}/>
+          onChange={this.onInputChange.bind(this, "password")} value={this.state.password}/>            
+
 
           <Button textOnButton="Sign Up" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/> 
         </Form>
