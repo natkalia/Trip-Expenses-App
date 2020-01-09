@@ -7,7 +7,8 @@ import ContentWrapper from './ContentWrapper';
 import getSupportedCurrencies from '../utils/getSupportedCurrencies';
 import {
   setLoggedIn,
-  setCurrencyList
+  setCurrencyList,
+  setUserId
 } from '../redux/actions/userActions';
 
 
@@ -28,13 +29,16 @@ class Login extends React.Component {
     }
     const url = "http://localhost:3000/api/users/login";
     await axios.post(url, user)
-      .then(res => localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]))
+      .then(res => {
+        localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]);
+        return res.data.userId;
+      })
+      .then((userId) => this.props.setUserId(userId))
+      .then(() => console.log(this.props.userId))
       .then(() => this.props.setLoggedIn())
       .then(() => getSupportedCurrencies())
       .then((list) => this.props.setCurrencyList(list))
       .then(() => this.props.history.push('/trips/all'))
-      // Uncomment and change :tripId for testing Expenses View
-      // .then(() => this.props.history.push('/trips/5e13afa0da2daf0ef07a3b8b/expenses/all'))
       .catch(err => console.log(err));
   }
 
@@ -69,14 +73,16 @@ class Login extends React.Component {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.isLoggedIn,
-    currencyList: state.currencyList
+    currencyList: state.currencyList,
+    userId: state.userId
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setLoggedIn: () => dispatch(setLoggedIn()),
-    setCurrencyList: (list) => dispatch(setCurrencyList(list))
+    setCurrencyList: (list) => dispatch(setCurrencyList(list)),
+    setUserId: (userId) => dispatch(setUserId(userId))
   }
 }
 
