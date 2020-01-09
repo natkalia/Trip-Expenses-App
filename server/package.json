@@ -1,11 +1,12 @@
 {
-  "name": "travelplanner-server",
+  "name": "tripexpenses-server",
   "version": "1.0.0",
   "description": "app for planning travel budget",
   "keywords": [
     "travel",
     "travel costs",
-    "travel budget"
+    "travel budget",
+    "trip expenses"
   ],
   "license": "ISC",
   "repository": {
@@ -14,7 +15,7 @@
   },
   "author": "Warsaw Team CodersCamp 2019",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",

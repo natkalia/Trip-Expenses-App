@@ -86,9 +86,7 @@ const PinImg = styled.img`
 const TripCard = (props) => {
   let status = props.trip.isTripFinished ? 'finished' : 'open';
   const { name, startDate, description, _id, mainCurrency } = props.trip; 
-  const setChoosenTrip = (tripId, tripName, tripMainCurrency) => {
-    props.setChoosenTrip(tripId, tripName, tripMainCurrency);
-  }
+
   return (
     <Card>
       <CardHeader status={status} >
@@ -112,8 +110,8 @@ const TripCard = (props) => {
             <Label htmlFor={`isPinned-${_id}`}>Pin trip to the main page</Label>         
           </InputCheckboxContainerCustom>
           <ContainerButtons>
-            <CustomSmallButton onClick={ () => setChoosenTrip(_id, name, mainCurrency)} to={`/trips/single/${_id}`} color="grey"> Details </CustomSmallButton>
-            <CustomSmallButton onClick={ () => setChoosenTrip(_id, name, mainCurrency)} to={`/trips/edit/${_id}`} color="greyOutline"> Edit / Delete </CustomSmallButton>
+            <CustomSmallButton onClick={ () => props.setChoosenTrip(_id, name, mainCurrency)} to={`/trips/single/${_id}`} color="grey"> Details </CustomSmallButton>
+            <CustomSmallButton onClick={ () => props.setChoosenTrip(_id, name, mainCurrency)} to={`/trips/edit/${_id}`} color="greyOutline"> Edit / Delete </CustomSmallButton>
           </ContainerButtons>            
         </Container>        
       </CardBody>

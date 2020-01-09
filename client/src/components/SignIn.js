@@ -28,7 +28,7 @@ class Login extends React.Component {
       email: this.state.email,
       password: this.state.password
     }
-    const url = "http://localhost:3000/api/users/login";
+    const url = "/api/users/login";
     await axios.post(url, user)
       .then(res => {
         localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]);

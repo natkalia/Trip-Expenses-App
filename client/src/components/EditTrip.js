@@ -25,6 +25,8 @@ import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
 import formatCurrencies from '../utils/formatCurrencies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { updateChoosenTrip, clearChoosenTrip } from '../redux/actions/userActions';
+
 
 class EditTrip extends Component {
 
@@ -97,26 +99,29 @@ class EditTrip extends Component {
       budget: this.state.budget,
       mainCurrency: this.state.budgetCurrency.value
     }
-    axios.put("http://localhost:3000/api/trips/edit/" + this.props.choosenTripId, trip, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.put("/api/trips/edit/" + this.props.choosenTripId, trip, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
+      .then(() => this.props.updateChoosenTrip(trip.name, trip.mainCurrency))
       .then(() => this.props.history.push(`/trips/single/${this.props.choosenTripId}`));
   };
 
   onDeleteSubmit = (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this trip?")) {
-    axios.delete("http://localhost:3000/api/trips/" + this.props.choosenTripId,
+    axios.delete("/api/trips/" + this.props.choosenTripId,
       { 
         data: {userId : this.props.userId},
-        headers: { "x-auth-token": `${getToken()}`} 
+        headers: {"x-auth-token": `${getToken()}`} 
       })
     .then(res => console.log(res.data))
+    .then(() => this.props.clearChoosenTrip())
     .then(() => this.props.history.push('/trips/all'));
     } else return;
   };
 
+  //tu można by chyba brać te wszystkie dane z reduxa, jeśli wcześniej je tam dodamy
   componentDidMount () {
-    axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} }) // temporary currenTripId
+    axios.get(`/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({ 
           id: res.data._id,
           name: res.data.name,
@@ -214,4 +219,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(EditTrip);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateChoosenTrip: (name, mainCurrency) => dispatch(updateChoosenTrip(name, mainCurrency)),
+    clearChoosenTrip: () => dispatch(clearChoosenTrip())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditTrip);
