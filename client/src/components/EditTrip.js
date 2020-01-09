@@ -16,14 +16,15 @@ import {
   InputCheckboxContainer,
   customStyleSelect,
   TripHeader,
+  LinkText,
+  NavLinksContainer,
 } from './styled';
 import Select from 'react-select';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
 import formatCurrencies from '../utils/formatCurrencies';
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class EditTrip extends Component {
 
@@ -187,6 +188,15 @@ class EditTrip extends Component {
           <Form onSubmit={this.onDeleteSubmit}>
             <Button textOnButton="Delete" textColor="#fff" btnColor="#DC3545" btnBorder="none"/> 
           </Form>
+
+          <NavLinksContainer>
+            <LinkText to = { `/trips/${this.props.choosenTripId}/expenses/all`} >
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to All Expenses
+            </LinkText>
+            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+            </LinkText>
+          </NavLinksContainer>
 
         </ContentWrapper>
       </>

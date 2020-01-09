@@ -74,6 +74,11 @@ class AllExpenses extends Component {
         <TripHeader name={this.state.name}/>
 
         <ContentWrapper title="Expenses List">
+          <NavLinksContainer>            
+            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+            </LinkText>
+          </NavLinksContainer>
           <LinkButtonBig to={`/trips/${this.state.tripId}/expenses/add`} color="green">Add a new expense</LinkButtonBig>
           { this.state.expenses.length > 0 ? (
             <ExpensesList>
@@ -84,12 +89,7 @@ class AllExpenses extends Component {
             </ExpensesList>
           ) : (
             <p>Oh, you haven't entered any expenses yet.</p>
-          )}
-          <NavLinksContainer>            
-            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
-              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
-            </LinkText>
-          </NavLinksContainer>
+          )}          
         </ContentWrapper>
       </>
     )
