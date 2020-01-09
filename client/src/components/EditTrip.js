@@ -22,7 +22,7 @@ import Button from './Button';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
 import formatCurrencies from '../utils/formatCurrencies';
-
+import { updateChoosenTrip, clearChoosenTrip } from '../redux/actions/userActions';
 
 
 class EditTrip extends Component {
@@ -98,6 +98,7 @@ class EditTrip extends Component {
     }
     axios.put("http://localhost:3000/api/trips/edit/" + this.props.choosenTripId, trip, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
+      .then(() => this.props.updateChoosenTrip(trip.name))
       .then(() => this.props.history.push(`/trips/single/${this.props.choosenTripId}`));
   };
 
@@ -107,13 +108,15 @@ class EditTrip extends Component {
     axios.delete("http://localhost:3000/api/trips/" + this.props.choosenTripId,
       { 
         data: {userId : this.props.userId},
-        headers: { "x-auth-token": `${getToken()}`} 
+        headers: {"x-auth-token": `${getToken()}`} 
       })
     .then(res => console.log(res.data))
+    .then(() => this.props.clearChoosenTrip())
     .then(() => this.props.history.push('/trips/all'));
     } else return;
   };
 
+  //tu można by chyba brać te wszystkie dane z reduxa, jeśli wcześniej je tam dodamy
   componentDidMount () {
     axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({ 
@@ -204,4 +207,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(EditTrip);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateChoosenTrip: name => dispatch(updateChoosenTrip(name)),
+    clearChoosenTrip: () => dispatch(clearChoosenTrip())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditTrip);
