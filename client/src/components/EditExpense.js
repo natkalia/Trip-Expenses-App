@@ -8,6 +8,7 @@ import {
   Label,
   Input,
   customStyleSelect,
+  TripHeader,
   LinkText,
   NavLinksContainer
 } from './styled';
@@ -139,79 +140,82 @@ class EditExpense extends Component {
  
   render() {
     return (
-      <ContentWrapper title="Edit Expense">
+      <>
+        <TripHeader name={this.props.choosenTripName}/>
+        <ContentWrapper title="Edit Expense">
 
-        <Form onSubmit={this.onEditSubmit}>
+          <Form onSubmit={this.onEditSubmit}>
 
-          <Label htmlFor="expenseName-edit">Name (3-40 characters):</Label>
-          <Input 
-            minlength="3" 
-            maxlength="40" 
-            type="text" 
-            name="expenseName" 
-            id="expenseName-edit"
-            placeholder="Name"
-            required 
-            onChange={this.onInputChange} 
-            value={this.state.expenseName}
-          />
+            <Label htmlFor="expenseName-edit">Name (3-40 characters):</Label>
+            <Input 
+              minlength="3" 
+              maxlength="40" 
+              type="text" 
+              name="expenseName" 
+              id="expenseName-edit"
+              placeholder="Name"
+              required 
+              onChange={this.onInputChange} 
+              value={this.state.expenseName}
+            />
 
-          <Label htmlFor="expenseCost-edit">Cost (0-10000):</Label>
-          <Input 
-            min="0" 
-            max="10000" 
-            type="number" 
-            name="expenseCost" 
-            id="expenseCost-edit" 
-            placeholder="Cost amount" 
-            required 
-            onChange={this.onInputChange} 
-            value={this.state.expenseCost}
-          />
+            <Label htmlFor="expenseCost-edit">Cost (0-10000):</Label>
+            <Input 
+              min="0" 
+              max="10000" 
+              type="number" 
+              name="expenseCost" 
+              id="expenseCost-edit" 
+              placeholder="Cost amount" 
+              required 
+              onChange={this.onInputChange} 
+              value={this.state.expenseCost}
+            />
 
-          <Label htmlFor="expenseCurrency-edit">Currency:</Label>
-          <Select 
-            styles={customStyleSelect} 
-            options={this.state.tripCurrencies} 
-            type="text" 
-            name="expenseCurrency" 
-            id="expenseCurrency-edit" 
-            placeholder="Currency" 
-            required onChange={this.onSelectCurrencyChange} 
-            value={this.state.expenseCurrency}
-          />
+            <Label htmlFor="expenseCurrency-edit">Currency:</Label>
+            <Select 
+              styles={customStyleSelect} 
+              options={this.state.tripCurrencies} 
+              type="text" 
+              name="expenseCurrency" 
+              id="expenseCurrency-edit" 
+              placeholder="Currency" 
+              required onChange={this.onSelectCurrencyChange} 
+              value={this.state.expenseCurrency}
+            />
 
-          <Label htmlFor="expenseCategory-edit">Category:</Label>
-          <Select 
-            styles={customStyleSelect} 
-            options={this.state.tripCategories} 
-            type="text" 
-            name="expenseCategory" 
-            id="expenseCategory-edit" 
-            placeholder="Category" 
-            required 
-            onChange={this.onSelectCategoryChange} 
-            value={this.state.expenseCategory}
-          />
+            <Label htmlFor="expenseCategory-edit">Category:</Label>
+            <Select 
+              styles={customStyleSelect} 
+              options={this.state.tripCategories} 
+              type="text" 
+              name="expenseCategory" 
+              id="expenseCategory-edit" 
+              placeholder="Category" 
+              required 
+              onChange={this.onSelectCategoryChange} 
+              value={this.state.expenseCategory}
+            />
 
-          <Button textOnButton="Edit" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/> 
+            <Button textOnButton="Edit" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/> 
 
-        </Form>
+          </Form>
 
-        <Form onSubmit={this.onDeleteSubmit}>
-          <Button textOnButton="Delete" textColor="#fff" btnColor="#DC3545" btnBorder="none"/> 
-        </Form>
+          <Form onSubmit={this.onDeleteSubmit}>
+            <Button textOnButton="Delete" textColor="#fff" btnColor="#DC3545" btnBorder="none"/> 
+          </Form>
 
-        <NavLinksContainer>
-            <LinkText to = { `/trips/${this.props.choosenTripId}/expenses/all`} >
-              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to All Expenses
-            </LinkText>
-            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
-              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
-            </LinkText>
-          </NavLinksContainer>
+          <NavLinksContainer>
+              <LinkText to = { `/trips/${this.props.choosenTripId}/expenses/all`} >
+                <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to All Expenses
+              </LinkText>
+              <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+                <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+              </LinkText>
+            </NavLinksContainer>
 
-      </ContentWrapper>
+        </ContentWrapper>
+      </>
     )
   }
 } 
@@ -219,6 +223,7 @@ class EditExpense extends Component {
 const mapStateToProps = (state) => {
   return {
     choosenTripId: state.choosenTrip.id,
+    choosenTripName: state.choosenTrip.name,
     currencyList: state.currencyList
   }
 }
