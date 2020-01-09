@@ -37,7 +37,7 @@ class AllTrips extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/users/${this.props.userId}/trips`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`/api/users/${this.props.userId}/trips`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({trips: res.data.trips}))
       .catch(err => console.log(err));
   }

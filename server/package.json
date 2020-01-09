@@ -14,7 +14,7 @@
   },
   "author": "Warsaw Team CodersCamp 2019",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",

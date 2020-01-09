@@ -21,7 +21,7 @@ class Signup extends React.Component {
       email: this.state.email,
       password: this.state.password,
     }
-    const url = "http://localhost:3000/api/users/";
+    const url = "/api/users/";
     await axios.post(url, user)
       .then(res => {
         const userName = res.data.name;

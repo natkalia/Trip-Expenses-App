@@ -64,7 +64,7 @@ class EditExpense extends Component {
       cost: this.state.expenseCost,
       currency: this.state.expenseCurrency.value
     }
-    await axios.put(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
+    await axios.put(`/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       this.setState({ 
         expenseName: "", 
@@ -87,7 +87,7 @@ class EditExpense extends Component {
   onDeleteSubmit = async (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this expense?")) {
-      await axios.delete(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
+      await axios.delete(`/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
       try {
         this.setState({ 
           expenseName: "", 
@@ -109,7 +109,7 @@ class EditExpense extends Component {
   }
 
   getTripAndExpenseData = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} });
+    const res = await axios.get(`/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
       let sanitizedExpense = res.data.expenses.filter(arr => (arr._id === this.state.expenseId));

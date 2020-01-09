@@ -66,7 +66,7 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/users/${this.props.userId}`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`/api/users/${this.props.userId}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => {
         this.setState({
           name: res.data.name,
