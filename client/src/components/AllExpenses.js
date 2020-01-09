@@ -7,10 +7,7 @@ import {
   LinkText,
   NavLinksContainer
 } from './styled';
-import {
-  ExpenseLine,
-  ExpensesList
-} from './ExpensesList';
+import ExpenseLine, { ExpensesList } from './ExpensesList';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

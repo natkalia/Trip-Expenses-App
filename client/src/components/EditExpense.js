@@ -17,14 +17,11 @@ import getToken from '../utils/getToken';
 import formatCurrencies from '../utils/formatCurrencies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
 class EditExpense extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      tripId: this.props.choosenTripId,
-      expenseId: this.props.match.params.expenseId,
       expenseName: "", 
       expenseCategory: 
       {
@@ -51,14 +48,12 @@ class EditExpense extends Component {
   }
 
   onSelectCurrencyChange = (optionsObject) => {
-
     this.setState({
       expenseCurrency: optionsObject
     });
   }
 
   onSelectCategoryChange = (optionsObject) => {
-
     this.setState({
       expenseCategory: optionsObject
     });
@@ -72,7 +67,7 @@ class EditExpense extends Component {
       cost: this.state.expenseCost,
       currency: this.state.expenseCurrency.value
     }
-    await axios.put(`/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
+    await axios.put(`/api/trips/${this.props.choosenTripId}/expenses/${this.props.choosenExpenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       this.setState({ 
         expenseName: "", 
@@ -95,7 +90,7 @@ class EditExpense extends Component {
   onDeleteSubmit = async (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this expense?")) {
-      await axios.delete(`/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
+      await axios.delete(`/api/trips/${this.props.choosenTripId}/expenses/${this.props.choosenExpenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
       try {
         this.setState({ 
           expenseName: "", 
@@ -120,7 +115,7 @@ class EditExpense extends Component {
     const res = await axios.get(`/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
-      let sanitizedExpense = res.data.expenses.filter(arr => (arr._id === this.state.expenseId));
+      let sanitizedExpense = res.data.expenses.filter(arr => (arr._id === this.props.choosenExpenseId));
       sanitizedExpense = sanitizedExpense[0];
         this.setState({
         tripCategories: sanitizedArrayCategories,
@@ -223,6 +218,7 @@ class EditExpense extends Component {
 const mapStateToProps = (state) => {
   return {
     choosenTripId: state.choosenTrip.id,
+    choosenExpenseId: state.choosenExpense.id,
     choosenTripName: state.choosenTrip.name,
     currencyList: state.currencyList
   }
