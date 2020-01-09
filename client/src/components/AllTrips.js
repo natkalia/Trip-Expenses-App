@@ -9,6 +9,7 @@ import getToken from '../utils/getToken';
 import TripCard from './TripCard';
 
 
+
 class AllTrips extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +22,7 @@ class AllTrips extends Component {
   onInputChange = (e) => {
     const pin = e.target.checked ? true : false;
     const tripId = e.target.id.slice(9, );
-    const pinnedTrips = [...this.state.pinnedTrips]    
+    const pinnedTrips = [...this.state.pinnedTrips]
     if (this.state.pinnedTrips.includes(tripId) && !pin){
       // Remove trip from the list of pinned trips
       const index = pinnedTrips.indexOf(tripId);
@@ -35,7 +36,8 @@ class AllTrips extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/users/5e0cfed451f05203b0575062/trips`, { headers: { "x-auth-token": `${getToken()}`} })
+    // axios.get(`http://localhost:3000/api/users/5e0cfed451f05203b0575062/trips`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`http://localhost:3000/api/users/5e13ab8334627a0e9b4ec33e/trips`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({trips: res.data.trips}))
       .catch(err => console.log(err));
   }

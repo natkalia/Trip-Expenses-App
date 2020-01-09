@@ -1,4 +1,5 @@
 import React, { Component } from 'react'; 
+import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import moment from 'moment';
@@ -17,6 +18,7 @@ import Select from 'react-select';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
+import formatCurrencies from '../utils/formatCurrencies';
 
 
 
@@ -34,7 +36,7 @@ class AddTrip extends Component {
           value: "PLN",
           label: "PLN"
         },
-      tripCurrencies: []
+      tripCurrencies: formatCurrencies(this.props.currencyList),
     };
   }
 
@@ -87,30 +89,8 @@ class AddTrip extends Component {
             label: "PLN"
           },
       }))
-      .then(() => this.props.history.push("/trips/add"))
+      .then(() => this.props.history.push("/trips/all"))
   };
-
-  getSupportedCurrencyList = async () => {
-    try {
-      const response = await axios.get('http://localhost:3000/api/currencies/list', { headers: { "x-auth-token": `${getToken()}`} });
-      const { data: { currencies }} = response;
-      const tripCurrencies = currencies.map((currency) => {
-        return {
-          value: currency,
-          label: currency
-        }
-       });
-      this.setState({
-        tripCurrencies: tripCurrencies
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  componentDidMount () {
-    if (!this.state.tripCurrencies.length) this.getSupportedCurrencyList();
-  }
  
   render() {
     return (
@@ -159,6 +139,12 @@ class AddTrip extends Component {
 
     )
   }
-} 
-  
-export default AddTrip;
+}
+
+const mapStateToProps = (state) => {
+  return {
+    currencyList: state.currencyList
+  }
+}
+
+export default connect(mapStateToProps)(AddTrip);

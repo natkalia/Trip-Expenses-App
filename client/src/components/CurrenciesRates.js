@@ -1,4 +1,4 @@
-import React, { Component } from 'react'; 
+import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -10,6 +10,8 @@ import {
 } from './styled';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
+
+
 
 const LeadingText = styled(ParagraphAlignedCenter)`
   font-size: 1.2em;

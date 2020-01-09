@@ -18,7 +18,8 @@ router.post('/add', (req, res) => {
       .then(async(trip) => {     
         // After authentication is done change the line below
         // For test trips route:
-        await User.findByIdAndUpdate('5e0fc8800785ca060578b375', {$push: {trips: trip._id}});
+        // UPDATE
+        await User.findByIdAndUpdate('5e13ab8334627a0e9b4ec33e', {$push: {trips: trip._id}});
 
       })
       .then(() => res.json('Trip added!'))

@@ -20,6 +20,7 @@ import Select from 'react-select';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
+import formatCurrencies from '../utils/formatCurrencies';
 
 
 
@@ -38,7 +39,7 @@ class EditTrip extends Component {
           value: "PLN",
           label: "PLN"
         },
-      tripCurrencies: []
+      tripCurrencies: formatCurrencies(this.props.currencyList)
     };
   }
 
@@ -113,28 +114,7 @@ class EditTrip extends Component {
     } else return;
   };
 
-  getSupportedCurrencyList = async () => {
-    try {
-      const response = await axios.get(
-        'http://localhost:3000/api/currencies/list',
-        { headers: { "x-auth-token": `${getToken()}`} });
-      const { data: { currencies }} = response;
-      const tripCurrencies = currencies.map((currency) => {
-        return {
-          value: currency,
-          label: currency
-        }
-       });
-      this.setState({
-        tripCurrencies: tripCurrencies
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   componentDidMount () {
-    // axios.get("http://localhost:3000/api/trips/5e0dd4da618f3e1f10d4db7f") // temporary currenTripId
     axios.get(`http://localhost:3000/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} }) // temporary currenTripId
       .then(res => this.setState({ 
           id: res.data._id,
@@ -214,7 +194,8 @@ class EditTrip extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    choosenTripId: state.choosenTrip.id
+    choosenTripId: state.choosenTrip.id,
+    currencyList: state.currencyList
   }
 }
 
