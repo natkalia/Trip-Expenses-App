@@ -4,6 +4,7 @@ import { theme } from '../utils/theme';
 
 
 const FooterWrapper = styled.div`
+  margin-top: auto;
   background-color: ${theme.colors.dark};
   padding: 10px 20px;
   width: 100%;

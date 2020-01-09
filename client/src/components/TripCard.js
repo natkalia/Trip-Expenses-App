@@ -112,7 +112,7 @@ const TripCard = (props) => {
             <Label htmlFor={`isPinned-${_id}`}>Pin trip to the main page</Label>         
           </InputCheckboxContainerCustom>
           <ContainerButtons>
-            <CustomSmallButton onClick={ () => setChoosenTrip(_id, name, mainCurrency)} to={`/trips/single/${_id}`} color="grey"> Expenses </CustomSmallButton>
+            <CustomSmallButton onClick={ () => setChoosenTrip(_id, name, mainCurrency)} to={`/trips/single/${_id}`} color="grey"> Details </CustomSmallButton>
             <CustomSmallButton onClick={ () => setChoosenTrip(_id, name, mainCurrency)} to={`/trips/edit/${_id}`} color="greyOutline"> Edit / Delete </CustomSmallButton>
           </ContainerButtons>            
         </Container>        
