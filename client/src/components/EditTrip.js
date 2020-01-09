@@ -14,7 +14,8 @@ import {
   ParagraphSmallItalic,
   Textarea,
   InputCheckboxContainer,
-  customStyleSelect
+  customStyleSelect,
+  TripHeader,
 } from './styled';
 import Select from 'react-select';
 import Button from './Button';
@@ -133,59 +134,62 @@ class EditTrip extends Component {
 
   render() {
     return (
-      <ContentWrapper title="Edit Trip Information">
-        <Form onSubmit={this.onEditSubmit}>
+      <>
+        <TripHeader name={this.props.choosenTripName}/>
+        <ContentWrapper title="Edit Trip Information">
+          <Form onSubmit={this.onEditSubmit}>
 
-          <Label htmlFor="name-edit">Name (5-100 characters):</Label>
-          <Input minlength="5" maxlength="100" type="text" name="name" id="name-edit" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
-              
-          <InputContainer>
-            <Label htmlFor="startDate-edit">Start date:</Label>
-            <DatePicker customInput={<DateInput/>} dateFormat="yyyy/MM/dd" type="text" name="startDate" id="startDate-edit" selected={this.state.startDate} onChange={this.onDateChange} todayButton="Today"/>
-          </InputContainer>
+            <Label htmlFor="name-edit">Name (5-100 characters):</Label>
+            <Input minlength="5" maxlength="100" type="text" name="name" id="name-edit" placeholder="Name" required onChange={this.onInputChange} value={this.state.name}/>
+                
+            <InputContainer>
+              <Label htmlFor="startDate-edit">Start date:</Label>
+              <DatePicker customInput={<DateInput/>} dateFormat="yyyy/MM/dd" type="text" name="startDate" id="startDate-edit" selected={this.state.startDate} onChange={this.onDateChange} todayButton="Today"/>
+            </InputContainer>
 
-          <Label htmlFor="budget-add">Budget: (from 0 to 1 million)</Label>
-          <Input 
-            min="0"
-            max="100000000" 
-            type="number" 
-            name="budget" 
-            id="budget-add" 
-            placeholder="Your budget" 
-            required 
-            onChange={this.onInputChange} 
-            value={this.state.budget}
-          />
+            <Label htmlFor="budget-add">Budget: (from 0 to 1 million)</Label>
+            <Input 
+              min="0"
+              max="100000000" 
+              type="number" 
+              name="budget" 
+              id="budget-add" 
+              placeholder="Your budget" 
+              required 
+              onChange={this.onInputChange} 
+              value={this.state.budget}
+            />
 
-          <Label htmlFor="budgetCurrency-add">Currency:</Label>
-          <Select 
-            styles={customStyleSelect} 
-            options={this.state.tripCurrencies} 
-            type="text" 
-            name="budgetCurrency" 
-            id="budgetCurrency-add" 
-            required 
-            onChange={this.onSelectCurrencyChange} 
-            value={this.state.budgetCurrency}
-          />          
-          
-          <Label htmlFor="description-edit">Description (10-200 characters):</Label>
-          <ParagraphSmallItalic>This field is optional</ParagraphSmallItalic>
-          <Textarea maxlength="200" name="description" id="description-edit" placeholder="Description" onChange={this.onDescriptionChange} value={this.state.description}/>
+            <Label htmlFor="budgetCurrency-add">Currency:</Label>
+            <Select 
+              styles={customStyleSelect} 
+              options={this.state.tripCurrencies} 
+              type="text" 
+              name="budgetCurrency" 
+              id="budgetCurrency-add" 
+              required 
+              onChange={this.onSelectCurrencyChange} 
+              value={this.state.budgetCurrency}
+            />          
+            
+            <Label htmlFor="description-edit">Description (10-200 characters):</Label>
+            <ParagraphSmallItalic>This field is optional</ParagraphSmallItalic>
+            <Textarea maxlength="200" name="description" id="description-edit" placeholder="Description" onChange={this.onDescriptionChange} value={this.state.description}/>
 
-          <InputCheckboxContainer>
-            <InputCheckbox type="checkbox" name="isTripFinished" id="isTripFinished-edit" onChange={this.onInputChange} checked={this.state.isTripFinished} />
-            <Label htmlFor="isTripFinished-edit">Is this trip finished?</Label>
-          </InputCheckboxContainer>
-          
-          <Button textOnButton="Edit" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/>     
-        </Form> 
+            <InputCheckboxContainer>
+              <InputCheckbox type="checkbox" name="isTripFinished" id="isTripFinished-edit" onChange={this.onInputChange} checked={this.state.isTripFinished} />
+              <Label htmlFor="isTripFinished-edit">Is this trip finished?</Label>
+            </InputCheckboxContainer>
+            
+            <Button textOnButton="Edit" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/>     
+          </Form> 
 
-        <Form onSubmit={this.onDeleteSubmit}>
-          <Button textOnButton="Delete" textColor="#2EC66D" btnColor="#fff" btnBorder="1px solid #2EC66D"/> 
-        </Form>
+          <Form onSubmit={this.onDeleteSubmit}>
+            <Button textOnButton="Delete" textColor="#2EC66D" btnColor="#fff" btnBorder="1px solid #2EC66D"/> 
+          </Form>
 
-      </ContentWrapper>
+        </ContentWrapper>
+      </>
     )
   }
 } 
@@ -194,6 +198,7 @@ class EditTrip extends Component {
 const mapStateToProps = (state) => {
   return {
     choosenTripId: state.choosenTrip.id,
+    choosenTripName: state.choosenTrip.name,
     currencyList: state.currencyList,
     userId: state.userId
   }
