@@ -8,15 +8,13 @@ import Select from 'react-select';
 import getToken from '../utils/getToken';
 import formatCurrencies from '../utils/formatCurrencies';
 
-
-
 class EditExpense extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       tripId: this.props.choosenTripId,
-      expenseId: this.props.match.params.expenseId,
+      expenseId: this.props.choosenExpenseId,
       expenseName: "", 
       expenseCategory: 
       {
@@ -43,14 +41,12 @@ class EditExpense extends Component {
   }
 
   onSelectCurrencyChange = (optionsObject) => {
-
     this.setState({
       expenseCurrency: optionsObject
     });
   }
 
   onSelectCategoryChange = (optionsObject) => {
-
     this.setState({
       expenseCategory: optionsObject
     });
@@ -64,7 +60,7 @@ class EditExpense extends Component {
       cost: this.state.expenseCost,
       currency: this.state.expenseCurrency.value
     }
-    await axios.put(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
+    await axios.put(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses/${this.props.choosenExpenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       this.setState({ 
         expenseName: "", 
@@ -87,7 +83,7 @@ class EditExpense extends Component {
   onDeleteSubmit = async (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this expense?")) {
-      await axios.delete(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
+      await axios.delete(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses/${this.props.choosenExpenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
       try {
         this.setState({ 
           expenseName: "", 
@@ -203,6 +199,7 @@ class EditExpense extends Component {
 const mapStateToProps = (state) => {
   return {
     choosenTripId: state.choosenTrip.id,
+    choosenExpenseId: state.choosenExpense.id,
     currencyList: state.currencyList
   }
 }
