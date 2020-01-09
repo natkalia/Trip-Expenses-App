@@ -103,7 +103,7 @@ npm run start:app
 ## Future features:
 - adding / modifying custom categories
 - searching in user trips
-- sortig user trips
+- sorting user trips
 - sorting and filtering user expenses
 
 
