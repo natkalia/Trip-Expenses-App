@@ -6,6 +6,8 @@ import {
 } from './styled';
 import { Chip } from './Chip';
 import { theme } from '../utils/theme';
+import { setChoosenExpense } from '../redux/actions/userActions';
+import { connect } from 'react-redux';
 
 const ExpenseButtonSmall = styled(LinkButtonSmall)`
   margin: 0;
@@ -66,7 +68,7 @@ const ExpenseButtonWrapper= styled.div`
   grid-area: action;
 `;
 
-export const ExpenseLine = (props) => {
+const ExpenseLine = (props) => {
   return (
     <ExpenseLineWrapper>
       <ExpenseCard>
@@ -80,12 +82,27 @@ export const ExpenseLine = (props) => {
           {props.expense.cost} {props.expense.currency}
         </ExpenseCostWrapper>
         <ExpenseButtonWrapper>
-          <ExpenseButtonSmall to={`/trips/${props.tripId}/expenses/edit/${props.expense._id}`} color="greyOutline">Edit/Delete</ExpenseButtonSmall>
+          <ExpenseButtonSmall onClick={ () => props.setChoosenExpense(props.expense._id)} to={`/trips/${props.tripId}/expenses/edit/${props.expense._id}`} color="greyOutline">Edit/Delete</ExpenseButtonSmall>
         </ExpenseButtonWrapper>
       </ExpenseCard>
     </ExpenseLineWrapper>
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    choosenExpense: state.choosenExpense
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setChoosenExpense: (id) => dispatch(setChoosenExpense(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseLine);
+
 export const ExpensesList = styled(Ul)`
 `;
+
