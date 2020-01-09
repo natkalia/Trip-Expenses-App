@@ -4,6 +4,7 @@ const CLEAR_STATE = 'CLEAR_STATE';
 const SET_CHOOSEN_TRIP = 'SET_CHOOSEN_TRIP';
 const SET_CURRENCY_LIST = 'SET_CURRENCY_LIST';
 const SET_USER_ID = 'SET_USER_ID';
+const SET_EXCHANGE_RATES = 'SET_EXCHANGE_RATES';
 
 
 const setLoggedIn = () => ({
@@ -50,6 +51,13 @@ const setUserId = (userId) => ({
   }
 });
 
+const setExchangeRates = (exchangeRates) => ({
+  type: SET_EXCHANGE_RATES,
+  payload: {
+    exchangeRates: exchangeRates,
+  }
+});
+
 export {
   setLoggedIn,
   setLoggedOut,
@@ -57,10 +65,12 @@ export {
   setChoosenTrip,
   setCurrencyList,
   setUserId,
+  setExchangeRates,
   SET_LOGGED_IN,
   SET_LOGGED_OUT,
   CLEAR_STATE,
   SET_CHOOSEN_TRIP,
   SET_CURRENCY_LIST,
-  SET_USER_ID
+  SET_USER_ID,
+  SET_EXCHANGE_RATES
 }

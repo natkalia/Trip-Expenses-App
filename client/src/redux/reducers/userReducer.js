@@ -4,7 +4,8 @@ import {
   CLEAR_STATE,
   SET_CHOOSEN_TRIP,
   SET_CURRENCY_LIST,
-  SET_USER_ID
+  SET_USER_ID,
+  SET_EXCHANGE_RATES
 } from '../actions/userActions';
 
 
@@ -12,7 +13,8 @@ const initialState = {
   isLoggedIn: false,
   choosenTrip: {},
   currencyList: [],
-  userID: ""
+  userId: "",
+  exchangeRates: null
 };
 
 const userReducer = (state = initialState, action) => {
@@ -28,6 +30,8 @@ const userReducer = (state = initialState, action) => {
     case SET_CURRENCY_LIST:
       return Object.assign({}, state, action.payload)
     case SET_USER_ID:
+      return Object.assign({}, state, action.payload)
+    case SET_EXCHANGE_RATES:
       return Object.assign({}, state, action.payload)
     default:
       return state
