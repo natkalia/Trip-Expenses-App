@@ -87,7 +87,10 @@ npm run start:app
 5. To see and test app open on [localhost:3000](http://localhost:3000)
 
 ## Credits:
-- background image from ....
+- Icons used:
+    - Icon made by Smashicons from www.flaticon.com
+    - Icon made by Freepik from www.flaticon.com
+- background photo by Louis Hansel on https://unsplash.com/
 - icons from <a href="https://fontawesome.com/">Font Awesome</a>
 - external exchange rates API: https://api.exchangerate-api.com/v4/latest/
 
