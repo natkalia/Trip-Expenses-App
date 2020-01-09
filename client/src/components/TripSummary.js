@@ -9,9 +9,11 @@ import getToken from '../utils/getToken';
 import {
   TripHeader, 
   InnerContainer,
-  H3
+  H3,
+  LinkText,
+  NavLinksContainer
 } from './styled';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ratesObject } from './RatesList';
 
 const Paragraph = styled.p`
@@ -248,6 +250,11 @@ class TripSummary extends Component {
               <canvas id="expensesChart" width="300" height="300"></canvas>
             </ChartContainer>
           </InnerContainer>
+          <NavLinksContainer>
+            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+            </LinkText>
+          </NavLinksContainer>
         </ContentWrapper>
       </>
     )

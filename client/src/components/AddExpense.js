@@ -3,11 +3,19 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import ContentWrapper from './ContentWrapper';
 import Button from './Button';
-import { Form, Label, Input, customStyleSelect, TripHeader } from './styled';
+import {
+  Form,
+  Label,
+  Input,
+  customStyleSelect,
+  TripHeader,
+  LinkText,
+  NavLinksContainer
+} from './styled';
 import Select from 'react-select';
 import getToken from '../utils/getToken';
 import formatCurrencies from '../utils/formatCurrencies';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 class AddExpense extends Component {
@@ -151,6 +159,14 @@ class AddExpense extends Component {
             <Button textOnButton="Add" textColor="#fff" btnColor="#2EC66D" btnBorder="none" /> 
 
           </Form>
+          <NavLinksContainer>
+            <LinkText to = { `/trips/${this.props.choosenTripId}/expenses/all`} >
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to All Expenses
+            </LinkText>
+            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+            </LinkText>
+          </NavLinksContainer>
 
         </ContentWrapper>
       </>

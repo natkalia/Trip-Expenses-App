@@ -3,11 +3,18 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import ContentWrapper from './ContentWrapper';
 import Button from './Button';
-import { Form, Label, Input, customStyleSelect } from './styled';
+import {
+  Form,
+  Label,
+  Input,
+  customStyleSelect,
+  LinkText,
+  NavLinksContainer
+} from './styled';
 import Select from 'react-select';
 import getToken from '../utils/getToken';
 import formatCurrencies from '../utils/formatCurrencies';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 class EditExpense extends Component {
@@ -194,6 +201,15 @@ class EditExpense extends Component {
         <Form onSubmit={this.onDeleteSubmit}>
           <Button textOnButton="Delete" textColor="#fff" btnColor="#DC3545" btnBorder="none"/> 
         </Form>
+
+        <NavLinksContainer>
+            <LinkText to = { `/trips/${this.props.choosenTripId}/expenses/all`} >
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to All Expenses
+            </LinkText>
+            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+            </LinkText>
+          </NavLinksContainer>
 
       </ContentWrapper>
     )
