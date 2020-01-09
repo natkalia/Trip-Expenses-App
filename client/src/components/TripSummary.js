@@ -196,7 +196,6 @@ class TripSummary extends Component {
     //   const exchangeRates = await getActualCurrencyRates(this.props.currencyList);
     // //   await this.props.setExchangeRates(exchangeRates);
     // // }
-    // console.log('Wydatki');
     if (this.state.sumExpenses !== 0) {
       await this.createChartExpenses();
     }

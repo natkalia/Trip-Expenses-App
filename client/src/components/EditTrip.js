@@ -117,7 +117,6 @@ class EditTrip extends Component {
     } else return;
   };
 
-  //tu można by chyba brać te wszystkie dane z reduxa, jeśli wcześniej je tam dodamy
   componentDidMount () {
     axios.get(`/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({ 
