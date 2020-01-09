@@ -39,7 +39,7 @@ class SingleTrip extends Component {
   render() {
     return (
       <>
-        <TripHeader name={this.state.name}/>
+        <TripHeader name={this.props.choosenTripName}/>
         
         <ContentWrapper title="Trip Details">          
           <InfoWrapper>
@@ -73,7 +73,8 @@ class SingleTrip extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    choosenTripId: state.choosenTrip.id
+    choosenTripId: state.choosenTrip.id,
+    choosenTripName: state.choosenTrip.name
   }
 }
 
