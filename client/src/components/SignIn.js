@@ -32,7 +32,6 @@ class Login extends React.Component {
       .then(() => this.props.setLoggedIn())
       .then(() => getSupportedCurrencies())
       .then((list) => this.props.setCurrencyList(list))
-      .then(() => console.log('Currency List' + this.props.currencyList))
       .then(() => this.props.history.push('/trips/all'))
       // Uncomment and change :tripId for testing Expenses View
       // .then(() => this.props.history.push('/trips/5e13afa0da2daf0ef07a3b8b/expenses/all'))

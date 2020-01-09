@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -9,7 +10,7 @@ import {
   Ul
 } from './styled';
 import ContentWrapper from './ContentWrapper';
-import getToken from '../utils/getToken';
+import formatCurrencies from '../utils/formatCurrencies';
 
 
 
@@ -64,46 +65,11 @@ class CurrenciesRates extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // Maybe this data (mainBudgetCurrency and name)
-      // should be get from Redux after 
-      // choice of trip
-      mainBudgetCurrency: "",
-      name: "",
-      tripCurrencies: [],
+      tripCurrencies: formatCurrencies(this.props.currencyList),
       currenciesRates: undefined
     };
   }
 
-  getActualTripInfo = async () => {
-    try {
-      const result = await axios.get(`http://localhost:3000/api/trips/${this.props.match.params.tripId}`, { headers: { "x-auth-token": `${getToken()}`} });
-      const { mainCurrency, name } = result.data;
-      this.setState({
-        name: name,
-        mainBudgetCurrency: mainCurrency,
-      });
-    } catch(error) {
-      console.log(error);
-    }
-  }
-
-  getSupportedCurrencyList = async () => {
-    try {
-      const response = await axios.get('http://localhost:3000/api/currencies/list');
-      const { data: { currencies }} = response;
-      const tripCurrencies = currencies.map((currency) => {
-        return {
-          value: currency,
-          label: currency
-        }
-       });
-      this.setState({
-        tripCurrencies: tripCurrencies
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   getSingleCurencyRates = async (currencyShortcut, currenciesArray) => {
     try {
@@ -177,7 +143,7 @@ class CurrenciesRates extends Component {
   
   renderRatesList () {
     if (this.state.currenciesRates) {
-      const actualCurrency = this.state.mainBudgetCurrency;
+      const actualCurrency = this.props.choosenTripMainCurrency;
       const dataToRender = this.getChosenCurrencyRates(actualCurrency);
       const { date : dateRates } = this.state.currenciesRates;
       const formattedDate = moment(dateRates).format('LL');
@@ -206,18 +172,7 @@ class CurrenciesRates extends Component {
     )
   }
 
-  renderActualBudgetCurrency () {
-    return this.state.mainBudgetCurrency !== "" ? (
-      <span> {this.state.mainBudgetCurrency} </span>
-    ) : (
-      <span>unknown</span>
-    )
-  }
-
   async componentDidMount () {
-    this.getActualTripInfo();
-    
-    if (!this.state.tripCurrencies.length) await this.getSupportedCurrencyList();
 
     const todayDate = moment().format("YYYY-MM-DD");
 
@@ -231,12 +186,11 @@ class CurrenciesRates extends Component {
   render() {
     return (
       <>
-        <TripHeader name={this.state.name}/>
+        <TripHeader name={this.props.choosenTripName}/>
 
         <ContentWrapper title="Actual Currencies Rates">
             <LeadingText>
-              Your budget currency is:
-              { this.renderActualBudgetCurrency() }
+              Your budget currency is: {this.props.choosenTripMainCurrency}
             </LeadingText>
             { this.renderRatesList() }
         </ContentWrapper>
@@ -245,4 +199,13 @@ class CurrenciesRates extends Component {
   }
 } 
   
-export default CurrenciesRates;
+const mapStateToProps = (state) => {
+  return {
+    choosenTripName: state.choosenTrip.name,
+    choosenTripId: state.choosenTrip.id,
+    choosenTripMainCurrency: state.choosenTrip.mainCurrency,
+    currencyList: state.currencyList
+  }
+}
+
+export default connect(mapStateToProps)(CurrenciesRates);

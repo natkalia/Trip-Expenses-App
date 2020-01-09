@@ -85,9 +85,9 @@ const PinImg = styled.img`
 
 const TripCard = (props) => {
   let status = props.trip.isTripFinished ? 'finished' : 'open';
-  const { name, startDate, description, _id } = props.trip; 
-  const setChoosenTrip = (tripId, tripName) => {
-    props.setChoosenTrip(tripId, tripName);
+  const { name, startDate, description, _id, mainCurrency } = props.trip; 
+  const setChoosenTrip = (tripId, tripName, tripMainCurrency) => {
+    props.setChoosenTrip(tripId, tripName, tripMainCurrency);
   }
   return (
     <Card>
@@ -112,8 +112,8 @@ const TripCard = (props) => {
             <Label htmlFor={`isPinned-${_id}`}>Pin trip to the main page</Label>         
           </InputCheckboxContainerCustom>
           <ContainerButtons>
-            <CustomSmallButton onClick={ () => setChoosenTrip(_id, name)} to={`/trips/single/${_id}`} color="grey"> Expenses </CustomSmallButton>
-            <CustomSmallButton onClick={ () => setChoosenTrip(_id, name)} to={`/trips/edit/${_id}`} color="greyOutline"> Edit / Delete </CustomSmallButton>
+            <CustomSmallButton onClick={ () => setChoosenTrip(_id, name, mainCurrency)} to={`/trips/single/${_id}`} color="grey"> Expenses </CustomSmallButton>
+            <CustomSmallButton onClick={ () => setChoosenTrip(_id, name, mainCurrency)} to={`/trips/edit/${_id}`} color="greyOutline"> Edit / Delete </CustomSmallButton>
           </ContainerButtons>            
         </Container>        
       </CardBody>
@@ -130,7 +130,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setChoosenTrip: (id, name) => dispatch(setChoosenTrip(id, name))
+    setChoosenTrip: (id, name, mainCurrency) => dispatch(setChoosenTrip(id, name, mainCurrency))
   }
 }
 
