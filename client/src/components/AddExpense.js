@@ -3,11 +3,19 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import ContentWrapper from './ContentWrapper';
 import Button from './Button';
-import { Form, Label, Input, customStyleSelect } from './styled';
+import {
+  Form,
+  Label,
+  Input,
+  customStyleSelect,
+  TripHeader,
+  LinkText,
+  NavLinksContainer
+} from './styled';
 import Select from 'react-select';
 import getToken from '../utils/getToken';
 import formatCurrencies from '../utils/formatCurrencies';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 class AddExpense extends Component {
@@ -93,71 +101,83 @@ class AddExpense extends Component {
 
   render() {
     return (
-      <ContentWrapper title="Add Expense">
+      <>
+        <TripHeader name={this.props.choosenTripName}/>
+        <ContentWrapper title="Add Expense">
 
-        <Form onSubmit={this.onFormSubmit}>
+          <Form onSubmit={this.onFormSubmit}>
 
-          <Label htmlFor="expenseName-add">Name (3-40 characters):</Label>
-          <Input 
-            minlength="3" 
-            maxlength="40" 
-            type="text" 
-            name="expenseName" 
-            id="expenseName-add" 
-            placeholder="Name" 
-            required 
-            onChange={this.onInputChange}
-            value={this.state.expenseName}/>
+            <Label htmlFor="expenseName-add">Name (3-40 characters):</Label>
+            <Input 
+              minlength="3" 
+              maxlength="40" 
+              type="text" 
+              name="expenseName" 
+              id="expenseName-add" 
+              placeholder="Name" 
+              required 
+              onChange={this.onInputChange}
+              value={this.state.expenseName}/>
 
-          <Label htmlFor="expenseCost-add">Cost (0-10000):</Label>
-          <Input 
-            min="0"
-            max="10000" 
-            type="number" 
-            name="expenseCost" 
-            id="expenseCost-add" 
-            placeholder="Cost amount" 
-            required 
-            onChange={this.onInputChange} 
-            value={this.state.expenseCost}
-          />
+            <Label htmlFor="expenseCost-add">Cost (0-10000):</Label>
+            <Input 
+              min="0"
+              max="10000" 
+              type="number" 
+              name="expenseCost" 
+              id="expenseCost-add" 
+              placeholder="Cost amount" 
+              required 
+              onChange={this.onInputChange} 
+              value={this.state.expenseCost}
+            />
 
-          <Label htmlFor="expenseCurrency-add">Currency:</Label>
-          <Select 
-            styles={customStyleSelect} 
-            options={this.state.tripCurrencies} 
-            type="text" 
-            name="expenseCurrency" 
-            id="expenseCurrency-add" 
-            required 
-            onChange={this.onSelectCurrencyChange} 
-            value={this.state.expenseCurrency}
-          />
+            <Label htmlFor="expenseCurrency-add">Currency:</Label>
+            <Select 
+              styles={customStyleSelect} 
+              options={this.state.tripCurrencies} 
+              type="text" 
+              name="expenseCurrency" 
+              id="expenseCurrency-add" 
+              required 
+              onChange={this.onSelectCurrencyChange} 
+              value={this.state.expenseCurrency}
+            />
 
-          <Label htmlFor="expenseCategory-add">Category:</Label>
-          <Select 
-            styles={customStyleSelect} 
-            options={this.state.tripCategories} 
-            type="text" 
-            name="expenseCategory" 
-            id="expenseCategory-add" 
-            required
-            onChange={this.onSelectCategoryChange} 
-            value={this.state.expenseCategory}
-          />
+            <Label htmlFor="expenseCategory-add">Category:</Label>
+            <Select 
+              styles={customStyleSelect} 
+              options={this.state.tripCategories} 
+              type="text" 
+              name="expenseCategory" 
+              id="expenseCategory-add" 
+              required
+              onChange={this.onSelectCategoryChange} 
+              value={this.state.expenseCategory}
+            />
 
-          <Button textOnButton="Add" btnColor="#2EC66D" btnBorder="none"/> 
+            <Button textOnButton="Add" textColor="#fff" btnColor="#2EC66D" btnBorder="none" /> 
 
-        </Form>
+          </Form>
+          <NavLinksContainer>
+            <LinkText to = { `/trips/${this.props.choosenTripId}/expenses/all`} >
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to All Expenses
+            </LinkText>
+            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+            </LinkText>
+          </NavLinksContainer>
 
-      </ContentWrapper>
+        </ContentWrapper>
+      </>
     )
   }
 } 
 
 const mapStateToProps = (state) => {
-  return {
+  return {    
     choosenTripId: state.choosenTrip.id,
+    choosenTripName: state.choosenTrip.name,
     currencyList: state.currencyList
   }
 }

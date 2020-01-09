@@ -38,7 +38,11 @@ class AllTrips extends Component {
 
   componentDidMount() {
     axios.get(`/api/users/${this.props.userId}/trips`, { headers: { "x-auth-token": `${getToken()}`} })
-      .then(res => this.setState({trips: res.data.trips}))
+      .then(res => {
+        const trips = res.data.trips;
+        trips.sort((older, newer) => new Date(newer.startDate) - new Date(older.startDate));        
+        this.setState({trips: trips})
+      })
       .catch(err => console.log(err));
   }
 

@@ -3,7 +3,9 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import {
   LinkButtonBig,
-  TripHeader
+  TripHeader,
+  LinkText,
+  NavLinksContainer
 } from './styled';
 import {
   ExpenseLine,
@@ -11,7 +13,7 @@ import {
 } from './ExpensesList';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 class AllExpenses extends Component {
@@ -83,6 +85,11 @@ class AllExpenses extends Component {
           ) : (
             <p>Oh, you haven't entered any expenses yet.</p>
           )}
+          <NavLinksContainer>            
+            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+            </LinkText>
+          </NavLinksContainer>
         </ContentWrapper>
       </>
     )

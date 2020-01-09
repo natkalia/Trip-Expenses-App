@@ -111,7 +111,7 @@ function validateTrip(trip) {
     name: Joi.string()
       .trim()
       .min(5)
-      .max(30)
+      .max(100)
       .required(),
     startDate: Joi.date()
       // .default(Date.now)
@@ -171,48 +171,6 @@ function validateExpense(expenseObject, categoriesArray) {
 
   return expenseSchema.validate(expenseObject);
 }
-
-// Test trip object
-/*
-const trip1 = {
-  name: 'Trip to Belgium',
-  mainCurrency: 'EUR',
-  budget: 500.2367,
-  description: 'First trip in database. Meow!',
-  startDate: '2020-10-01',
-  expenses: [
-    {
-      name: 'Train ticket to Brussels',
-      category: 'tickets',
-      cost: 350,
-      currency: 'PLN',
-    },
-    {
-      name: 'Train ticket to Haga',
-      category: 'accomodation',
-      cost: 650,
-    // currency: 'EUR'
-    }
-  ]
-};
-*/
-
-// Test Joi Validation
-/*
-const validateResult = validateTrip(trip1);
-console.log('Validate result object:');
-console.dir(validateResult, {depth: null});
-*/
-
-// Test internal mongoose validation
-/*
-function createTrip(dataTrip) {
-  let firstTrip = new Trip(dataTrip);
-  console.log(firstTrip.validateSync());
- }
-
-createTrip(validateResult.value);
-*/
 
 exports.Trip = Trip;
 exports.validateTrip = validateTrip;
