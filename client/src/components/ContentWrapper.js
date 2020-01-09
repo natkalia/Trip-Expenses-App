@@ -11,6 +11,11 @@ const Wrapper = styled.div`
   background-color: rgba(255,255,255,0.85);
   margin: 40px auto 40px;
   padding-bottom:20px;
+  box-shadow: 0 0 5px ${theme.colors.neutralMidDark};
+  ${theme.media.landscapePhone} {  
+    border-radius: ${theme.radius.bg};
+    width: 90%;
+  }
 `;
 
 const Container = styled.div`
@@ -28,6 +33,9 @@ const TitleWrapper = styled.div`
   margin-bottom: 30px;
   background-color: rgba(255,255,255,0.85);
   box-shadow: 0 4px 4px ${theme.colors.neutralExtraLight};
+  ${theme.media.landscapePhone} {  
+    border-radius: ${theme.radius.bg} ${theme.radius.bg} 0 0;
+  }
 `;
 
 const ContentWrapper = (props) => {

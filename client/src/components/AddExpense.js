@@ -1,10 +1,12 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
+import { connect } from 'react-redux';
 import ContentWrapper from './ContentWrapper';
 import Button from './Button';
 import { Form, Label, Input, customStyleSelect } from './styled';
 import Select from 'react-select';
 import getToken from '../utils/getToken';
+import formatCurrencies from '../utils/formatCurrencies';
 
 
 
@@ -13,7 +15,6 @@ class AddExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripId: "5e0dd4fa618f3e1f10d4db80", // temporary
       expenseName: "", 
       expenseCategory: 
         {
@@ -26,16 +27,7 @@ class AddExpense extends Component {
           value: "PLN", 
           label: "PLN"
         },
-      tripCurrencies: [
-        { value: 'PLN', label: 'PLN' },
-        { value: 'USD', label: 'USD' },
-        { value: 'EUR', label: 'EUR' },
-        { value: 'GBP', label: 'GBP' },
-        { value: 'JPY', label: 'JPY' },
-        { value: 'AUD', label: 'AUD' },
-        { value: 'CAD', label: 'CAD' },
-        { value: 'CHF', label: 'CHF' }
-      ],
+      tripCurrencies: formatCurrencies(this.props.currencyList),
       tripCategories: []
     }
   }
@@ -105,10 +97,10 @@ class AddExpense extends Component {
 
         <Form onSubmit={this.onFormSubmit}>
 
-          <Label htmlFor="expenseName-add">Name (3-30 characters):</Label>
+          <Label htmlFor="expenseName-add">Name (3-40 characters):</Label>
           <Input 
             minlength="3" 
-            maxlength="30" 
+            maxlength="40" 
             type="text" 
             name="expenseName" 
             id="expenseName-add" 
@@ -162,5 +154,12 @@ class AddExpense extends Component {
     )
   }
 } 
-  
-export default AddExpense;
+
+const mapStateToProps = (state) => {
+  return {
+    choosenTripId: state.choosenTrip.id,
+    currencyList: state.currencyList
+  }
+}
+
+export default connect(mapStateToProps)(AddExpense);

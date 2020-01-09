@@ -22,7 +22,27 @@ class Signup extends React.Component {
       password: this.state.password,
     }
     const url = "/api/users/";
-    await axios.post(url, user).then(res => console.log(res.data)).catch(err => console.log(err.res));
+    await axios.post(url, user)
+      .then(res => {
+        const userName = res.data.name;
+        return userName;
+      })
+      .then((userName) => alert(`Hello ${userName}. You've successfully register. Log in now`))
+      .then(() => this.props.history.push('/users/login'))
+      .catch(err => {
+        if (err.response.data) {
+          const errorMessage = err.response.data.error;
+          console.log(errorMessage);
+          alert(`
+            Sorry, sth goes wrong
+            ${errorMessage}`);
+        } else {
+          console.log(err);
+          alert('Sth goes wrong');
+        }
+        
+        // alert(`We are sorry. Sth went wrong.\n ${err.data.error} `)
+      });
   }
 
   onInputChange = (inputName, e) => {

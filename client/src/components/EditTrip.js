@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; 
 import DatePicker from 'react-datepicker';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -19,6 +20,7 @@ import Select from 'react-select';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
+import formatCurrencies from '../utils/formatCurrencies';
 
 
 
@@ -37,7 +39,7 @@ class EditTrip extends Component {
           value: "PLN",
           label: "PLN"
         },
-      tripCurrencies: []
+      tripCurrencies: formatCurrencies(this.props.currencyList)
     };
   }
 
@@ -93,18 +95,18 @@ class EditTrip extends Component {
       budget: this.state.budget,
       mainCurrency: this.state.budgetCurrency.value
     }
-    axios.put("/api/trips/edit/" + this.state.id, trip, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.put("/api/trips/edit/" + this.props.choosenTripId, trip, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
-      .then(() => this.props.history.push(`/trips/single/${this.state.id}`));
+      .then(() => this.props.history.push(`/trips/single/${this.props.choosenTripId}`));
   };
 
   onDeleteSubmit = (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this trip?")) {
     // after authorization and Redux change hardcoded values of user id
-    axios.delete("/api/trips/" + this.state.id,
+    axios.delete("/api/trips/" + this.props.choosenTripId,
       { 
-        data: {userId : "5e0fc8800785ca060578b375"},
+        data: {userId : this.props.userId},
         headers: { "x-auth-token": `${getToken()}`} 
       })
     .then(res => console.log(res.data))
@@ -112,28 +114,7 @@ class EditTrip extends Component {
     } else return;
   };
 
-  getSupportedCurrencyList = async () => {
-    try {
-      const response = await axios.get(
-        '/api/currencies/list',
-        { headers: { "x-auth-token": `${getToken()}`} });
-      const { data: { currencies }} = response;
-      const tripCurrencies = currencies.map((currency) => {
-        return {
-          value: currency,
-          label: currency
-        }
-       });
-      this.setState({
-        tripCurrencies: tripCurrencies
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   componentDidMount () {
-    // axios.get("http://localhost:3000/api/trips/5e0dd4da618f3e1f10d4db7f") // temporary currenTripId
     axios.get(`/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} }) // temporary currenTripId
       .then(res => this.setState({ 
           id: res.data._id,
@@ -210,4 +191,13 @@ class EditTrip extends Component {
   }
 } 
   
-export default EditTrip;
+
+const mapStateToProps = (state) => {
+  return {
+    choosenTripId: state.choosenTrip.id,
+    currencyList: state.currencyList,
+    userId: state.userId
+  }
+}
+
+export default connect(mapStateToProps)(EditTrip);

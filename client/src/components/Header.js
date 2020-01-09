@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import LogoImg from '../images/logo.png';
-import { setLoggedOut } from '../redux/actions/userActions';
+import { setLoggedOut, clearState } from '../redux/actions/userActions';
 
 
 const HeaderWrapper = styled.div`
@@ -142,6 +142,8 @@ class Header extends Component {
 
   logOut = () => {
     this.props.setLoggedOut();
+    this.props.clearState();
+    localStorage.removeItem('travelplanner_x-auth-token');
   }
 
   setChoosen = (e) => {
@@ -233,7 +235,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setLoggedOut: () => dispatch(setLoggedOut())
+    setLoggedOut: () => dispatch(setLoggedOut()),
+    clearState: () => dispatch(clearState())
   }
 }
 

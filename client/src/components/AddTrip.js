@@ -1,4 +1,5 @@
 import React, { Component } from 'react'; 
+import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import moment from 'moment';
@@ -17,6 +18,7 @@ import Select from 'react-select';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
 import getToken from '../utils/getToken';
+import formatCurrencies from '../utils/formatCurrencies';
 
 
 
@@ -34,7 +36,7 @@ class AddTrip extends Component {
           value: "PLN",
           label: "PLN"
         },
-      tripCurrencies: []
+      tripCurrencies: formatCurrencies(this.props.currencyList),
     };
   }
 
@@ -74,7 +76,11 @@ class AddTrip extends Component {
       budget: this.state.budget === "" ? 0 : this.state.budget,
       mainCurrency: this.state.budgetCurrency.value
     }
-    axios.post("/api/trips/add", trip, { headers: { "x-auth-token": `${getToken()}`} })
+    const postData = {
+      tripData: trip,
+      userData: this.props.userId
+    }
+    axios.post("/api/trips/add", postData, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
       .then(() => this.setState({
         name: "",
@@ -88,29 +94,8 @@ class AddTrip extends Component {
           },
       }))
       .then(() => this.props.history.push("/trips/all"))
+      .catch((error) => console.dir(error.response.data));
   };
-
-  getSupportedCurrencyList = async () => {
-    try {
-      const response = await axios.get('/api/currencies/list', { headers: { "x-auth-token": `${getToken()}`} });
-      const { data: { currencies }} = response;
-      const tripCurrencies = currencies.map((currency) => {
-        return {
-          value: currency,
-          label: currency
-        }
-       });
-      this.setState({
-        tripCurrencies: tripCurrencies
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  componentDidMount () {
-    if (!this.state.tripCurrencies.length) this.getSupportedCurrencyList();
-  }
  
   render() {
     return (
@@ -159,6 +144,13 @@ class AddTrip extends Component {
 
     )
   }
-} 
-  
-export default AddTrip;
+}
+
+const mapStateToProps = (state) => {
+  return {
+    currencyList: state.currencyList,
+    userId: state.userId
+  }
+}
+
+export default connect(mapStateToProps)(AddTrip);

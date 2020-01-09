@@ -9,16 +9,15 @@ const { User, validateUser} = require('../models/user');
 // Currently the trip is added to same hardcoded user! To be changed after authentication is done!!
 
 router.post('/add', (req, res) => {
-  const { error, value } = validateTrip(req.body);
+  const { error, value } = validateTrip(req.body.tripData);
   if (error) {
     return res.status(400).send(error.details[0].message)
   } else {
     const trip = new Trip(value);
     trip.save()
-      .then(async(trip) => {     
-        // After authentication is done change the line below
-        // For test trips route:
-        await User.findByIdAndUpdate('5e0fc8800785ca060578b375', {$push: {trips: trip._id}});
+      .then(async(trip) => {
+        const { userData } = req.body;
+        await User.findByIdAndUpdate(userData, {$push: {trips: trip._id}});
 
       })
       .then(() => res.json('Trip added!'))

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
+import { connect } from 'react-redux';
 import ContentWrapper from './ContentWrapper';
 import Button from './Button';
 import { Form, Label, Input, customStyleSelect } from './styled';
 import Select from 'react-select';
 import getToken from '../utils/getToken';
+import formatCurrencies from '../utils/formatCurrencies';
 
 
 
@@ -13,8 +15,8 @@ class EditExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripId: "5e1368962bc58a16e4917fe3", // temporary
-      expenseId: "5e136be35221cf1ee0802829", // temporary
+      tripId: this.props.choosenTripId,
+      expenseId: this.props.match.params.expenseId,
       expenseName: "", 
       expenseCategory: 
       {
@@ -27,16 +29,7 @@ class EditExpense extends Component {
         value: "", 
         label: ""
       },
-      tripCurrencies: [
-        { value: 'PLN', label: 'PLN' },
-        { value: 'USD', label: 'USD' },
-        { value: 'EUR', label: 'EUR' },
-        { value: 'GBP', label: 'GBP' },
-        { value: 'JPY', label: 'JPY' },
-        { value: 'AUD', label: 'AUD' },
-        { value: 'CAD', label: 'CAD' },
-        { value: 'CHF', label: 'CHF' }
-      ],
+      tripCurrencies: formatCurrencies(this.props.currencyList),
       tripCategories: []
     }
   }
@@ -71,7 +64,7 @@ class EditExpense extends Component {
       cost: this.state.expenseCost,
       currency: this.state.expenseCurrency.value
     }
-    await axios.put(`/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
+    await axios.put(`/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, expense, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       this.setState({ 
         expenseName: "", 
@@ -85,7 +78,7 @@ class EditExpense extends Component {
         }, 
         expenseCost: ""
       });
-      this.props.history.push(`/trips/single/${this.state.tripId}`);
+      this.props.history.push(`/trips/single/${this.props.choosenTripId}`);
     } catch (error) {
       this.setState({ error: 'Error' });
     }
@@ -94,7 +87,7 @@ class EditExpense extends Component {
   onDeleteSubmit = async (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this expense?")) {
-      await axios.delete(`/api/trips/${this.state.tripId}/expenses/${this.state.expenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
+      await axios.delete(`/api/trips/${this.props.choosenTripId}/expenses/${this.state.expenseId}`, { headers: { "x-auth-token": `${getToken()}`} });
       try {
         this.setState({ 
           expenseName: "", 
@@ -108,7 +101,7 @@ class EditExpense extends Component {
           }, 
           expenseCost: ""
         });
-        this.props.history.push(`/trips/single/${this.state.tripId}`);
+        this.props.history.push(`/trips/single/${this.props.choosenTripId}`);
       } catch (error) {
         this.setState({ error: 'Error' });
       }
@@ -116,7 +109,7 @@ class EditExpense extends Component {
   }
 
   getTripAndExpenseData = async () => {
-    const res = await axios.get(`/api/trips/${this.state.tripId}`, { headers: { "x-auth-token": `${getToken()}`} });
+    const res = await axios.get(`/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
       let sanitizedExpense = res.data.expenses.filter(arr => (arr._id === this.state.expenseId));
@@ -143,10 +136,10 @@ class EditExpense extends Component {
 
         <Form onSubmit={this.onEditSubmit}>
 
-          <Label htmlFor="expenseName-edit">Name (3-30 characters):</Label>
+          <Label htmlFor="expenseName-edit">Name (3-40 characters):</Label>
           <Input 
             minlength="3" 
-            maxlength="30" 
+            maxlength="40" 
             type="text" 
             name="expenseName" 
             id="expenseName-edit"
@@ -207,4 +200,11 @@ class EditExpense extends Component {
   }
 } 
   
-export default EditExpense;
+const mapStateToProps = (state) => {
+  return {
+    choosenTripId: state.choosenTrip.id,
+    currencyList: state.currencyList
+  }
+}
+
+export default connect(mapStateToProps)(EditExpense);
