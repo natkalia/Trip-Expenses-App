@@ -75,8 +75,7 @@ class TripSummary extends Component {
   }
 
   getDataFromTrip = async () => {
-
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} });
+     const res = await axios.get(`/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`} });
     try {
 
       // modify object with currencies table to get one array of currencies rate in relation to main currency

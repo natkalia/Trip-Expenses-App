@@ -1,11 +1,12 @@
 {
-  "name": "travelplanner-client",
+  "name": "tripexpenses-client",
   "version": "1.0.0",
   "description": "app for planning travel budget",
   "keywords": [
     "travel",
     "travel costs",
-    "travel budget"
+    "travel budget",
+    "trip expenses"
   ],
   "license": "ISC",
   "repository": {
