@@ -43,8 +43,7 @@ userSchema.methods.generateAuthToken = function () {
     _id: this._id,
     name: this.name,
   }, 
-  // config.get('db.jwtPrivateKey'));
-  process.env.JWT_PRIVATEKEY); //deployment
+  process.env.JWT_PRIVATEKEY); 
   return token;
 }
 

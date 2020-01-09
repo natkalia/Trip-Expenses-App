@@ -103,7 +103,6 @@ class EditTrip extends Component {
   onDeleteSubmit = (e) => {
     e.preventDefault();
     if(window.confirm("Are you sure you want to delete this trip?")) {
-    // after authorization and Redux change hardcoded values of user id
     axios.delete("/api/trips/" + this.props.choosenTripId,
       { 
         data: {userId : this.props.userId},
@@ -115,7 +114,7 @@ class EditTrip extends Component {
   };
 
   componentDidMount () {
-    axios.get(`/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} }) // temporary currenTripId
+    axios.get(`/api/trips/${this.props.match.params.id}`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({ 
           id: res.data._id,
           name: res.data.name,

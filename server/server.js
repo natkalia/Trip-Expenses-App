@@ -1,5 +1,5 @@
 
-require('dotenv').config({ debug: process.env.DEBUG }); // temporary debugger
+require('dotenv').config();
 const config = require('config');
 
 const serverDebug = require('debug')('server:startup');
@@ -47,7 +47,6 @@ if (process.env.NODE_ENV === 'development') {
 
 // App routes
 app.use('/api/trips', checkAuthenticated, tripsRouter);
-// app.use('/api/trips', tripsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/currencies', currencyRouter);
 
