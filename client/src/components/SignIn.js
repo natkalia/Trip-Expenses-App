@@ -34,7 +34,6 @@ class Login extends React.Component {
         return res.data.userId;
       })
       .then((userId) => this.props.setUserId(userId))
-      .then(() => console.log(this.props.userId))
       .then(() => this.props.setLoggedIn())
       .then(() => getSupportedCurrencies())
       .then((list) => this.props.setCurrencyList(list))

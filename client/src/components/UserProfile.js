@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../utils/theme';
 import ContentWrapper from './ContentWrapper';
@@ -85,4 +86,10 @@ class UserProfile extends Component {
   }
 }
 
-export default UserProfile;
+const mapStateToProps = (state) => {
+  return {
+    userId: state.userId
+  }
+}
+
+export default connect(mapStateToProps)(UserProfile);

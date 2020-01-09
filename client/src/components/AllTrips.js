@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import ContentWrapper from './ContentWrapper';
 import {
@@ -36,8 +37,7 @@ class AllTrips extends Component {
   }
 
   componentDidMount() {
-    // axios.get(`http://localhost:3000/api/users/5e0cfed451f05203b0575062/trips`, { headers: { "x-auth-token": `${getToken()}`} })
-    axios.get(`http://localhost:3000/api/users/5e13ab8334627a0e9b4ec33e/trips`, { headers: { "x-auth-token": `${getToken()}`} })
+    axios.get(`http://localhost:3000/api/users/${this.props.userId}/trips`, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => this.setState({trips: res.data.trips}))
       .catch(err => console.log(err));
   }
@@ -63,4 +63,10 @@ class AllTrips extends Component {
 };
 
 
-export default AllTrips;
+const mapStateToProps = (state) => {
+  return {
+    userId: state.userId
+  }
+}
+
+export default connect(mapStateToProps)(AllTrips);

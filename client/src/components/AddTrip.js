@@ -76,7 +76,11 @@ class AddTrip extends Component {
       budget: this.state.budget === "" ? 0 : this.state.budget,
       mainCurrency: this.state.budgetCurrency.value
     }
-    axios.post("http://localhost:3000/api/trips/add", trip, { headers: { "x-auth-token": `${getToken()}`} })
+    const postData = {
+      tripData: trip,
+      userData: this.props.userId
+    }
+    axios.post("http://localhost:3000/api/trips/add", postData, { headers: { "x-auth-token": `${getToken()}`} })
       .then(res => console.log(res.data))
       .then(() => this.setState({
         name: "",
@@ -90,6 +94,7 @@ class AddTrip extends Component {
           },
       }))
       .then(() => this.props.history.push("/trips/all"))
+      .catch((error) => console.dir(error.response.data));
   };
  
   render() {
@@ -143,7 +148,8 @@ class AddTrip extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    currencyList: state.currencyList
+    currencyList: state.currencyList,
+    userId: state.userId
   }
 }
 
