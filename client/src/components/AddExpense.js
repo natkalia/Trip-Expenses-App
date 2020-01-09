@@ -28,7 +28,7 @@ class AddExpense extends Component {
           label: "PLN"
         },
       tripCurrencies: formatCurrencies(this.props.currencyList),
-      tripCategories: [],
+      tripCategories: []
     }
   }
 
@@ -148,7 +148,7 @@ class AddExpense extends Component {
               value={this.state.expenseCategory}
             />
 
-            <Button textOnButton="Add" btnColor="#2EC66D" btnBorder="none"/> 
+            <Button textOnButton="Add" textColor="#fff" btnColor="#2EC66D" btnBorder="none" /> 
 
           </Form>
 

@@ -185,7 +185,7 @@ class EditTrip extends Component {
           </Form> 
 
           <Form onSubmit={this.onDeleteSubmit}>
-            <Button textOnButton="Delete" textColor="#2EC66D" btnColor="#fff" btnBorder="1px solid #2EC66D"/> 
+            <Button textOnButton="Delete" textColor="#fff" btnColor="#DC3545" btnBorder="none"/> 
           </Form>
 
         </ContentWrapper>

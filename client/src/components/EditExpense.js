@@ -187,12 +187,12 @@ class EditExpense extends Component {
             value={this.state.expenseCategory}
           />
 
-          <Button textOnButton="Edit" btnColor="#2EC66D" btnBorder="none"/> 
+          <Button textOnButton="Edit" textColor="#fff" btnColor="#2EC66D" btnBorder="none"/> 
 
         </Form>
 
         <Form onSubmit={this.onDeleteSubmit}>
-          <Button textOnButton="Delete" btnColor="#DC3545" btnBorder="none"/> 
+          <Button textOnButton="Delete" textColor="#fff" btnColor="#DC3545" btnBorder="none"/> 
         </Form>
 
       </ContentWrapper>
