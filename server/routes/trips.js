@@ -9,19 +9,15 @@ const { User, validateUser} = require('../models/user');
 // Currently the trip is added to same hardcoded user! To be changed after authentication is done!!
 
 router.post('/add', (req, res) => {
-  const { error, value } = validateTrip(req.body);
+  const { error, value } = validateTrip(req.body.tripData);
   if (error) {
     return res.status(400).send(error.details[0].message)
   } else {
     const trip = new Trip(value);
     trip.save()
-      .then(async(trip) => {     
-        // After authentication is done change the line below
-        // await User.findByIdAndUpdate('5e09e6344d3be0524e67993c', {$push: {trips: trip._id}});
-        // Actual:
-        // await User.findByIdAndUpdate('5e0cfed451f05203b0575062', {$push: {trips: trip._id}});
-        // For test trips route:
-        await User.findByIdAndUpdate('5e0fc8800785ca060578b375', {$push: {trips: trip._id}});
+      .then(async(trip) => {
+        const { userData } = req.body;
+        await User.findByIdAndUpdate(userData, {$push: {trips: trip._id}});
 
       })
       .then(() => res.json('Trip added!'))
@@ -72,7 +68,9 @@ router.put('/edit/:id', (req, res) => {
           name: req.body.name,
           description: req.body.description,
           startDate: req.body.startDate,
-          isTripFinished: req.body.isTripFinished
+          isTripFinished: req.body.isTripFinished,
+          budget: req.body.budget,
+          mainCurrency: req.body.mainCurrency
         });
         trip.save()
           .then(() => res.json('Trip modified!'))
@@ -132,7 +130,6 @@ router.get('/:tripId/expenses/:expenseId', async (req, res) => {
       })
     }
     const expense = trip.expenses.id(req.params.expenseId);
-    console.log('Expense', expense);
     if (expense === null) {
       return res.status(404).json({
         "message": "Expense not found"
@@ -208,7 +205,6 @@ router.delete('/:tripId/expenses/:expenseId', async (req, res) => {
       })
     }
     const deletedExpense = trip.expenses.id(req.params.expenseId).remove();
-    console.log(deletedExpense);
     await trip.save();
     return res.status(200).send(
       {

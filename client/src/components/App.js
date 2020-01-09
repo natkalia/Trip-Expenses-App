@@ -1,6 +1,4 @@
 import React from 'react';
-import Cookies from 'universal-cookie'; 
-import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './Header';
 import HomePage from './HomePage';
@@ -14,65 +12,38 @@ import AddExpense from './AddExpense';
 import TripSummary from './TripSummary';
 import AllTrips from './AllTrips';
 import UserProfile from './UserProfile';
+import CurrenciesRates from './CurrenciesRates';
+import AllExpenses from './AllExpenses';
 import Footer from './Footer';
 import Layout from '../layout/Layout';
+import PrivateRoute from './PrivateRoute';
 
-import { addFirstOne } from '../actions/exampleAction';
 
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const cookies = new Cookies();
-    this.state = {
-      apiResponse: "",
-      travelplanner_jwt: cookies.get('travelplanner_jwt') || ""
-    };
-  }
-
-  changeText = () => {
-    this.props.addFirstOne("Zupełenie nowy text")    
-  }
-  
   render() {
     return (
       <Router>
-        <Header/>
         <Layout>
+          <Header/>
           <Route path='/' exact component={HomePage} />
-          <Route path='/trips/add' component={AddTrip} />
-          <Route path='/trips/edit/:id' component={EditTrip} />
+          <PrivateRoute path='/trips/add' component={AddTrip} />
+          <PrivateRoute path='/trips/edit/:id' component={EditTrip} />
           <Route path='/users/login' component={SignIn} />
           <Route path='/users/register' component={RegisterUser} />
-          <Route path='/trips/single/:id' component={SingleTrip} />
-          <Route path='/trips/summary/:id' component={TripSummary} />
-          <Route path='/trips/all' component={AllTrips} />
-          <Route path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
-          <Route path='/trips/:tripId/expenses/add' component={AddExpense} />
-          <Route path='/users/profile' component={UserProfile} />
-        </Layout> 
-
-        {/* do usuniecia później */}
-        {/* <h1>{this.props.text}</h1>
-        <button onClick={this.changeText}>kliknij</button> */}
-        <Footer/>
+          <PrivateRoute path='/trips/single/:tripId' component={SingleTrip} />
+          <PrivateRoute path='/trips/summary/:id' component={TripSummary} />
+          <PrivateRoute path='/trips/all' component={AllTrips} />
+          <PrivateRoute path='/trips/:tripId/expenses/edit/:expenseId' component={EditExpense} />
+          <PrivateRoute path='/trips/:tripId/expenses/add' component={AddExpense} />
+          <PrivateRoute path='/trips/:tripId/expenses/all' component={AllExpenses} />
+          <PrivateRoute path='/users/profile' component={UserProfile} />
+          <PrivateRoute path='/trips/currencies/:tripId' component={CurrenciesRates} />
+          <Footer/>
+        </Layout>
       </Router>
     )
   }
-
 }
 
-const mapStateToProps = (state) => {
-  return {
-    text: state.text
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addFirstOne: newText => dispatch(addFirstOne(newText))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -26,7 +26,7 @@ const expenseSchema = new mongoose.Schema({
   name: {
     type: String,
     minlength: 3,
-    maxlength: 30,
+    maxlength: 40,
     trim: true,
     required: [true, 'You should define expense name']
   },
@@ -99,7 +99,6 @@ const tripSchema = new mongoose.Schema({
 
 const Trip = mongoose.model('Trip', tripSchema);
 
-
 function validateTrip(trip) {
   // validateTrip returns an object with:
   // - error key if there is an error with model
@@ -112,7 +111,7 @@ function validateTrip(trip) {
     name: Joi.string()
       .trim()
       .min(5)
-      .max(30)
+      .max(100)
       .required(),
     startDate: Joi.date()
       // .default(Date.now)
@@ -154,7 +153,7 @@ function validateExpense(expenseObject, categoriesArray) {
     name: Joi.string()
       .trim()
       .min(3)
-      .max(30)
+      .max(40)
       .required(),
     category: Joi.string()
       .required()
@@ -166,7 +165,6 @@ function validateExpense(expenseObject, categoriesArray) {
       .precision(2)
       .required(),
     currency: Joi.string()
-      // .default(Joi.ref('/mainCurrency'))
       .valid(...supportedCurrencies)
       .required()
   });
@@ -174,48 +172,7 @@ function validateExpense(expenseObject, categoriesArray) {
   return expenseSchema.validate(expenseObject);
 }
 
-// Test trip object
-/*
-const trip1 = {
-  name: 'Trip to Belgium',
-  mainCurrency: 'EUR',
-  budget: 500.2367,
-  description: 'First trip in database. Meow!',
-  startDate: '2020-10-01',
-  expenses: [
-    {
-      name: 'Train ticket to Brussels',
-      category: 'tickets',
-      cost: 350,
-      currency: 'PLN',
-    },
-    {
-      name: 'Train ticket to Haga',
-      category: 'accomodation',
-      cost: 650,
-    // currency: 'EUR'
-    }
-  ]
-};
-*/
-
-// Test Joi Validation
-/*
-const validateResult = validateTrip(trip1);
-console.log('Validate result object:');
-console.dir(validateResult, {depth: null});
-*/
-
-// Test internal mongoose validation
-/*
-function createTrip(dataTrip) {
-  let firstTrip = new Trip(dataTrip);
-  console.log(firstTrip.validateSync());
- }
-
-createTrip(validateResult.value);
-*/
-
 exports.Trip = Trip;
 exports.validateTrip = validateTrip;
 exports.validateExpense = validateExpense;
+exports.supportedCurrencies = supportedCurrencies;

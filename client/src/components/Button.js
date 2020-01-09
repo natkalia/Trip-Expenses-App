@@ -9,14 +9,19 @@ const DefaultButton = styled.button`
   margin: 0 auto 20px;
   width: 100%;
   font-size: 20px;
+  font-weight: 400;
   text-align: center;
   border: none;
   color: ${theme.colors.neutralMidDark};
   user-select: none;
   outline: none;
+  box-shadow: 0 0 4px ${theme.colors.neutralLight};
+  cursor: pointer;
+  transition: .3s;
 
   &:hover {
-    cursor: pointer;  
+    font-weight: 600;
+    box-shadow: 0 0 4px ${theme.colors.neutralMidLight};
   } 
   &:focus {
     outline: none;  
@@ -24,6 +29,8 @@ const DefaultButton = styled.button`
 `;
 
 const Button = (props) => {
+  // Customize the button adding props textOnButton, textColor, btnColor, btnBorder. 
+  // For example: textOnButton="Add" textColor="white" btnColor="green" btnBorder="none"
 
   const btnStyle = {
     color: props.textColor,

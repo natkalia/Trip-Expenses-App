@@ -1,16 +1,28 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
+import { connect } from 'react-redux';
 import ContentWrapper from './ContentWrapper';
 import Button from './Button';
-import { Form, Label, Input, customStyleSelect } from './styled';
+import {
+  Form,
+  Label,
+  Input,
+  customStyleSelect,
+  TripHeader,
+  LinkText,
+  NavLinksContainer
+} from './styled';
 import Select from 'react-select';
+import getToken from '../utils/getToken';
+import formatCurrencies from '../utils/formatCurrencies';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 class AddExpense extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      tripId: "5e0dd4fa618f3e1f10d4db80", // temporary
       expenseName: "", 
       expenseCategory: 
         {
@@ -23,16 +35,7 @@ class AddExpense extends Component {
           value: "PLN", 
           label: "PLN"
         },
-      tripCurrencies: [
-        { value: 'PLN', label: 'PLN' },
-        { value: 'USD', label: 'USD' },
-        { value: 'EUR', label: 'EUR' },
-        { value: 'GBP', label: 'GBP' },
-        { value: 'JPY', label: 'JPY' },
-        { value: 'AUD', label: 'AUD' },
-        { value: 'CAD', label: 'CAD' },
-        { value: 'CHF', label: 'CHF' }
-      ],
+      tripCurrencies: formatCurrencies(this.props.currencyList),
       tripCategories: []
     }
   }
@@ -69,7 +72,7 @@ class AddExpense extends Component {
       currency: this.state.expenseCurrency.value
     }
 
-    axios.post(`http://localhost:3000/api/trips/${this.state.tripId}/expenses`, expense)
+    axios.post(`http://localhost:3000/api/trips/${this.props.choosenTripId}/expenses`, expense, { headers: { "x-auth-token": `${getToken()}`}})
     .then(res => console.log(res.data))
     .then(this.setState({ 
       expenseName: "", 
@@ -80,7 +83,7 @@ class AddExpense extends Component {
   };
 
   getCategoriesFromTrip = async () => {
-    const res = await axios.get(`http://localhost:3000/api/trips/${this.state.tripId}`);
+    const res = await axios.get(`http://localhost:3000/api/trips/${this.props.choosenTripId}`, { headers: { "x-auth-token": `${getToken()}`}});
     try {
       const sanitizedArrayCategories = res.data.categories.map(option => ({ value: option, label: option }));
       this.setState({
@@ -98,66 +101,85 @@ class AddExpense extends Component {
 
   render() {
     return (
-      <ContentWrapper title="Add Expense">
+      <>
+        <TripHeader name={this.props.choosenTripName}/>
+        <ContentWrapper title="Add Expense">
 
-        <Form onSubmit={this.onFormSubmit}>
+          <Form onSubmit={this.onFormSubmit}>
 
-          <Label htmlFor="expenseName-add">Name (3-30 characters):</Label>
-          <Input 
-            minlength="3" 
-            maxlength="30" 
-            type="text" 
-            name="expenseName" 
-            id="expenseName-add" 
-            placeholder="Name" 
-            required 
-            onChange={this.onInputChange}
-            value={this.state.expenseName}/>
+            <Label htmlFor="expenseName-add">Name (3-40 characters):</Label>
+            <Input 
+              minlength="3" 
+              maxlength="40" 
+              type="text" 
+              name="expenseName" 
+              id="expenseName-add" 
+              placeholder="Name" 
+              required 
+              onChange={this.onInputChange}
+              value={this.state.expenseName}/>
 
-          <Label htmlFor="expenseCost-add">Cost (0-10000):</Label>
-          <Input 
-            min="0"
-            max="10000" 
-            type="number" 
-            name="expenseCost" 
-            id="expenseCost-add" 
-            placeholder="Cost amount" 
-            required 
-            onChange={this.onInputChange} 
-            value={this.state.expenseCost}
-          />
+            <Label htmlFor="expenseCost-add">Cost (0-10000):</Label>
+            <Input 
+              min="0"
+              max="10000" 
+              type="number" 
+              name="expenseCost" 
+              id="expenseCost-add" 
+              placeholder="Cost amount" 
+              required 
+              onChange={this.onInputChange} 
+              value={this.state.expenseCost}
+            />
 
-          <Label htmlFor="expenseCurrency-add">Currency:</Label>
-          <Select 
-            styles={customStyleSelect} 
-            options={this.state.tripCurrencies} 
-            type="text" 
-            name="expenseCurrency" 
-            id="expenseCurrency-add" 
-            required 
-            onChange={this.onSelectCurrencyChange} 
-            value={this.state.expenseCurrency}
-          />
+            <Label htmlFor="expenseCurrency-add">Currency:</Label>
+            <Select 
+              styles={customStyleSelect} 
+              options={this.state.tripCurrencies} 
+              type="text" 
+              name="expenseCurrency" 
+              id="expenseCurrency-add" 
+              required 
+              onChange={this.onSelectCurrencyChange} 
+              value={this.state.expenseCurrency}
+            />
 
-          <Label htmlFor="expenseCategory-add">Category:</Label>
-          <Select 
-            styles={customStyleSelect} 
-            options={this.state.tripCategories} 
-            type="text" 
-            name="expenseCategory" 
-            id="expenseCategory-add" 
-            required
-            onChange={this.onSelectCategoryChange} 
-            value={this.state.expenseCategory}
-          />
+            <Label htmlFor="expenseCategory-add">Category:</Label>
+            <Select 
+              styles={customStyleSelect} 
+              options={this.state.tripCategories} 
+              type="text" 
+              name="expenseCategory" 
+              id="expenseCategory-add" 
+              required
+              onChange={this.onSelectCategoryChange} 
+              value={this.state.expenseCategory}
+            />
 
-          <Button textOnButton="Add" btnColor="#2EC66D" btnBorder="none"/> 
+            <Button textOnButton="Add" textColor="#fff" btnColor="#2EC66D" btnBorder="none" /> 
 
-        </Form>
+          </Form>
+          <NavLinksContainer>
+            <LinkText to = { `/trips/${this.props.choosenTripId}/expenses/all`} >
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to All Expenses
+            </LinkText>
+            <LinkText to={`/trips/single/${this.props.choosenTripId}`}>
+              <FontAwesomeIcon icon="arrow-left"/>&nbsp;&nbsp; Back to Trip Details
+            </LinkText>
+          </NavLinksContainer>
 
-      </ContentWrapper>
+        </ContentWrapper>
+      </>
     )
   }
 } 
-  
-export default AddExpense;
+
+const mapStateToProps = (state) => {
+  return {    
+    choosenTripId: state.choosenTrip.id,
+    choosenTripName: state.choosenTrip.name,
+    currencyList: state.currencyList
+  }
+}
+
+export default connect(mapStateToProps)(AddExpense);

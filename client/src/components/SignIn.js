@@ -1,9 +1,16 @@
 import axios from 'axios';
 import React from 'react';
-import Cookies from 'universal-cookie';
+import { connect } from 'react-redux';
 import { Form, Label, Input } from './styled';
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
+import getSupportedCurrencies from '../utils/getSupportedCurrencies';
+import {
+  setLoggedIn,
+  setCurrencyList,
+  setUserId
+} from '../redux/actions/userActions';
+
 
 class Login extends React.Component {
   constructor(props) {
@@ -21,13 +28,17 @@ class Login extends React.Component {
       password: this.state.password
     }
     const url = "http://localhost:3000/api/users/login";
-    const cookies = new Cookies();
     await axios.post(url, user)
-      .then(res => cookies.set('travelplanner_x-auth-token', res.headers["x-auth-token"]))
+      .then(res => {
+        localStorage.setItem('travelplanner_x-auth-token', res.headers["x-auth-token"]);
+        return res.data.userId;
+      })
+      .then((userId) => this.props.setUserId(userId))
+      .then(() => this.props.setLoggedIn())
+      .then(() => getSupportedCurrencies())
+      .then((list) => this.props.setCurrencyList(list))
+      .then(() => this.props.history.push('/trips/all'))
       .catch(err => console.log(err));
-    this.setState({
-      travelplanner_jwt: cookies.get('travelplanner_jwt')
-    })
   }
 
   onInputChange = (inputName, e) => {
@@ -57,4 +68,21 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.isLoggedIn,
+    currencyList: state.currencyList,
+    userId: state.userId
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoggedIn: () => dispatch(setLoggedIn()),
+    setCurrencyList: (list) => dispatch(setCurrencyList(list)),
+    setUserId: (userId) => dispatch(setUserId(userId))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
