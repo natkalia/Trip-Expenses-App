@@ -205,7 +205,7 @@ class TripSummary extends Component {
   render() {
     return (
       <>
-        <TripHeader name={this.state.tripName}/>
+        <TripHeader name={this.props.choosenTripName}/>
         <ContentWrapper title="Budget Overview">
           <InnerContainer>
             <Paragraph> 
@@ -263,7 +263,8 @@ class TripSummary extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    choosenTripId: state.choosenTrip.id
+    choosenTripId: state.choosenTrip.id,
+    choosenTripName: state.choosenTrip.name
   }
 }
 

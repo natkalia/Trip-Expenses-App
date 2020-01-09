@@ -3,6 +3,8 @@ const SET_LOGGED_OUT = 'SET_LOGGED_OUT';
 const CLEAR_STATE = 'CLEAR_STATE';
 const SET_CHOOSEN_TRIP = 'SET_CHOOSEN_TRIP';
 const SET_CHOOSEN_EXPENSE = 'SET_CHOOSEN_EXPENSE';
+const CLEAR_CHOOSEN_TRIP = 'CLEAR_CHOOSEN_TRIP';
+const UPDATE_CHOOSEN_TRIP = 'UPDATE_CHOOSEN_TRIP';
 const SET_CURRENCY_LIST = 'SET_CURRENCY_LIST';
 const SET_USER_ID = 'SET_USER_ID';
 
@@ -46,6 +48,19 @@ const setChoosenExpense = (id) => ({
   }
 });
 
+const updateChoosenTrip = (name, mainCurrency) => ({
+  type: UPDATE_CHOOSEN_TRIP,
+  payload: {
+      name,
+      mainCurrency
+  }
+});
+
+const clearChoosenTrip = () => ({
+  type: CLEAR_CHOOSEN_TRIP,
+  payload: {}
+});
+
 const setCurrencyList = (currencyList) => ({
   type: SET_CURRENCY_LIST,
   payload: {
@@ -66,6 +81,8 @@ export {
   clearState,
   setChoosenTrip,
   setChoosenExpense,
+  updateChoosenTrip,
+  clearChoosenTrip,
   setCurrencyList,
   setUserId,
   SET_LOGGED_IN,
@@ -73,6 +90,8 @@ export {
   CLEAR_STATE,
   SET_CHOOSEN_TRIP,
   SET_CHOOSEN_EXPENSE,
+  UPDATE_CHOOSEN_TRIP,
+  CLEAR_CHOOSEN_TRIP,
   SET_CURRENCY_LIST,
   SET_USER_ID
 }
