@@ -1,0 +1,34 @@
+{
+  "name": "tripexpenses",
+  "version": "1.0.0",
+  "description": "app for planning travel budget",
+  "keywords": [
+    "travel",
+    "travel costs",
+    "travel budget",
+    "trip expenses"
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dobrzyckahanna/TravelPlanner.git"
+  },
+  "author": "Warsaw Team CodersCamp 2019",
+  "scripts": {
+    "install:app": "npm install && npm run install:server && npm run install:client",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "start:app": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "nodemon server/server.js",
+    "start:client": "npm run start --prefix client",
+    "start": "cd server && npm install && node server.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.2",
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "moment": "^2.24.0"
+  }
+}
